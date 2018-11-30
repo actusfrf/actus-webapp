@@ -4,9 +4,15 @@ import com.bundiconsulting.actuswebapp.models.Contact;
 import com.bundiconsulting.actuswebapp.models.Demo;
 import com.bundiconsulting.actuswebapp.models.Event;
 import com.bundiconsulting.actuswebapp.repositories.DemoRepository;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.MapType;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,13 +61,6 @@ public class DemoController {
     	return meta;
     }
     
-    /*@RequestMapping(method=RequestMethod.GET, value="/demos/terms/{id}")
-    public Map<String, Object> getDemoTerms(@PathVariable String id) {
-    	Optional<Demo> terms = demoRepository.findById(id);
-    	
-    	return terms.getTerms();
-    }*/
-    
     @RequestMapping(method=RequestMethod.GET, value="/demos/terms/{id}")
     public Map<String, Object> getDemoTerms(@PathVariable String id) {
     	Optional<Demo> optdemo = demoRepository.findById(id);
@@ -74,23 +73,26 @@ public class DemoController {
     // String -> ArrayList<ContractEvent>
     @RequestMapping(method=RequestMethod.POST, value="/events")
     public List<Event> solveContract(@RequestBody  
-    		String contractType, String calendar, String statusDate, String contractRole, 
-			String legalEntityIDCounterparty, String dayCountConvention, String currency,
-			String initialExchangeDate, String maturityDate, String notionalPrincipal) {
+    		//String contractType, String calendar, String statusDate, String contractRole, 
+			//String legalEntityIDCounterparty, String dayCountConvention, String currency,
+			//String initialExchangeDate, String maturityDate, String notionalPrincipal) {
+    		String terms) {
 
-        // define attributes
-        Map<String, String> map = new HashMap<String, String>();
-        /*map.put("ContractType", contractType);
-        map.put("Calendar", calendar);
-        map.put("StatusDate", statusDate);
-        map.put("ContractRole", contractRole);
-        map.put("LegalEntityIDCounterparty", legalEntityIDCounterparty);
-        map.put("DayCountConvention", dayCountConvention);
-        map.put("Currency", currency);
-        map.put("InitialExchangeDate", initialExchangeDate);
-        map.put("MaturityDate", maturityDate);
-        map.put("NotionalPrincipal", notionalPrincipal);*/
-        map.put("ContractType", "PAM");
+    	// define attributes
+        //Map<String, String> map = new HashMap<String, String>();
+        
+        //map.put("ContractType", contractType);
+        //map.put("Calendar", calendar);
+        //map.put("StatusDate", statusDate);
+        //map.put("ContractRole", contractRole);
+        //map.put("LegalEntityIDCounterparty", legalEntityIDCounterparty);
+        //map.put("DayCountConvention", dayCountConvention);
+        //map.put("Currency", currency);
+        //map.put("InitialExchangeDate", initialExchangeDate);
+        //map.put("MaturityDate", maturityDate);
+        //map.put("NotionalPrincipal", notionalPrincipal);
+        
+        /*map.put("ContractType", "PAM");
         map.put("Calendar", "NoHolidayCalendar");
         map.put("StatusDate", "2016-01-01T00:00:00");
         map.put("ContractRole", "RPA");
@@ -99,7 +101,28 @@ public class DemoController {
         map.put("Currency", "USD");
         map.put("InitialExchangeDate", "2016-01-02T00:00:00");
         map.put("MaturityDate", "2017-01-01T00:00:00");
-        map.put("NotionalPrincipal", "1000.0");
+        map.put("NotionalPrincipal", "1000.0");*/
+        
+    	//Map<String,Object> map = new ObjectMapper().readValue(terms, HashMap.class);
+    	
+    	TypeFactory factory = TypeFactory.defaultInstance();
+    	MapType type = factory.constructMapType(HashMap.class, String.class, String.class);
+    	ObjectMapper mapper  = new ObjectMapper();
+    	Map<String, String> map = null;
+    	
+		try {
+			map = mapper.readValue(terms, type);
+		} catch (JsonParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (JsonMappingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+    	
         // parse attributes
         ContractModel model = ContractModel.parse(map);
         // define analysis times
@@ -112,8 +135,7 @@ public class DemoController {
         
         List<Event> output = events.stream().map(e -> new Event(e)).collect(Collectors.toList());
         
-        return output; // --> ArrayList zu JSON konvertieren?
-        //return "Test";
+        return output;
     }
     
     @RequestMapping(method=RequestMethod.GET, value="/demos")
@@ -150,68 +172,4 @@ public class DemoController {
 
         return demo;
     }
-    
-    
-    /*@RequestMapping(method=RequestMethod.GET, value="/demos/meta/{ct}")
-    public Iterable<Demo> demoContracts() {
-    	return demoRepository.findByContract();
-    }*/
-    
-    
-    
-    
-    /*@RequestMapping(method=RequestMethod.PUT, value="/demos/{id}")
-    public Demo update(@PathVariable String id, @RequestBody Demo demo) {
-        Demo d = demoRepository.findOne(id);
-        d.setIdentifier("Test");
-        d.setLabel("asdf");
-        d.setDescription("Beschreibung");;
-        d.setVersion(2);
-        d.setTerms("{“ContractID”:”pam_demo_1”,“ContractDealDate”:”2018-01-01T00:00:00”,“InitialExchangeDate”:”2018-01-02T00:00:00”,“MaturityDate”:”2018-12-31T23:59:59”,“NotionalPrincipal”:1000.0,“NominalInterestRate”:0.01}");
-        demoRepository.save(d);
-        return demo;
-    }*/
-    
-    /*
-    @RequestMapping(method=RequestMethod.GET, value="/contacts")
-    public Iterable<Contact> contact() {
-        return contactRepository.findAll();
-    }
-
-    @RequestMapping(method=RequestMethod.POST, value="/contacts")
-    public Contact save(@RequestBody Contact contact) {
-        contactRepository.save(contact);
-
-        return contact;
-    }
-
-    @RequestMapping(method=RequestMethod.GET, value="/contacts/{id}")
-    public Contact show(@PathVariable String id) {
-        return contactRepository.findOne(id);
-    }
-
-    @RequestMapping(method=RequestMethod.PUT, value="/contacts/{id}")
-    public Contact update(@PathVariable String id, @RequestBody Contact contact) {
-        Contact c = contactRepository.findOne(id);
-        if(contact.getName() != null)
-            c.setName(contact.getName());
-        if(contact.getAddress() != null)
-            c.setAddress(contact.getAddress());
-        if(contact.getCity() != null)
-            c.setCity(contact.getCity());
-        if(contact.getPhone() != null)
-            c.setPhone(contact.getPhone());
-        if(contact.getEmail() != null)
-            c.setEmail(contact.getEmail());
-        contactRepository.save(c);
-        return contact;
-    }
-
-    @RequestMapping(method=RequestMethod.DELETE, value="/contacts/{id}")
-    public String delete(@PathVariable String id) {
-        Contact contact = contactRepository.findOne(id);
-        contactRepository.delete(contact);
-
-        return "";
-    }*/
 }
