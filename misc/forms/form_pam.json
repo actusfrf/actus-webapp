@@ -1,0 +1,14 @@
+{
+"Identifier":"form_pam",
+"ContractType":"PAM",
+"Description":"A generalized lending agreement with notional being paid-out at initial exchange and repaid at maturity in a lump sum (bullet loan pattern). Covers all kinds of such agreements including zero-coupon, fixed-rate, variable-rate, index-linked, etc.",
+"Version":"20181128",
+"Terms":
+[
+{"Group":"Calendar","Name":"Calendar","Type":"List","List":["NoCalendar","MondayToFriday"],"Description":"Calendar defines the non-working days which affect the dates of contract events (CDE's) in combination with EOMC and BDC.","Applicability":"x"},
+{"Group":"Calendar","Name":"BusinessDayConvention","Type":"List","List":[],"Description":"","Applicability":"x"},
+{"Group":"Calendar","Name":"EndOfMonthConvention","Type":"List","List":[],"Description":"","Applicability":"x"},
+{"Group":"Contract identification","Name":"ContractType","Type":"PAM","List":,"Description":,"Applicability":"NN"},
+...
+]
+}

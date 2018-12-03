@@ -1,0 +1,24 @@
+{
+"Identifier":"demo_pam102",
+"Label":"Short 3-month zero-coupon-bond",
+"ContractType":"PAM",
+"Version":"20181128",
+"Description":"Short position of a 3-month zero coupon bond with Notional of 1000 and discount at initiation of 100.",
+"Terms":
+{
+"ContractType":"PAM",
+"StatusDate":"2019-01-01T00:00:00",
+"ContractRole":"RPA",
+"LegalEntityIDRecordCreator":"Actusfrf",
+"ContractID":"pam102",
+"LegalEntityIDCounterparty":"EntityA",
+"ContractStatus":"PF",
+"DayCountConvention":"30E/360",
+"Currency":"USD",
+"ContractDealDate":"2019-01-01T00:00:00",
+"InitialExchangeDate":"2019-01-02T00:00:00",
+"MaturityDate":"2019-04-02T00:00:00",
+"NotionalPrincipal":1000,
+"PremiumDiscountAtIED":-100
+}
+}

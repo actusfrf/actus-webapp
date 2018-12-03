@@ -1,0 +1,26 @@
+{
+"Identifier":"demo_pam104",
+"Label":"Long 5-year bullet loan",
+"ContractType":"PAM",
+"Version":"20181128",
+"Description":"Long position of a 5-year bullet loan with notional of 1000 and annual coupon-payments at fixed interest rate of 2% using 30E/360 day-count-convention.",
+"Terms":
+{
+"ContractType":"PAM",
+"StatusDate":"2019-01-01T00:00:00",
+"ContractRole":"RPA",
+"LegalEntityIDRecordCreator":"Actusfrf",
+"ContractID":"pam104",
+"LegalEntityIDCounterparty":"EntityA",
+"ContractStatus":"PF",
+"DayCountConvention":"30E/360",
+"Currency":"USD",
+"ContractDealDate":"2019-01-01T00:00:00",
+"InitialExchangeDate":"2019-01-02T00:00:00",
+"MaturityDate":"2024-01-02T00:00:00",
+"NotionalPrincipal":1000,
+"NominalInterestRate":0.02,
+"CycleAnchorDateOfInterestPayment":"2020-01-02T00:00:00",
+"CycleOfInterestPayment":"1Y-"
+}
+}
