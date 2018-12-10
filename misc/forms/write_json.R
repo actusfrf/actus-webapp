@@ -13,9 +13,9 @@ rawdat <- read_excel("forms/Consolidated_DD_CTD_TechCommittee.xlsx", sheet = "Co
 rawdat <- rawdat[1:141,]
 
 # added types, i was note sure how to classify as list or not
-list_type <- read_excel("forms/notes_Consolidated_DD_CTD_TechCommittee.xlsx", sheet = "Consolidated DD CTD", skip = 1)
-list_type <- list_type$Type
-
+notes_file <- read_excel("misc/forms/notes_Consolidated_DD_CTD_TechCommittee.xlsx", sheet = "Consolidated DD CTD", skip = 1)
+list_type <- notes_file$Type
+list_values <- notes_file
 
 basic_contract <- c("CSH", "UMP",	"PBN",	"CLM",	"PAM",	"LAM",	"LAX",	"ANN",	"ANX",	"NAM",	"NAX",	"STK",	"COM")
 # for testing
