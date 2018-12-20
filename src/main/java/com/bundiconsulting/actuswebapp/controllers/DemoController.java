@@ -1,6 +1,5 @@
 package com.bundiconsulting.actuswebapp.controllers;
 
-import com.bundiconsulting.actuswebapp.models.Contact;
 import com.bundiconsulting.actuswebapp.models.Demo;
 import com.bundiconsulting.actuswebapp.models.Event;
 import com.bundiconsulting.actuswebapp.repositories.DemoRepository;
@@ -44,43 +43,46 @@ public class DemoController {
             Set<String> keys = new HashSet<String>();
             return keys;
         }
-        
+
         public double stateAt(String id,LocalDateTime time,StateSpace contractStates,ContractModelProvider contractAttributes) {
-            return 0.0;    
+            return 0.0;
         }
     }
-	
+
     @Autowired
     DemoRepository demoRepository;
-    
-    
-    @RequestMapping(method=RequestMethod.GET, value="/demos/meta/{ct}")
-    public List<Demo> getDemoMeta(@PathVariable String ct) {
-    	List<Demo> meta = StreamSupport.stream(demoRepository.findAll().spliterator(), false).filter(x -> ct.equals(x.getContract())).collect(Collectors.toList());
 
+
+    @RequestMapping(method=RequestMethod.GET, value="/demos/meta/{contractType}")
+    public List<Demo> getDemoMeta(@PathVariable String contractType) {
+    	//List<Demo> meta = StreamSupport.stream(demoRepository.findAll().spliterator(), false).filter(x -> ct.equals(x.getContract())).collect(Collectors.toList());
+        List<Demo> meta = StreamSupport.stream(demoRepository.findAll().spliterator(), false).filter(x -> contractType.equals(x.getContractType())).collect(Collectors.toList());
     	return meta;
     }
-    
-    @RequestMapping(method=RequestMethod.GET, value="/demos/terms/{id}")
+
+
+
+
+    @RequestMapping(method=RequestMethod.GET, value="/demos/{id}")
     public Map<String, Object> getDemoTerms(@PathVariable String id) {
     	Optional<Demo> optdemo = demoRepository.findById(id);
         Demo d = optdemo.get();
-        
+
         return d.getTerms();
-        
+
     }
-    
+
     // String -> ArrayList<ContractEvent>
     @RequestMapping(method=RequestMethod.POST, value="/events")
-    public List<Event> solveContract(@RequestBody  
-    		//String contractType, String calendar, String statusDate, String contractRole, 
+    public List<Event> solveContract(@RequestBody
+    		//String contractType, String calendar, String statusDate, String contractRole,
 			//String legalEntityIDCounterparty, String dayCountConvention, String currency,
 			//String initialExchangeDate, String maturityDate, String notionalPrincipal) {
     		String terms) {
 
     	// define attributes
         //Map<String, String> map = new HashMap<String, String>();
-        
+
         //map.put("ContractType", contractType);
         //map.put("Calendar", calendar);
         //map.put("StatusDate", statusDate);
@@ -91,7 +93,7 @@ public class DemoController {
         //map.put("InitialExchangeDate", initialExchangeDate);
         //map.put("MaturityDate", maturityDate);
         //map.put("NotionalPrincipal", notionalPrincipal);
-        
+
         /*map.put("ContractType", "PAM");
         map.put("Calendar", "NoHolidayCalendar");
         map.put("StatusDate", "2016-01-01T00:00:00");
@@ -102,14 +104,14 @@ public class DemoController {
         map.put("InitialExchangeDate", "2016-01-02T00:00:00");
         map.put("MaturityDate", "2017-01-01T00:00:00");
         map.put("NotionalPrincipal", "1000.0");*/
-        
+
     	//Map<String,Object> map = new ObjectMapper().readValue(terms, HashMap.class);
-    	
+
     	TypeFactory factory = TypeFactory.defaultInstance();
     	MapType type = factory.constructMapType(HashMap.class, String.class, String.class);
     	ObjectMapper mapper  = new ObjectMapper();
     	Map<String, String> map = null;
-    	
+
 		try {
 			map = mapper.readValue(terms, type);
 		} catch (JsonParseException e1) {
@@ -122,7 +124,7 @@ public class DemoController {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-    	
+
         // parse attributes
         ContractModel model = ContractModel.parse(map);
         // define analysis times
@@ -132,25 +134,25 @@ public class DemoController {
         MarketModel riskFactors = new MarketModel();
         // lifecycle PAM contract
         ArrayList<ContractEvent> events = PrincipalAtMaturity.lifecycle(analysisTimes,model,riskFactors);
-        
+
         List<Event> output = events.stream().map(e -> new Event(e)).collect(Collectors.toList());
-        
+
         return output;
     }
-    
+
     @RequestMapping(method=RequestMethod.GET, value="/demos")
     public Iterable<Demo> demo() {
     	System.out.println("Hello World!");
     	return demoRepository.findAll();
     }
-    
-    
+
+
     @RequestMapping(method=RequestMethod.PUT, value="/demos/{id}")
     public Demo update(@PathVariable String id, @RequestBody Demo demo) {
         Optional<Demo> optdemo = demoRepository.findById(id);
         Demo d = optdemo.get();
-        if(demo.getContract() != null)
-        	d.setContract(demo.getContract());
+     //   if(demo.getContract() != null)
+       // 	d.setContract(demo.getContract());
         if(demo.getIdentifier() != null)
         	d.setIdentifier(demo.getIdentifier());
         if(demo.getLabel() != null)
@@ -160,12 +162,12 @@ public class DemoController {
         if(demo.getVersion() != null)
         	d.setVersion(demo.getVersion());
         if(demo.getTerms() != null)
-        	d.setTerms(demo.getTerms());
+        //	d.setTerms(demo.getTerms());
         demoRepository.save(d);
         return demo;
-        
+
     }
-    
+
     @RequestMapping(method=RequestMethod.POST, value="/demos")
     public Demo save(@RequestBody Demo demo) {
         demoRepository.save(demo);

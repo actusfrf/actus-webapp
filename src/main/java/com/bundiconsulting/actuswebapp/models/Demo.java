@@ -2,54 +2,68 @@ package com.bundiconsulting.actuswebapp.models;
 
 import java.util.Map;
 
-//import org.json.JSONObject;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
-import com.fasterxml.jackson.databind.JsonNode;
 
 @Document(collection = "demos")
 public class Demo {
+
     @Id
-    String id;
-    String contract;
-    String identifier;
-    String label;
-    String description;
-    String version;
-    Map<String, Object> terms; 
-    
-    
-    // for deserialization 
+    private String _id;
+    @Field(value="Identifier")
+    private String identifier;
+    @Field (value="Label")
+    private String label;
+    @Field (value="contractType")
+    private String contractType;
+    @Field (value="Version")
+    private String version;
+    @Field (value="Description")
+    private String description;
+ //   private String terms;
+    @Field (value="Terms")
+    private Map<String, Object> terms = new HashMap<String, Object>();
+
+    /**
+     * No args constructor for use in serialization
+     *
+     */
     public Demo() {
     }
 
-    public Demo(String contract, String identifier, String label, String description, 
-    			String version, Map<String, Object>  terms) {
-        this.contract = contract;
-    	this.identifier = identifier;
+    /**
+     *
+     * @param description
+     * @param terms
+     * @param contractType
+     * @param label
+     * @param identifier
+     * @param version
+     */
+    public Demo(String identifier, String label, String contractType, String version, String description) {
+        super();
+        this.identifier = identifier;
         this.label = label;
-        this.description = description;
+        this.contractType = contractType;
         this.version = version;
-        this.terms = terms;
+        this.description = description;
+     //   this.terms = terms;
     }
 
     public String getId() {
-        return id;
+        return _id;
     }
 
     public void setId(String id) {
-        this.id = id;
+        this._id = id;
     }
 
-    public String getContract() {
-    	return contract;
-    }
-    
-    public void setContract(String contract) {
-    	this.contract = contract;
-    }
-    
+
+
     public String getIdentifier() {
         return identifier;
     }
@@ -59,35 +73,51 @@ public class Demo {
     }
 
     public String getLabel() {
-    	return label;
+        return label;
     }
-    
+
     public void setLabel(String label) {
-    	this.label = label;
+        this.label = label;
     }
-    
-    public String getDescription() {
-    	return description;
+
+    public String getContractType() {
+        return contractType;
     }
-    
-    public void setDescription(String description) {
-    	this.description = description;
+
+    public void setContractType(String contractType) {
+        this.contractType = contractType;
     }
-    
+
     public String getVersion() {
-    	return version;
+        return version;
     }
-    
+
     public void setVersion(String version) {
-    	this.version = version;
+        this.version = version;
     }
-    
-    public Map<String, Object>  getTerms() {
-    	return terms;
+
+    public String getDescription() {
+        return description;
     }
-    
-    public void setTerms(Map<String, Object> terms) {
-    	this.terms = terms;
+
+    public void setDescription(String description) {
+        this.description = description;
     }
-    
+
+   // public String getTerms() {
+   //     return terms;
+  //  }
+
+  //  public void setTerms(String terms) {
+   //     this.terms = terms;
+   // }
+
+    public Map<String, Object> getTerms() {
+        return this.terms;
+    }
+
+    public void setTerms(String name, Object value) {
+        this.terms.put(name, value);
+    }
+
 }
