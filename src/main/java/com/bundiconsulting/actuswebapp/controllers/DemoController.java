@@ -55,9 +55,10 @@ public class DemoController {
 
     @RequestMapping(method=RequestMethod.GET, value="/demos/meta/{contractType}")
     public List<Demo> getDemoMeta(@PathVariable String contractType) {
+        System.out.println("Hello World!: " + contractType);
     	//List<Demo> meta = StreamSupport.stream(demoRepository.findAll().spliterator(), false).filter(x -> ct.equals(x.getContract())).collect(Collectors.toList());
-        List<Demo> meta = StreamSupport.stream(demoRepository.findAll().spliterator(), false).filter(x -> contractType.equals(x.getContractType())).collect(Collectors.toList());
-    	return meta;
+         List<Demo> meta = demoRepository.findByContractType(contractType);
+        return meta;
     }
 
 

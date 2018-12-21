@@ -18,7 +18,7 @@ public class Demo {
     private String identifier;
     @Field (value="Label")
     private String label;
-    @Field (value="contractType")
+    @Field (value="ContractType")
     private String contractType;
     @Field (value="Version")
     private String version;
@@ -38,7 +38,6 @@ public class Demo {
     /**
      *
      * @param description
-     * @param terms
      * @param contractType
      * @param label
      * @param identifier
