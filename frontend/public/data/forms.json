@@ -1,0 +1,50 @@
+{
+    "contracts": [{
+            "type": "Basic Contracts",
+            "items": [{
+                    "name": "PAM",
+                    "description": "Principal At Maturity"
+                },
+                {
+                    "name": "ANN",
+                    "description": "Annuity"
+                },
+                {
+                    "name": "NAM",
+                    "description": "Negative Amortizer"
+                },
+                {
+                    "name": "LAM",
+                    "description": "Linear Amortizer"
+                },
+                {
+                    "name": "LAX",
+                    "description": "Exotic Linear Amortizer"
+                },
+                {
+                    "name": "STK",
+                    "description": "Stocks"
+                }
+            ]
+        },{
+            "type": "Combined Contracts",
+            "items": [{
+                "name": "FUTUR",
+                "description": "Futures"
+            },
+            {
+                "name": "OPTNS",
+                "description": "Options"
+            },
+            {
+                "name": "SWAPS",
+                "description": "Swaps"
+            },
+            {
+                "name": "FXOUT",
+                "description": "Foreign Exchange Outright"
+            }]
+        }
+
+    ]
+}

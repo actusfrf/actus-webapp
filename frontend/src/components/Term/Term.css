@@ -1,0 +1,11 @@
+.items-group{
+    margin-bottom: 1rem;
+}
+.item{
+
+}
+.item-label{
+    font-weight: bold;
+    border: 1px solid #ccc;
+    padding: .25rem;
+}

@@ -1,24 +1,75 @@
 import React, { PureComponent } from 'react';
+import { Col, Grid, Row } from 'react-bootstrap';
+import { Term } from '../Term';
 import axios from 'axios';
+
+import './Form.css';
 
 export class Form extends PureComponent {
   state ={
-    fields:[]
+    groups:[],
+    error: false
   }
+
+  assemble(a, b){
+    a.Group[b.Name] = b.Name;
+    return a;
+  }
+
   componentDidMount(){
-    axios.get('http://localhost:8080/terms')
+    let {match} = this.props;
+    axios.get(`/data/form_${match.params.id}.json`)
     .then(res => {
-      console.log(res.data);
+      //console.log(res.data.Terms);
+      if(!res.data.Terms){
+        return false;
+      }
+      let groupToValues = res.data.Terms.reduce(function (obj, item) {
+        let gName = item.Group.split(' ').join('');
+        obj[gName] = obj[item.Group] || [];
+        obj[gName].push(item);
+        return obj;
+      }, {});
+
+      let groups = Object.keys(groupToValues).map(function (key) {
+          return {group: key, Items: groupToValues[key]};
+      });
+      this.setState({
+        groups: groups,
+        error: {...this.state.error}
+      });
+      //console.log(this.state.groups);
+    })
+    .catch(error => {
+      console.log('>>>>>>>>>>>error:', error.response);
     });
   }
 
   render() {
-    let { match } = this.props;
-    let id = match.params.id.toUpperCase();
-
+    let { groups } = this.state;
     return (
       <div>
-        FORM {id}
+        <Grid fluid>
+          <Row>
+            <Col sm={6}>
+              <div className="">form here</div>
+            </Col>
+            <Col sm={6}>
+            <div className="term-group-header">Below are your Optional choices</div>
+            {
+              groups.map((group, groupId) => {
+                //console.log(group);
+                return (
+                  <div key={`term_wrapper${groupId}`} className="term-wrapper">
+                    <Term className="item" groupName={group.group} groupLabel={group.Items[0].Group} items={group.Items} key={`item${groupId}`}/>
+                  </div>
+                )
+              })
+            }
+            </Col>
+          </Row>
+        </Grid>
+        
       </div>
     );
   }
