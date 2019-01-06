@@ -1,0 +1,49 @@
+.tool-tip-copy {
+    display: none;
+}
+
+.icon {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.tool-tip img {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.tool-tip {
+    position: absolute;
+    top: 50%;
+    left: calc(100% + 2px);
+    transform: translateY(-50%);
+    width: 15px;
+    height: 15px;
+    z-index: 2;
+    opacity: 0;
+    transition: all ease .3s;
+}
+
+
+.tool-tip-copy {
+    position: absolute;
+    bottom: -200%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(241, 241, 241, 0.95);
+    color: #000;
+    width: 200px;
+    height: auto;
+    font-size: 1.2rem;
+    padding: 2rem;
+    border: 1px solid #ccc;
+    text-align: center;
+    border-radius: 5px;
+    user-select: none;
+}
+
+.tool-tip:hover .tool-tip-copy {
+    display: block;
+}

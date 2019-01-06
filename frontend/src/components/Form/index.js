@@ -50,10 +50,10 @@ export class Form extends PureComponent {
       <div>
         <Grid fluid>
           <Row>
-            <Col sm={6}>
+            <Col sm={4}>
               <div className="">form here</div>
             </Col>
-            <Col sm={6}>
+            <Col sm={8}>
             <div className="term-group-header">Below are your Optional choices</div>
             {
               groups.map((group, groupId) => {

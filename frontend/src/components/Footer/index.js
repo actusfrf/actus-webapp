@@ -4,7 +4,7 @@ import './Footer.css';
 export default class Footer extends PureComponent { 
     render(){
         return (
-            <div className="header-wrapper">FOOTER HERE</div>
+            <div className="footer-wrapper">FOOTER HERE</div>
         )
     }
 }
