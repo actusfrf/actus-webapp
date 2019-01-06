@@ -55,6 +55,15 @@
     padding: 1rem;
 }
 
+.choices.required{
+
+}
+.choices.optional{
+    border-left: 1px solid rgb(209, 209, 209, 0.75);
+    padding-left: 2.5rem;
+}
+
+/*Medium Up*/
 @media screen and (min-width: 641px){
     .item .tool-tip .tool-tip-copy {
         right: initial;

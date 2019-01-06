@@ -50,21 +50,21 @@ export class Form extends PureComponent {
       <div>
         <Grid fluid>
           <Row>
-            <Col sm={4}>
-              <div className="">form here</div>
+            <Col sm={4} className="required choices">
+              <div className="">All fields below are mandatory to fill in:</div>
             </Col>
-            <Col sm={8}>
-            <div className="term-group-header">Below are your Optional choices</div>
-            {
-              groups.map((group, groupId) => {
-                //console.log(group);
-                return (
-                  <div key={`term_wrapper${groupId}`} className="term-wrapper">
-                    <Term className="item" groupName={group.group} groupLabel={group.Items[0].Group} items={group.Items} key={`item${groupId}`}/>
-                  </div>
-                )
-              })
-            }
+            <Col sm={8} className="optional choices">
+              <div className="term-group-header">Below are your Optional choices</div>
+              {
+                groups.map((group, groupId) => {
+                  //console.log(group);
+                  return (
+                    <div key={`term_wrapper${groupId}`} className="term-wrapper">
+                      <Term className="item" groupName={group.group} groupLabel={group.Items[0].Group} items={group.Items} key={`item${groupId}`}/>
+                    </div>
+                  )
+                })
+              }
             </Col>
           </Row>
         </Grid>
