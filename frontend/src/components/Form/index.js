@@ -39,6 +39,7 @@ export class Form extends PureComponent {
         groupDescription: res.data.Description,
         contractType: res.data.ContractType,
         identifier: res.data.Identifier,
+        version: res.data.Version,
         error: {...this.state.error}
       });
     })
@@ -48,10 +49,10 @@ export class Form extends PureComponent {
   }
 
   render() {
-    let { groups, groupDescription, contractType, identifier } = this.state;
+    let { groups, groupDescription, contractType, identifier, version} = this.state;
     //let { match } = this.props;
     return (
-      <div id={identifier}>
+      <div id="form-container" identifier={identifier} version={version}>
         <Grid fluid>
           <Row>
             <Col sm={12} className="contract-main-wrapper">
