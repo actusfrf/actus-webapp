@@ -28,7 +28,6 @@ export class Landing extends PureComponent {
                 </div>
                 {
                     contracts.map((contract, index) => {
-                        console.log(contract);
                         return (
                             <Contract key={`_contract_${index}`} type={contract.type} contracts={contract.items} />
                         )

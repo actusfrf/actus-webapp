@@ -6,7 +6,7 @@ import './Term.css';
 export class Term extends PureComponent {
     render() {
         let { items, groupName, groupLabel } = this.props;
-        console.log('jellyfish:', this.props);
+        //console.log('jellyfish:', this.props);
         return ( 
             <div id={groupName} className="items-group">
                 <div className="item-header">{groupLabel}</div>
@@ -23,7 +23,7 @@ export class Term extends PureComponent {
                                     <div className="input-container">
                                         <label className="item-labels" htmlFor={item.Name}>{itemName}</label>
                                         <div className="input-wrapper">
-                                            <input id={item.Name} title={item.Description} placeholder={itemName} className="item-fields" type="text" />
+                                            <input id={item.Name} title={`Optional Choice`} placeholder={itemName} className="item-fields" type="text" />
                                             <ToolTip description={item.Description} />
                                         </div>                                        
                                     </div>

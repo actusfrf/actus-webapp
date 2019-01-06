@@ -20,7 +20,7 @@ export class Form extends PureComponent {
     let {match} = this.props;
     axios.get(`/data/form_${match.params.id}.json`)
     .then(res => {
-      //console.log(res.data.Terms);
+      //console.log(res.data);
       if(!res.data.Terms){
         return false;
       }
@@ -36,6 +36,9 @@ export class Form extends PureComponent {
       });
       this.setState({
         groups: groups,
+        groupDescription: res.data.Description,
+        contractType: res.data.ContractType,
+        identifier: res.data.Identifier,
         error: {...this.state.error}
       });
     })
@@ -45,10 +48,16 @@ export class Form extends PureComponent {
   }
 
   render() {
-    let { groups } = this.state;
+    let { groups, groupDescription, contractType, identifier } = this.state;
+    //let { match } = this.props;
     return (
-      <div>
+      <div id={identifier}>
         <Grid fluid>
+          <Row>
+            <Col sm={12} className="contract-main-wrapper">
+                <span className="contract-title">{contractType}:</span> <span className="contract-description">{groupDescription}</span>
+            </Col>
+          </Row>
           <Row>
             <Col sm={4} className="required choices">
               <div className="">All fields below are mandatory to fill in:</div>

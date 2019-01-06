@@ -1,7 +1,28 @@
-.form-wrapper{
+.form-wrapper {
     background: #ccc;
     color: #000;
 }
+
 .term-group-header {
     margin-bottom: 1rem;
+}
+
+.contract-main-wrapper {
+    font-weight: bold;
+    border: 1px solid #ccc;
+    padding: 1rem 2rem;
+    min-height: 35px;
+    line-height: 35px;
+    color: #0d6796;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    border-radius: 5px;
+    background: rgba(241, 241, 241, 0.95);
+}
+.contract-main-wrapper .contract-title{
+    font-weight: bold;
+}
+.contract-main-wrapper .contract-description{
+    font-weight: normal;
+    color: #888;
 }
