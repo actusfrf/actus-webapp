@@ -2,7 +2,11 @@
     margin-bottom: 1rem;
 }
 
-.item {}
+.item .tool-tip .tool-tip-copy {
+    left: initial;
+    right: 0;
+    transform: initial;
+}
 
 .item-header {
     font-weight: bold;
@@ -40,12 +44,6 @@
     opacity: 1;
 }
 
-.item:nth-child(3n) .tool-tip .tool-tip-copy {
-    left: initial;
-    right: 0;
-    transform: initial;
-}
-
 .input-wrapper {
     position: relative;
 }
@@ -55,4 +53,18 @@
     border-right: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
     padding: 1rem;
+}
+
+@media screen and (min-width: 641px){
+    .item .tool-tip .tool-tip-copy {
+        right: initial;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .item:nth-child(3n) .tool-tip .tool-tip-copy {
+        left: initial;
+        right: 0;
+        transform: initial;
+    }
 }
