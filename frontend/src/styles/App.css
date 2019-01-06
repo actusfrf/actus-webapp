@@ -7,6 +7,15 @@
   height: 40vmin;
 }
 
+.nopadding {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+body{
+  font-size: 16px;
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;

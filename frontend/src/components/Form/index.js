@@ -38,10 +38,9 @@ export class Form extends PureComponent {
         groups: groups,
         error: {...this.state.error}
       });
-      //console.log(this.state.groups);
     })
     .catch(error => {
-      console.log('>>>>>>>>>>>error:', error.response);
+      console.log('>>>>>>>>>>> error:', error.response);
     });
   }
 

@@ -1,6 +1,9 @@
 .section-title{
     border-bottom: 1px solid #83d54d;
-    padding-bottom: 0.2em;
+    padding: 0.5em 0;
     color: #303030;
     font-size: 26px;
+}
+.section-description{
+    padding: 1.5rem 0;
 }

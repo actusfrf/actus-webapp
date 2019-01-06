@@ -1,11 +1,23 @@
 .items-group{
     margin-bottom: 1rem;
 }
-.item{
-
+.item {
+    
 }
 .item-label{
     font-weight: bold;
     border: 1px solid #ccc;
-    padding: .25rem;
+    padding: 1.5rem 2rem;
+    min-height: 35px;
+    line-height: 35px;
+}
+
+.item-fields{
+    max-width: 100%;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    padding: .35rem .8rem;
+}
+.input-container{
+    padding: .5rem;
 }

@@ -16,7 +16,7 @@ export class Contract extends PureComponent {
                                 <Col key={`contract_col_${index}`} sm={12} md={3} className="contract-wrapper">
                                     <div className="contract-content">
                                         <Link className="contract-link" to={`/form/${contract.name}`}>{contract.name}</Link>
-                                        <div>{contract.description}</div>
+                                        <div className="contract-description">{contract.description}</div>
                                     </div>
                                 </Col>
                             )
