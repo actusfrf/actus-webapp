@@ -2,18 +2,29 @@ import React, { PureComponent } from 'react';
 import { Col, Grid, Row } from 'react-bootstrap';
 import { Term } from '../Term';
 import axios from 'axios';
+import DatePicker from "react-datepicker"; 
 
+import "react-datepicker/dist/react-datepicker.css";
 import './Form.css';
 
 export class Form extends PureComponent {
-  state ={
+  state = {
     groups:[],
-    error: false
+    error: false,
+    startDate: new Date()
   }
 
   assemble(a, b){
     a.Group[b.Name] = b.Name;
     return a;
+  }
+
+  handleChange(date) {
+    console.log(date);
+    console.log(this.state);
+    this.setState({
+      startDate: date
+    });
   }
 
   componentDidMount(){
@@ -65,6 +76,9 @@ export class Form extends PureComponent {
             </Col>
             <Col sm={8} className="optional choices">
               <div className="term-group-header">Below are your Optional choices</div>
+              {/* <div>
+                <DatePicker selected={this.state.startDate} onChange={this.handleChange.bind(this)}  className="item-fields" accept />
+              </div> */}
               {
                 groups.map((group, groupId) => {
                   //console.log(group);
