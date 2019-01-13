@@ -1,9 +1,13 @@
-.section-title{
-    border-bottom: 1px solid #83d54d;
-    padding: 0.5em 0;
-    color: #303030;
+.section-title {
+    padding: 1rem 2rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    color: #fff;
     font-size: 26px;
+    background: #1a6395;
+    font-weight: bold;
 }
-.section-description{
+
+.section-description {
     padding: 1.5rem 0;
 }

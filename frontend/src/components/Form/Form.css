@@ -10,19 +10,20 @@
 .contract-main-wrapper {
     font-weight: bold;
     border: 1px solid #ccc;
+    border-radius: 5px;
     padding: 1rem 2rem;
     min-height: 35px;
     line-height: 35px;
-    color: #0d6796;
+    color: #fff;
     margin-bottom: 2rem;
     text-transform: uppercase;
-    border-radius: 5px;
-    background: rgba(241, 241, 241, 0.95);
+    background: #1a6395;
 }
 .contract-main-wrapper .contract-title{
     font-weight: bold;
 }
 .contract-main-wrapper .contract-description{
     font-weight: normal;
-    color: #888;
+    color: #fff;
+    padding-left: 1rem;
 }

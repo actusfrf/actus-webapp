@@ -59,7 +59,7 @@
 
 }
 .choices.optional{
-    border-left: 1px solid rgb(209, 209, 209, 0.75);
+    border-left: 2px dotted rgb(209, 209, 209, 1);
     padding-left: 2.5rem;
 }
 

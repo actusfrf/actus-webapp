@@ -38,9 +38,9 @@ export class Form extends PureComponent {
         console.log(this.state.fields);
 
         /*fetch('/api/endpoint.js',{
-      method: 'POST',
-      body: JSON.stringify(data)
-    })*/
+          method: 'POST',
+          body: JSON.stringify(data)
+        })*/
     }
 
     componentDidMount() {
