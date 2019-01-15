@@ -38,16 +38,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class DemoController {
 
-	class MarketModel implements RiskFactorModelProvider {
-        public Set<String> keys() {
-            Set<String> keys = new HashSet<String>();
-            return keys;
-        }
 
-        public double stateAt(String id,LocalDateTime time,StateSpace contractStates,ContractModelProvider contractAttributes) {
-            return 0.0;
-        }
-    }
 
     @Autowired
     DemoRepository demoRepository;
@@ -73,73 +64,7 @@ public class DemoController {
 
     }
 
-    // String -> ArrayList<ContractEvent>
-    @RequestMapping(method=RequestMethod.POST, value="/events")
-    public List<Event> solveContract(@RequestBody
-    		//String contractType, String calendar, String statusDate, String contractRole,
-			//String legalEntityIDCounterparty, String dayCountConvention, String currency,
-			//String initialExchangeDate, String maturityDate, String notionalPrincipal) {
-    		String terms) {
 
-    	// define attributes
-        //Map<String, String> map = new HashMap<String, String>();
-
-        //map.put("ContractType", contractType);
-        //map.put("Calendar", calendar);
-        //map.put("StatusDate", statusDate);
-        //map.put("ContractRole", contractRole);
-        //map.put("LegalEntityIDCounterparty", legalEntityIDCounterparty);
-        //map.put("DayCountConvention", dayCountConvention);
-        //map.put("Currency", currency);
-        //map.put("InitialExchangeDate", initialExchangeDate);
-        //map.put("MaturityDate", maturityDate);
-        //map.put("NotionalPrincipal", notionalPrincipal);
-
-        /*map.put("ContractType", "PAM");
-        map.put("Calendar", "NoHolidayCalendar");
-        map.put("StatusDate", "2016-01-01T00:00:00");
-        map.put("ContractRole", "RPA");
-        map.put("LegalEntityIDCounterparty", "CORP-XY");
-        map.put("DayCountConvention", "A/AISDA");
-        map.put("Currency", "USD");
-        map.put("InitialExchangeDate", "2016-01-02T00:00:00");
-        map.put("MaturityDate", "2017-01-01T00:00:00");
-        map.put("NotionalPrincipal", "1000.0");*/
-
-    	//Map<String,Object> map = new ObjectMapper().readValue(terms, HashMap.class);
-
-    	TypeFactory factory = TypeFactory.defaultInstance();
-    	MapType type = factory.constructMapType(HashMap.class, String.class, String.class);
-    	ObjectMapper mapper  = new ObjectMapper();
-    	Map<String, String> map = null;
-
-		try {
-			map = mapper.readValue(terms, type);
-		} catch (JsonParseException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (JsonMappingException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-        // parse attributes
-        ContractModel model = ContractModel.parse(map);
-        // define analysis times
-        Set<LocalDateTime> analysisTimes = new HashSet<LocalDateTime>();
-        analysisTimes.add(LocalDateTime.parse("2016-01-01T00:00:00"));
-        // define risk factor model
-        MarketModel riskFactors = new MarketModel();
-        // lifecycle PAM contract
-        ArrayList<ContractEvent> events = PrincipalAtMaturity.lifecycle(analysisTimes,model,riskFactors);
-
-        List<Event> output = events.stream().map(e -> new Event(e)).collect(Collectors.toList());
-
-        return output;
-    }
 
     @RequestMapping(method=RequestMethod.GET, value="/demos")
     public Iterable<Demo> demo() {

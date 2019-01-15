@@ -10,8 +10,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import org.springframework.data.mongodb.core.mapping.Field;
+
 
 public class Event {
+	@Field
     String type;
     String time;
     double payoff;
