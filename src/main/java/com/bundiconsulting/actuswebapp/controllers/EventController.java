@@ -65,12 +65,12 @@ class MarketModel implements RiskFactorModelProvider {
     @RequestMapping(method=RequestMethod.POST, value="/events")
     public List<Event> solveContract(@RequestBody Map<String, Object> json ) {
 
-        Map<String, String> map = null;
+        Map<String,String> map = new HashMap<String,String>();
 
 
         for (Map.Entry<String, Object> entry : json.entrySet()) {
-            System.out.println(entry.getKey() + ":" + entry.getValue());
-            map.put(entry.getKey(), entry.getValue().toString());
+         System.out.println(entry.getKey() + ":" + entry.getValue());
+           map.put(entry.getKey(),  entry.getValue().toString());
 
         }
 
@@ -103,7 +103,7 @@ class MarketModel implements RiskFactorModelProvider {
         ContractModel model = ContractModel.parse(map);
 
         // define analysis times
-        Set<LocalDateTime> analysisTimes = new HashSet<LocalDateTime>();
+       Set<LocalDateTime> analysisTimes = new HashSet<LocalDateTime>();
         analysisTimes.add(LocalDateTime.parse("2019-01-01T00:00:00"));
         // define risk factor model
           MarketModel riskFactors = new MarketModel();
