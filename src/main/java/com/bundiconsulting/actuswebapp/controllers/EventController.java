@@ -104,7 +104,9 @@ class MarketModel implements RiskFactorModelProvider {
 
         // define analysis times
        Set<LocalDateTime> analysisTimes = new HashSet<LocalDateTime>();
-        analysisTimes.add(LocalDateTime.parse("2019-01-01T00:00:00"));
+        //analysisTimes.add(LocalDateTime.parse("2019-01-01T00:00:00")); // needs to be synced with dates in terms objects
+        analysisTimes.add(LocalDateTime.parse("2015-01-01T00:00:00"));
+        
         // define risk factor model
           MarketModel riskFactors = new MarketModel();
 
