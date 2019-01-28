@@ -99,6 +99,8 @@ class MarketModel implements RiskFactorModelProvider {
 //            e1.printStackTrace();
 //        }
 
+        System.out.println(map);
+
         // parse attributes
         ContractModel model = ContractModel.parse(map);
 
