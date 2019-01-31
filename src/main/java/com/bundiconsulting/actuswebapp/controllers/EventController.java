@@ -2,30 +2,18 @@ package com.bundiconsulting.actuswebapp.controllers;
 
 import com.bundiconsulting.actuswebapp.models.Event;
 import com.bundiconsulting.actuswebapp.repositories.EventRepository;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.MapType;
-import com.fasterxml.jackson.databind.type.TypeFactory;
 import org.actus.attributes.ContractModel;
 import org.actus.attributes.ContractModelProvider;
-import org.actus.contracts.ContractType;
 import org.actus.contracts.PrincipalAtMaturity;
 import org.actus.events.ContractEvent;
-
-
 import org.actus.externals.RiskFactorModelProvider;
 import org.actus.states.StateSpace;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -78,7 +66,7 @@ class MarketModel implements RiskFactorModelProvider {
         List<Event> output  = events.stream().map(e -> new Event(e)).collect(Collectors.toList());
 
         return output;
-        
+
     }
 
 }

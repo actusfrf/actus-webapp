@@ -22,50 +22,19 @@ public class FormController {
         return formRepository.findAll();
     }
 
-    @RequestMapping(method=RequestMethod.POST, value="/terms")
-    public Form save(@RequestBody Form form) {
-        formRepository.save(form);
-
-        return form;
-    }
-
     @RequestMapping(method=RequestMethod.GET, value="/terms/meta/{contractType}")
     public List<Form> getDemoMeta(@PathVariable String contractType) {
-        System.out.println("Hello World!: " + contractType);
-    
-         List<Form> meta = formRepository.findByContractType(contractType);
+   
+        List<Form> meta = formRepository.findByContractType(contractType);
+
         return meta;
     }
 
     @RequestMapping(method=RequestMethod.GET, value="/terms/{id}")
     public Optional<Form> show(@PathVariable String id) {
+       
         return formRepository.findById(id);
+        
     }
 
-    @RequestMapping(method=RequestMethod.PUT, value="/terms/{id}")
-    public Form update(@PathVariable String id, @RequestBody Form form) {
-        Optional<Form> optform = formRepository.findById(id);
-        Form c = optform.get();
-       // if(form.getName() != null)
-      //      c.setName(form.getName());
-    //    if(form.getAddress() != null)
-    //        c.setAddress(form.getAddress());
-     //   if(form.getCity() != null)
-      //      c.setCity(form.getCity());
-    //    if(form.getPhone() != null)
-     //       c.setPhone(form.getPhone());
-    //    if(form.getEmail() != null)
-     //       c.setEmail(form.getEmail());
-        formRepository.save(c);
-        return c;
-    }
-
-    @RequestMapping(method=RequestMethod.DELETE, value="/terms/{id}")
-    public String delete(@PathVariable String id) {
-        Optional<Form> optform = formRepository.findById(id);
-        Form form = optform.get();
-        formRepository.delete(form);
-
-        return "";
-    }
 }
