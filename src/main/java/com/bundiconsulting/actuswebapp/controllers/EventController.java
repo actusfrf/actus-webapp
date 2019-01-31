@@ -37,19 +37,6 @@ public class EventController {
     @Autowired
     EventRepository eventRepository;
 
-//    @RequestMapping(method=RequestMethod.POST, value="/events")
-//    public Iterable<Event> form() {
-//
-//
-//        return eventRepository.findAll();
-//    }
-//
-//    @RequestMapping(method=RequestMethod.POST, value="/events")
-//    public Event save(@RequestBody Event form) {
-//        eventRepository.save(form);
-//
-//        return form;
-//    }
 class MarketModel implements RiskFactorModelProvider {
     public Set<String> keys() {
         Set<String> keys = new HashSet<String>();
@@ -67,62 +54,31 @@ class MarketModel implements RiskFactorModelProvider {
 
         Map<String,String> map = new HashMap<String,String>();
 
-
         for (Map.Entry<String, Object> entry : json.entrySet()) {
          System.out.println(entry.getKey() + ":" + entry.getValue());
            map.put(entry.getKey(),  entry.getValue().toString());
 
         }
 
-     //   ContractModelProvider modelProvider = ContractModelProvider.parse( json );
-
-     //  ArrayList<ContractEvent> events = ContractType.lifecycle(times,model,riskfactors);
-
-
-
-
-     //   TypeFactory factory = TypeFactory.defaultInstance();
-     //   MapType type = factory.constructMapType(HashMap.class, String.class, String.class);
-        ObjectMapper mapper  = new ObjectMapper();
-
-
-//        try {
-//            map = mapper.readValue(terms, type);
-//        } catch (JsonParseException e1) {
-//            // TODO Auto-generated catch block
-//            e1.printStackTrace();
-//        } catch (JsonMappingException e1) {
-//            // TODO Auto-generated catch block
-//            e1.printStackTrace();
-//        } catch (IOException e1) {
-//            // TODO Auto-generated catch block
-//            e1.printStackTrace();
-//        }
-
-        System.out.println(map);
-
         // parse attributes
         ContractModel model = ContractModel.parse(map);
 
         // define analysis times
        Set<LocalDateTime> analysisTimes = new HashSet<LocalDateTime>();
-        //analysisTimes.add(LocalDateTime.parse("2019-01-01T00:00:00")); // needs to be synced with dates in terms objects
+
+          // needs to be synced with dates in terms objects
         analysisTimes.add(LocalDateTime.parse("2015-01-01T00:00:00"));
         
         // define risk factor model
           MarketModel riskFactors = new MarketModel();
 
-
         // lifecycle PAM contract
         ArrayList<ContractEvent> events = PrincipalAtMaturity.lifecycle(analysisTimes,model,riskFactors);
-
-
-
 
         List<Event> output  = events.stream().map(e -> new Event(e)).collect(Collectors.toList());
 
         return output;
+        
     }
-
 
 }

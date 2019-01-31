@@ -38,8 +38,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class DemoController {
 
-
-
     @Autowired
     DemoRepository demoRepository;
 
@@ -47,11 +45,10 @@ public class DemoController {
     @RequestMapping(method=RequestMethod.GET, value="/demos/meta/{contractType}")
     public List<Demo> getDemoMeta(@PathVariable String contractType) {
         System.out.println("Hello World!: " + contractType);
-    	//List<Demo> meta = StreamSupport.stream(demoRepository.findAll().spliterator(), false).filter(x -> ct.equals(x.getContract())).collect(Collectors.toList());
+    
          List<Demo> meta = demoRepository.findByContractType(contractType);
         return meta;
     }
-
 
 
 
@@ -63,7 +60,6 @@ public class DemoController {
         return d.getTerms();
 
     }
-
 
 
     @RequestMapping(method=RequestMethod.GET, value="/demos")

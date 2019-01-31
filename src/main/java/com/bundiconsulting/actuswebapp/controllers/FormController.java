@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -26,6 +27,14 @@ public class FormController {
         formRepository.save(form);
 
         return form;
+    }
+
+    @RequestMapping(method=RequestMethod.GET, value="/terms/meta/{contractType}")
+    public List<Form> getDemoMeta(@PathVariable String contractType) {
+        System.out.println("Hello World!: " + contractType);
+    
+         List<Form> meta = formRepository.findByContractType(contractType);
+        return meta;
     }
 
     @RequestMapping(method=RequestMethod.GET, value="/terms/{id}")
