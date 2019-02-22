@@ -51,21 +51,19 @@ export class Form extends PureComponent {
                 if (!res.data[0].terms || !res || !res.data) {
                     return false;
                 }
-                console.log('res:', res.data[0].terms);
+                //console.log('res:', res.data[0].terms);
 
                 let groupToValues = res
                     .data[0]
                     .terms
-                    .reduce(function (obj, item) {
-                        let gName = item
-                            .group
-                            .split(' ')
-                            .join('');
-
-                        obj[gName] = obj[item.group] || [];
-                        obj[gName].push(item);
+                    .reduce(function (obj, item) { 
+                        console.log(item.applicability)
+                        obj[item.group] = obj[item.group] || [];
+                        obj[item.group].push(item);
                         return obj;
-                    }, {});
+                    }, Object.create(null));
+
+                    console.log(groupToValues);
 
                 let fields = {};
 
@@ -74,6 +72,10 @@ export class Form extends PureComponent {
                     .data[0]
                     .terms
                     .map(function (term, index) {
+                        //console.log("group:",term.group);
+                        if(term.applicability.indexOf('NN')>-1){
+                            console.log(`this term is mandatory ${term.name} from ${term.group}`);
+                        }
                         fields[term.name] = {};
                         fields[term.name] = '';
                     });
@@ -111,6 +113,9 @@ export class Form extends PureComponent {
             <div id="form-container" identifier={identifier} version={version}>
                 <Grid fluid>
                     <Row>
+                    <Col sm={12} className="contract-main-wrapper">
+                    <span className="contract-title">Demo Case</span>
+                    </Col>
                         <Col sm={12} className="contract-main-wrapper">
                             <span className="contract-title">{contractType}:</span>
                             <span className="contract-description">{groupDescription}</span>
