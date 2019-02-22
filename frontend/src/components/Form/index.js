@@ -14,7 +14,8 @@ export class Form extends PureComponent {
         groups: [],
         error: false,
         fields: {},
-        startDate: new Date()
+        startDate: new Date(),
+        validated: false
     }
 
     assemble(a, b) {
@@ -51,19 +52,17 @@ export class Form extends PureComponent {
                 if (!res.data[0].terms || !res || !res.data) {
                     return false;
                 }
-                //console.log('res:', res.data[0].terms);
+
+                //TODO: FILTER RES DATA FIELDS FROM THE BEGINNING AND THEN GROUP
 
                 let groupToValues = res
                     .data[0]
                     .terms
                     .reduce(function (obj, item) { 
-                        console.log(item.applicability)
                         obj[item.group] = obj[item.group] || [];
                         obj[item.group].push(item);
                         return obj;
                     }, Object.create(null));
-
-                    console.log(groupToValues);
 
                 let fields = {};
 
@@ -72,7 +71,6 @@ export class Form extends PureComponent {
                     .data[0]
                     .terms
                     .map(function (term, index) {
-                        //console.log("group:",term.group);
                         if(term.applicability.indexOf('NN')>-1){
                             console.log(`this term is mandatory ${term.name} from ${term.group}`);
                         }
@@ -127,7 +125,8 @@ export class Form extends PureComponent {
                         </Col>
                         <Col sm={8} className="optional choices">
                             <div className="term-group-header">Below are your Optional choices</div>
-                            {/* <div>
+                            {/* DatePicker component do not remove.
+                                <div>
                                     <DatePicker
                                         selected={this.state.startDate}
                                         onChange={this
@@ -135,20 +134,21 @@ export class Form extends PureComponent {
                                         .bind(this)}
                                         className="item-fields"
                                         accept/>
-                                </div> */}
+                                </div> 
+                                */}
                             {
                                 groups.map((group, groupId) => {
-                                return (
-                                    <div key={`term_wrapper${groupId}`} className="term-wrapper">
-                                        <Term
-                                            className="item"
-                                            groupName={group.group}
-                                            groupLabel={group.Items[0].group}
-                                            items={group.Items}
-                                            fields={this.state.fields}
-                                            key={`item${groupId}`}/>
-                                    </div>
-                                )
+                                    return (
+                                        <div key={`term_wrapper${groupId}`} className="term-wrapper">
+                                            <Term
+                                                className="item"
+                                                groupName={group.group}
+                                                groupLabel={group.Items[0].group}
+                                                items={group.Items}
+                                                fields={this.state.fields}
+                                                key={`item${groupId}`}/>
+                                        </div>
+                                    )
                             })
                             }
                         </Col>
@@ -157,7 +157,7 @@ export class Form extends PureComponent {
                         <Col sm={6} className="text-right">
                             <input type="reset" value="RESET" onClick={(e) => this.handleReset(e)}/>
                         </Col>
-                        <Col sm={6} className="text-left">
+                        <Col sm={6} className={(this.state.validated)?`text-left`:`text-left inactive`}>
                             <input type="submit" value="SEND" onClick={(e) => this.handleSubmit(e)}/>
                         </Col>
                     </Row>
