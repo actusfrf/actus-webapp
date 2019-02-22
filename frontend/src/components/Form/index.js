@@ -46,21 +46,23 @@ export class Form extends PureComponent {
     componentDidMount() {
         let {match} = this.props;
         axios
-            .get(`/data/form_${match.params.id}.json`)
+            .get(`http://localhost/terms/meta/${match.params.id}`)
             .then(res => {
-                if (!res.data.Terms || !res || !res.data) {
+                if (!res.data[0].terms || !res || !res.data) {
                     return false;
                 }
+                console.log('res:', res.data[0].terms);
 
                 let groupToValues = res
-                    .data
-                    .Terms
+                    .data[0]
+                    .terms
                     .reduce(function (obj, item) {
                         let gName = item
-                            .Group
+                            .group
                             .split(' ')
                             .join('');
-                        obj[gName] = obj[item.Group] || [];
+
+                        obj[gName] = obj[item.group] || [];
                         obj[gName].push(item);
                         return obj;
                     }, {});
@@ -69,11 +71,11 @@ export class Form extends PureComponent {
 
                 //auto populate fields with values for testing
                 res
-                    .data
-                    .Terms
+                    .data[0]
+                    .terms
                     .map(function (term, index) {
-                        fields[term.Name] = {};
-                        fields[term.Name] = `LoremIpsum ${term.Name} ${index}`;
+                        fields[term.name] = {};
+                        fields[term.name] = '';
                     });
 
                 let groups = Object
@@ -87,13 +89,11 @@ export class Form extends PureComponent {
                     fields: {
                         ...fields
                     },
-                    totalFields: Object
-                        .keys(fields)
-                        .length,
-                    groupDescription: res.data.Description,
-                    contractType: res.data.ContractType,
-                    identifier: res.data.Identifier,
-                    version: res.data.Version,
+                    totalFields: Object.keys(fields).length,
+                    groupDescription: res.data[0].description,
+                    contractType: res.data[0].contractType,
+                    identifier: res.data[0].identifier,
+                    version: res.data[0].version,
                     error: {
                         ...this.state.error
                     }
@@ -131,20 +131,21 @@ export class Form extends PureComponent {
                                         className="item-fields"
                                         accept/>
                                 </div> */}
-                            {groups.map((group, groupId) => {
+                            {
+                                groups.map((group, groupId) => {
                                 return (
                                     <div key={`term_wrapper${groupId}`} className="term-wrapper">
                                         <Term
                                             className="item"
                                             groupName={group.group}
-                                            groupLabel={group.Items[0].Group}
+                                            groupLabel={group.Items[0].group}
                                             items={group.Items}
                                             fields={this.state.fields}
                                             key={`item${groupId}`}/>
                                     </div>
                                 )
                             })
-}
+                            }
                         </Col>
                     </Row>
                     <Row>

@@ -1,11 +1,8 @@
 .section-title {
-    padding: 1rem 2rem;
-    border: 1px solid #ccc;
+    padding: 1rem 2rem 1rem 0;
+    border-bottom: 1px solid #83d54d;
     border-radius: 5px;
-    color: #fff;
     font-size: 26px;
-    background: #1a6395;
-    font-weight: bold;
 }
 
 .section-description {
