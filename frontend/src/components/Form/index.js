@@ -3,6 +3,8 @@ import {Col, Grid, Row} from 'react-bootstrap';
 import {Term} from '../Term';
 import axios from 'axios';
 
+import ToolTip from '../ToolTip';
+//import '../Term.css';
 /* eslint-disable */
 import DatePicker from "react-datepicker";
 
@@ -15,7 +17,15 @@ export class Form extends PureComponent {
         error: false,
         fields: {},
         startDate: new Date(),
-        validated: false
+        validated: false,
+        unfilteredData: [],
+        optionalFields: [],
+        mandatoryFields: [],
+        totalFields: 0,
+        groupDescription: "",
+        contractType: "",
+        identifier: "",
+        version: ""
     }
 
     assemble(a, b) {
@@ -52,13 +62,21 @@ export class Form extends PureComponent {
                 if (!res.data[0].terms || !res || !res.data) {
                     return false;
                 }
+                let responseData = res.data[0];
+                let unfilteredData = res.data[0].terms;
+                let optionalFields = res.data[0].terms.filter(n => {
+                    return (n.applicability.indexOf('NN') <= -1);
+                });
+                let mandatoryFields = res.data[0].terms.filter(n => {
+                    return (n.applicability.indexOf('NN') > -1);
+                });
 
+                console.log("unfilteredData:", unfilteredData);
+                //console.log("optionalFields:", optionalFields);
+                
                 //TODO: FILTER RES DATA FIELDS FROM THE BEGINNING AND THEN GROUP
 
-                let groupToValues = res
-                    .data[0]
-                    .terms
-                    .reduce(function (obj, item) { 
+                let groupToValues = optionalFields.reduce(function (obj, item) { 
                         obj[item.group] = obj[item.group] || [];
                         obj[item.group].push(item);
                         return obj;
@@ -67,13 +85,7 @@ export class Form extends PureComponent {
                 let fields = {};
 
                 //auto populate fields with values for testing
-                res
-                    .data[0]
-                    .terms
-                    .map(function (term, index) {
-                        if(term.applicability.indexOf('NN')>-1){
-                            console.log(`this term is mandatory ${term.name} from ${term.group}`);
-                        }
+                optionalFields.map(function (term, index) {
                         fields[term.name] = {};
                         fields[term.name] = '';
                     });
@@ -89,15 +101,20 @@ export class Form extends PureComponent {
                     fields: {
                         ...fields
                     },
+                    unfilteredData: [...unfilteredData],
+                    optionalFields: [...optionalFields],
+                    mandatoryFields: [...mandatoryFields],
                     totalFields: Object.keys(fields).length,
-                    groupDescription: res.data[0].description,
-                    contractType: res.data[0].contractType,
-                    identifier: res.data[0].identifier,
-                    version: res.data[0].version,
+                    groupDescription: responseData.description,
+                    contractType: responseData.contractType,
+                    identifier: responseData.identifier,
+                    version: responseData.version,
                     error: {
                         ...this.state.error
                     }
                 });
+
+                console.log(this.state);
             })
             .catch(error => {
                 console.log('>>>>>>>>>>> error:', error);
@@ -105,7 +122,7 @@ export class Form extends PureComponent {
     }
 
     render() {
-        let {groups, groupDescription, contractType, identifier, version} = this.state;
+        let {groups, groupDescription, contractType, identifier, version, mandatoryFields} = this.state;
         //let { match } = this.props;
         return (
             <div id="form-container" identifier={identifier} version={version}>
@@ -120,10 +137,43 @@ export class Form extends PureComponent {
                         </Col>
                     </Row>
                     <Row>
-                        <Col sm={4} className="required choices">
-                            <div className="">All fields below are mandatory to fill in:</div>
+                        <Col sm={5} className="required choices">
+                            <div className="term-group-header">All fields below are mandatory to fill in:</div>
+                            <div className="field-wrapper">
+                                <div className="items-group">
+                                    <Grid fluid>
+                                        <Row>
+                                            {
+                                                mandatoryFields.map((m, groupId) => {
+                                                    let itemName = m.name;
+                                                    itemName = itemName.replace(/([a-z])([A-Z])/g, '$1 $2');
+                                                    itemName = itemName.replace(/([A-Z])([A-Z])/g, '$1 $2');
+
+                                                    return (                                                        
+                                                        <Col key={`term_wrapper${groupId}`} sm={6} className="item nopadding">
+                                                            <div className="input-container">
+                                                                <label className="item-labels" htmlFor={m.name}>{itemName}</label>
+                                                                <div className="input-wrapper">
+                                                                    <input id={m.name}
+                                                                    applicability={m.applicability}
+                                                                    title={`Optional Choice`} 
+                                                                    placeholder='...' 
+                                                                    onChange={()=>{}}
+                                                                    className="item-fields" 
+                                                                    type="text" />
+                                                                    <ToolTip description={m.description} />
+                                                                </div>                                        
+                                                            </div>
+                                                        </Col>                                                                    
+                                                    )
+                                                })
+                                            }
+                                        </Row>
+                                    </Grid>
+                                </div>
+                            </div>
                         </Col>
-                        <Col sm={8} className="optional choices">
+                        <Col sm={7} className="optional choices">
                             <div className="term-group-header">Below are your Optional choices</div>
                             {/* DatePicker component do not remove.
                                 <div>
@@ -149,7 +199,7 @@ export class Form extends PureComponent {
                                                 key={`item${groupId}`}/>
                                         </div>
                                     )
-                            })
+                                })
                             }
                         </Col>
                     </Row>

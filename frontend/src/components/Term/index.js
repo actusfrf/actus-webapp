@@ -28,8 +28,9 @@ export class Term extends PureComponent {
                                             <label className="item-labels" htmlFor={item.name}>{itemName}</label>
                                             <div className="input-wrapper">
                                                 <input id={item.name} 
+                                                applicability={item.applicability}
                                                 title={`Optional Choice`} 
-                                                placeholder={itemName} 
+                                                placeholder={`...`} 
                                                 onChange={()=>{}}
                                                 className="item-fields" 
                                                 type="text" />
