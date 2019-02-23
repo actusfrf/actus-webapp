@@ -7,7 +7,7 @@ export class Term extends PureComponent {
    
     render() {
         let { items, groupName, groupLabel, fields } = this.props;  
-        console.log(groupName," | ",items.length);
+               
         if(items.length > 1){
             return ( 
                 <div id={groupName} className="items-group">
@@ -18,9 +18,10 @@ export class Term extends PureComponent {
                         items.map(item => {
                                 let itemName = item.name;
                                 let itemValue = fields[itemName];
-                                //console.log(item.applicability);
+
                                 itemName = itemName.replace(/([a-z])([A-Z])/g, '$1 $2');
                                 itemName = itemName.replace(/([A-Z])([A-Z])/g, '$1 $2');
+
                                 return(
                                     <Col key={`key${item.name}`} sm={4} className="item nopadding">
                                         <div className="input-container">
@@ -29,8 +30,7 @@ export class Term extends PureComponent {
                                                 <input id={item.name} 
                                                 title={`Optional Choice`} 
                                                 placeholder={itemName} 
-                                                value={``}  
-                                                onChange={()=>{}} 
+                                                onChange={()=>{}}
                                                 className="item-fields" 
                                                 type="text" />
                                                 <ToolTip description={item.description} />

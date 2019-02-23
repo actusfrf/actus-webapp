@@ -43,7 +43,7 @@ export class Form extends PureComponent {
           body: JSON.stringify(data)
         })*/
     }
-
+    
     componentDidMount() {
         let {match} = this.props;
         axios
