@@ -15,10 +15,8 @@ export class Form extends PureComponent {
     state = {
         groups: [],
         error: false,
-        fields: {},
         startDate: new Date(),
         validated: false,
-        unfilteredData: [],
         optionalFields: [],
         mandatoryFields: [],
         totalFields: 0,
@@ -46,15 +44,52 @@ export class Form extends PureComponent {
     handleSubmit(e) {
         e.preventDefault();
         const data = JSON.stringify(this.state.fields);
-        console.log(this.state.fields);
+        console.log(this.state.requiredFields);
+        console.log(this.state.requiredFields);
 
         /*fetch('/api/endpoint.js',{
           method: 'POST',
           body: JSON.stringify(data)
         })*/
     }
+
+    validateFields(){
+        let fields = this.state.requiredFields;
+        let errorCount = 0;
+        for(var f in fields){
+            if(fields[f] === ''){
+                errorCount++;
+            }
+        }
+        //console.log("error Count:", errorCount);
+
+         this.setState({
+             validated: errorCount === 0
+         });
+    }
+
+    updateField(e) {
+        this.setState({
+            requiredFields: {
+                ...this.state.requiredFields,
+                [e.target.id]: e.target.value
+            }
+        });
+        
+        this.validateFields();
+    }
+
+    onComponentUpdate(e){
+        this.setState({
+            nonRequiredFields:{
+                ...this.state.nonRequiredFields,
+                [e.target.id]: e.target.value
+            }
+        });
+    }
     
     componentDidMount() {
+        console.log('did mount');
         let {match} = this.props;
         axios
             .get(`http://localhost/terms/meta/${match.params.id}`)
@@ -63,18 +98,13 @@ export class Form extends PureComponent {
                     return false;
                 }
                 let responseData = res.data[0];
-                let unfilteredData = res.data[0].terms;
-                let optionalFields = res.data[0].terms.filter(n => {
-                    return (n.applicability.indexOf('NN') <= -1);
-                });
-                let mandatoryFields = res.data[0].terms.filter(n => {
-                    return (n.applicability.indexOf('NN') > -1);
-                });
 
-                console.log("unfilteredData:", unfilteredData);
-                //console.log("optionalFields:", optionalFields);
-                
-                //TODO: FILTER RES DATA FIELDS FROM THE BEGINNING AND THEN GROUP
+                let optionalFields = res.data[0].terms.filter(n => (n.applicability.indexOf('NN') <= -1));
+                let mandatoryFields = res.data[0].terms.filter(n => (n.applicability.indexOf('NN') > -1));
+
+                let requiredFields = Object.assign({}, ...mandatoryFields.map(o=>({[o.name]: ''})));
+                let nonRequiredFields = Object.assign({}, ...optionalFields.map(o=>({[o.name]: ''})));
+                //console.log(requiredFields);
 
                 let groupToValues = optionalFields.reduce(function (obj, item) { 
                         obj[item.group] = obj[item.group] || [];
@@ -98,12 +128,10 @@ export class Form extends PureComponent {
 
                 this.setState({
                     groups: groups,
-                    fields: {
-                        ...fields
-                    },
-                    unfilteredData: [...unfilteredData],
                     optionalFields: [...optionalFields],
                     mandatoryFields: [...mandatoryFields],
+                    requiredFields: {...requiredFields},
+                    nonRequiredFields: {...nonRequiredFields},
                     totalFields: Object.keys(fields).length,
                     groupDescription: responseData.description,
                     contractType: responseData.contractType,
@@ -113,8 +141,7 @@ export class Form extends PureComponent {
                         ...this.state.error
                     }
                 });
-
-                console.log(this.state);
+                //console.log(this.state);
             })
             .catch(error => {
                 console.log('>>>>>>>>>>> error:', error);
@@ -156,9 +183,11 @@ export class Form extends PureComponent {
                                                                 <div className="input-wrapper">
                                                                     <input id={m.name}
                                                                     applicability={m.applicability}
-                                                                    title={`Optional Choice`} 
+                                                                    title={`Required Field`} 
                                                                     placeholder='...' 
-                                                                    onChange={()=>{}}
+                                                                    value={this.state.requiredFields[m.name]}
+                                                                    onChange={e=>this.updateField(e)}
+                                                                    onKeyUp={e=>this.updateField(e)}
                                                                     className="item-fields" 
                                                                     type="text" />
                                                                     <ToolTip description={m.description} />
@@ -195,6 +224,7 @@ export class Form extends PureComponent {
                                                 groupName={group.group}
                                                 groupLabel={group.Items[0].group}
                                                 items={group.Items}
+                                                action={e => this.onComponentUpdate(e)}
                                                 fields={this.state.fields}
                                                 key={`item${groupId}`}/>
                                         </div>

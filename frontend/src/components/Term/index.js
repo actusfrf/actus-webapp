@@ -4,9 +4,8 @@ import ToolTip from '../ToolTip';
 import './Term.css';
 
 export class Term extends PureComponent {
-   
     render() {
-        let { items, groupName, groupLabel, fields } = this.props;  
+        let { items, groupName, groupLabel, action} = this.props;  
                
         if(items.length > 1){
             return ( 
@@ -17,7 +16,7 @@ export class Term extends PureComponent {
                         {
                         items.map(item => {
                                 let itemName = item.name;
-                                let itemValue = fields[itemName];
+                                //let itemValue = fields[itemName];
 
                                 itemName = itemName.replace(/([a-z])([A-Z])/g, '$1 $2');
                                 itemName = itemName.replace(/([A-Z])([A-Z])/g, '$1 $2');
@@ -30,8 +29,8 @@ export class Term extends PureComponent {
                                                 <input id={item.name} 
                                                 applicability={item.applicability}
                                                 title={`Optional Choice`} 
-                                                placeholder={`...`} 
-                                                onChange={()=>{}}
+                                                placeholder={`...`}
+                                                onKeyUp={e=> action(e)}
                                                 className="item-fields" 
                                                 type="text" />
                                                 <ToolTip description={item.description} />
