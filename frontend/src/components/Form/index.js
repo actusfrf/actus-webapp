@@ -43,14 +43,13 @@ export class Form extends PureComponent {
 
     handleSubmit(e) {
         e.preventDefault();
-        const data = JSON.stringify(this.state.fields);
-        console.log(this.state.requiredFields);
-        console.log(this.state.requiredFields);
-
-        /*fetch('/api/endpoint.js',{
-          method: 'POST',
-          body: JSON.stringify(data)
-        })*/
+        let allAnswers = Object.assign({},this.state.requiredFields, this.state.nonRequiredFields);
+        console.log(allAnswers);
+        axios.post('http://190.141.20.26/events',{allAnswers})
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+            });
     }
 
     validateFields(){
@@ -187,7 +186,6 @@ export class Form extends PureComponent {
                                                                     placeholder='...' 
                                                                     value={this.state.requiredFields[m.name]}
                                                                     onChange={e=>this.updateField(e)}
-                                                                    onKeyUp={e=>this.updateField(e)}
                                                                     className="item-fields" 
                                                                     type="text" />
                                                                     <ToolTip description={m.description} />
