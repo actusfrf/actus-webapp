@@ -23,7 +23,27 @@ export class Form extends PureComponent {
         groupDescription: "",
         contractType: "",
         identifier: "",
-        version: ""
+        version: "",
+        testFields:{
+            "ContractType": "PAM",
+            "StatusDate": "2015-01-01T00:00:00",
+            "ContractRole": "RPA",
+            "ContractID": 101,
+            "LegalEntityIDCounterparty": "TEST_LEI_CP",
+            "NominalInterestRate": 0,
+            "DayCountConvention": "30E/360",
+            "CyclePointOfInterestPayment": 1,
+            "Currency": "USD",
+            "ContractDealDate": "2015-01-01T00:00:00",
+            "InitialExchangeDate": "2015-01-02T00:00:00",
+            "MaturityDate": "2015-04-02T00:00:00",
+            "NotionalPrincipal": 1000,
+            "RateSpread": 0,
+            "CyclePointOfRateReset": 0,
+            "RateMultiplier": 1,
+            "MarketValueObserved": 10,
+            "PremiumDiscountAtIED": -5
+        }
     }
 
     assemble(a, b) {
@@ -45,12 +65,44 @@ export class Form extends PureComponent {
         e.preventDefault();
         let allAnswers = Object.assign({},this.state.requiredFields, this.state.nonRequiredFields);
         console.log(allAnswers);
-        axios.post('http://190.141.20.26/events',{allAnswers})
+
+        let tf = this.state.testFields;
+        let config = {
+            'mode': 'cors',
+            'headers': {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json',
+            },
+            'withCredentials': true,
+            'credentials': 'omit'
+        }
+        axios.post('http://localhost/events',tf, config)
             .then(res => {
                 console.log(res);
                 console.log(res.data);
             });
+
+        // this.postData(`http://localhost/events`,tf)
+        //     .then(data => console.log(JSON.stringify(data)))
+        //     .catch(error => console.error(error));
     }
+    // postData(url = ``, data = {}) {
+    // // Default options are marked with *
+    //     return fetch(url, {
+    //         method: "POST", // *GET, POST, PUT, DELETE, etc.
+    //         mode: "no-cors", // no-cors, cors, *same-origin
+    //         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+    //         credentials: "omit", // include, *same-origin, omit
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //             // "Content-Type": "application/x-www-form-urlencoded",
+    //         },
+    //         redirect: "follow", // manual, *follow, error
+    //         referrer: "no-referrer", // no-referrer, *client
+    //         body: JSON.stringify(data), // body data type must match "Content-Type" header
+    //     })
+    //     .then(response => response.json()); // parses response to JSON
+    // }
 
     validateFields(){
         let fields = this.state.requiredFields;
@@ -235,7 +287,7 @@ export class Form extends PureComponent {
                         <Col sm={6} className="text-right">
                             <input type="reset" value="RESET" onClick={(e) => this.handleReset(e)}/>
                         </Col>
-                        <Col sm={6} className={(this.state.validated)?`text-left`:`text-left inactive`}>
+                        <Col sm={6} className={(this.state.validated)?`text-left`:`text-left`}>
                             <input type="submit" value="SEND" onClick={(e) => this.handleSubmit(e)}/>
                         </Col>
                     </Row>
