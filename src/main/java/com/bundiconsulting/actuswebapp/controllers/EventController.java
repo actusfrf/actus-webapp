@@ -39,7 +39,7 @@ class MarketModel implements RiskFactorModelProvider {
 
     // String -> ArrayList<ContractEvent>
     @RequestMapping(method=RequestMethod.POST, value="/events")
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "*")
     public List<Event> solveContract(@RequestBody Map<String, Object> json ) {
 
         Map<String,String> map = new HashMap<String,String>();
