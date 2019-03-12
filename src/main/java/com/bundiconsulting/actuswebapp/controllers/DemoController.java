@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +20,9 @@ public class DemoController {
     @Autowired
     DemoRepository demoRepository;
 
+  
     @RequestMapping(method=RequestMethod.GET, value="/demos/meta/{contractType}")
+    @CrossOrigin(origins = "*")
     public List<Demo> getDemoMeta(@PathVariable String contractType) {
         System.out.println("Hello World!: " + contractType);
     
@@ -27,7 +30,9 @@ public class DemoController {
         return meta;
     }
 
+
     @RequestMapping(method=RequestMethod.GET, value="/demos/{id}")
+    @CrossOrigin(origins = "*")
     public Map<String, Object> getDemoTerms(@PathVariable String id) {
         
         Optional<Demo> optdemo = demoRepository.findById(id);
@@ -36,7 +41,9 @@ public class DemoController {
         return d.getTerms();
     }
 
+   
     @RequestMapping(method=RequestMethod.GET, value="/demos")
+    @CrossOrigin(origins = "*")
     public Iterable<Demo> demo() {
     
     	return demoRepository.findAll();
