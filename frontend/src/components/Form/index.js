@@ -1,6 +1,7 @@
-import React, {PureComponent} from 'react';
-import {Col, Grid, Row} from 'react-bootstrap';
-import {Term} from '../Term';
+import React, { PureComponent } from 'react';
+import { Redirect } from 'react-router-dom'
+import { Col, Grid, Row}  from 'react-bootstrap';
+import { Term } from '../Term';
 import axios from 'axios';
 
 import ToolTip from '../ToolTip';
@@ -43,7 +44,10 @@ export class Form extends PureComponent {
             "RateMultiplier": 1,
             "MarketValueObserved": 10,
             "PremiumDiscountAtIED": -5
-        }
+        },
+        results:{},
+        isFetching: false,
+        redirect: false,
     }
 
     assemble(a, b) {
@@ -54,7 +58,9 @@ export class Form extends PureComponent {
     handleChange(date) {
         console.log(date);
         console.log(this.state);
-        this.setState({startDate: date});
+        this.setState({
+            startDate: date
+        });
     }
 
     handleReset(e) {
@@ -64,7 +70,7 @@ export class Form extends PureComponent {
     handleSubmit(e) {
         e.preventDefault();
         let allAnswers = Object.assign({},this.state.requiredFields, this.state.nonRequiredFields);
-        console.log(allAnswers);
+        //console.log(allAnswers);
 
         let tf = this.state.testFields;
         let config = {
@@ -76,10 +82,15 @@ export class Form extends PureComponent {
             'withCredentials': true,
             'credentials': 'omit'
         }
-        axios.post('http://190.141.20.26/events',tf)
+        axios.post('http://localhost/events',tf)
             .then(res => {
-                console.log(res);
                 console.log(res.data);
+                this.setState({
+                    results: res.data,
+                    isFetching: false,
+                    redirect: true,
+                })
+                //console.log(res.data);
             });
     }
 
@@ -91,7 +102,6 @@ export class Form extends PureComponent {
                 errorCount++;
             }
         }
-        //console.log("error Count:", errorCount);
 
          this.setState({
              validated: errorCount === 0
@@ -179,99 +189,102 @@ export class Form extends PureComponent {
     }
 
     render() {
-        let {groups, groupDescription, contractType, identifier, version, mandatoryFields} = this.state;
+        let {groups, groupDescription, contractType, identifier, version, mandatoryFields, redirect, results} = this.state;
         //let { match } = this.props;
-        return (
-            <div id="form-container" identifier={identifier} version={version}>
-                <Grid fluid>
-                    <Row>
-                    <Col sm={12} className="contract-main-wrapper">
-                    <span className="contract-title">Demo Case</span>
-                    </Col>
+        if( redirect ) {
+            return <Redirect to={{ pathname: '/results', state: { data: results } }} />
+        } else {            
+            return (
+                <div id="form-container" identifier={ identifier } version={ version }>
+                    <Grid fluid>
+                        <Row>
                         <Col sm={12} className="contract-main-wrapper">
-                            <span className="contract-title">{contractType}:</span>
-                            <span className="contract-description">{groupDescription}</span>
+                        <span className="contract-title">Demo Case</span>
                         </Col>
-                    </Row>
-                    <Row>
-                        <Col sm={5} className="required choices">
-                            <div className="term-group-header">All fields below are mandatory to fill in:</div>
-                            <div className="field-wrapper">
-                                <div className="items-group">
-                                    <Grid fluid>
-                                        <Row>
-                                            {
-                                                mandatoryFields.map((m, groupId) => {
-                                                    let itemName = m.name;
-                                                    itemName = itemName.replace(/([a-z])([A-Z])/g, '$1 $2');
-                                                    itemName = itemName.replace(/([A-Z])([A-Z])/g, '$1 $2');
-
-                                                    return (                                                        
-                                                        <Col key={`term_wrapper${groupId}`} sm={6} className="item nopadding">
-                                                            <div className="input-container">
-                                                                <label className="item-labels" htmlFor={m.name}>{itemName}</label>
-                                                                <div className="input-wrapper">
-                                                                    <input id={m.name}
-                                                                    applicability={m.applicability}
-                                                                    title={`Required Field`} 
-                                                                    placeholder='...' 
-                                                                    value={this.state.requiredFields[m.name]}
-                                                                    onChange={e=>this.updateField(e)}
-                                                                    className="item-fields" 
-                                                                    type="text" />
-                                                                    <ToolTip description={m.description} />
-                                                                </div>                                        
-                                                            </div>
-                                                        </Col>                                                                    
-                                                    )
-                                                })
-                                            }
-                                        </Row>
-                                    </Grid>
+                            <Col sm={12} className="contract-main-wrapper">
+                                <span className="contract-title">{contractType}:</span>
+                                <span className="contract-description">{groupDescription}</span>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col sm={5} className="required choices">
+                                <div className="term-group-header">All fields below are mandatory to fill in:</div>
+                                <div className="field-wrapper">
+                                    <div className="items-group">
+                                        <Grid fluid>
+                                            <Row>
+                                                {mandatoryFields.map((m, groupId) => {
+                                                        let itemName = m.name;
+                                                        itemName = itemName.replace(/([a-z])([A-Z])/g, '$1 $2');
+                                                        itemName = itemName.replace(/([A-Z])([A-Z])/g, '$1 $2');
+    
+                                                        return (                                                        
+                                                            <Col key={`term_wrapper${groupId}`} sm={6} className="item nopadding">
+                                                                <div className="input-container">
+                                                                    <label className="item-labels" htmlFor={m.name}>{itemName}</label>
+                                                                    <div className="input-wrapper">
+                                                                        <input id={m.name}
+                                                                        applicability={m.applicability}
+                                                                        title={`Required Field`} 
+                                                                        placeholder='...' 
+                                                                        value={this.state.requiredFields[m.name]}
+                                                                        onChange={e=>this.updateField(e)}
+                                                                        className="item-fields" 
+                                                                        type="text" />
+                                                                        <ToolTip description={m.description} />
+                                                                    </div>                                        
+                                                                </div>
+                                                            </Col>                                                                    
+                                                        )
+                                                    })
+                                                }
+                                            </Row>
+                                        </Grid>
+                                    </div>
                                 </div>
-                            </div>
-                        </Col>
-                        <Col sm={7} className="optional choices">
-                            <div className="term-group-header">Below are your Optional choices</div>
-                            {/* DatePicker component do not remove.
-                                <div>
-                                    <DatePicker
-                                        selected={this.state.startDate}
-                                        onChange={this
-                                        .handleChange
-                                        .bind(this)}
-                                        className="item-fields"
-                                        accept/>
-                                </div> 
-                                */}
-                            {
-                                groups.map((group, groupId) => {
-                                    return (
-                                        <div key={`term_wrapper${groupId}`} className="term-wrapper">
-                                            <Term
-                                                className="item"
-                                                groupName={group.group}
-                                                groupLabel={group.Items[0].group}
-                                                items={group.Items}
-                                                action={e => this.onComponentUpdate(e)}
-                                                fields={this.state.fields}
-                                                key={`item${groupId}`}/>
-                                        </div>
-                                    )
-                                })
-                            }
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col sm={6} className="text-right">
-                            <input type="reset" value="RESET" onClick={(e) => this.handleReset(e)}/>
-                        </Col>
-                        <Col sm={6} className={(this.state.validated)?`text-left`:`text-left`}>
-                            <input type="submit" value="SEND" onClick={(e) => this.handleSubmit(e)}/>
-                        </Col>
-                    </Row>
-                </Grid>
-            </div>
-        );
+                            </Col>
+                            <Col sm={7} className="optional choices">
+                                <div className="term-group-header">Below are your Optional choices</div>
+                                {/* DatePicker component do not remove.
+                                    <div>
+                                        <DatePicker
+                                            selected={this.state.startDate}
+                                            onChange={this
+                                            .handleChange
+                                            .bind(this)}
+                                            className="item-fields"
+                                            accept/>
+                                    </div> 
+                                    */}
+                                {
+                                    groups.map((group, groupId) => {
+                                        return (
+                                            <div key={`term_wrapper${groupId}`} className="term-wrapper">
+                                                <Term
+                                                    className="item"
+                                                    groupName={group.group}
+                                                    groupLabel={group.Items[0].group}
+                                                    items={group.Items}
+                                                    action={e => this.onComponentUpdate(e)}
+                                                    fields={this.state.fields}
+                                                    key={`item${groupId}`}/>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col sm={6} className="text-right">
+                                <input type="reset" value="RESET" onClick={(e) => this.handleReset(e)}/>
+                            </Col>
+                            <Col sm={6} className={(this.state.validated)?`text-left`:`text-left`}>
+                                <input type="submit" value="SEND" onClick={(e) => this.handleSubmit(e)}/>
+                            </Col>
+                        </Row>
+                    </Grid>
+                </div>
+            );
+        }
     }
 }
