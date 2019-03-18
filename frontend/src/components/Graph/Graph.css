@@ -1,0 +1,6 @@
+.graph-render {
+    margin: 10px auto;
+    border: 1px solid #ccc;
+    display: block;
+    background: rgba(0, 0, 0, .1);
+}

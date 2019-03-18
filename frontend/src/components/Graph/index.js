@@ -19,7 +19,10 @@ export class Graph extends PureComponent {
 
     render() {
         return (
-            <div>GRAPH HERE</div>
+            <div>
+                <div className="text-center">TODO: GRAPH HERE</div>
+                <canvas id="graphRender" className="graph-render" width="680" height="480" />
+            </div>
         )
     }
 }
