@@ -8,26 +8,16 @@ terms_path <- './forms/terms/'
 forms_path <- './forms/forms/'
 
 # read data dictionary
-#library(xlsx)
-#rawdat = read.xlsx("forms/Consolidated_DD_CTD_TechCommittee.xlsx", sheetName = "Consolidated DD CTD")
-library(readxl)
-rawdat <- read_excel("forms/Consolidated_DD_CTD_TechCommittee.xlsx", sheet = "Consolidated DD CTD", skip = 1)
+rawdat <- read_csv("forms/Consolidated DD CTD v1.0.csv", skip=1)
 
-# remove bottom rows because they are empty
-rawdat <- rawdat[1:141,]
-
-# added types, i was note sure how to classify as list or not
-notes_file <- read_excel("forms/notes_Consolidated_DD_CTD_TechCommittee.xlsx", sheet = "Consolidated DD CTD", skip = 1)
-list_type <- notes_file$Type
-list_values <- notes_file
-
+# which contract types covered?
 basic_contract <- c("CSH", "UMP",	"PBN",	"CLM",	"PAM",	"LAM",	"LAX",	"ANN",	"ANX",	"NAM",	"NAX",	"STK",	"COM")
 # for testing
 # basic_contract <- c("CSH", "COM")
 combined_contract <- c("TXS (Transactions)",	"CEG",	"CEC",	"CRL",	"SWPPV",	"SWAPS",	"FXOUT",	"FUTUR",	"OPTNS",	"CAPFL",	"BNDCP",	"BNDWR",	"SWPTN",	"CAXFL",	"SCXOP",	"FXXOP",	"SECUR",	"Margining")
 
 covered_contract <- c("CSH", "UMP",	"CLM",	"PAM",	"LAM",	"LAX",	"ANN",	"NAM",	"STK",	"COM", 
-                      "CEG",	"CEC",	"SWPPV",	"SWAPS",	"FXOUT",	"FUTUR",	"OPTNS",	"CAPFL", "Margining")
+                      "CEG",	"CEC",	"SWPPV",	"SWAPS",	"FXOUT",	"FUTUR",	"OPTNS",	"CAPFL")
 
 # prepare
 forms <- data.frame()
@@ -38,6 +28,9 @@ description <- c()
 vers <- c()
 ctr_terms <- c()
 terms_names <- c("Contract", "Group", "Name", "Type", "List", "Description", "Applicability")
+
+# extract list values (Enum types) as json arrays
+list_values <- sapply(sapply(sapply(rawdat[,"Allowed Values"],strsplit,"\n"),strsplit,"="),function(x) paste0("[",paste(sapply(x,function(y) trimws(y[1])),collapse=","),"]"))
 
 # for every basic contract
 build_group <- covered_contract #combined_contract # basic_contract
@@ -70,14 +63,20 @@ for (ctr in build_group) {
     new_forms <- data.frame(rep(ctr, length(rawdat[available_ctr_bool,"Group Name"])),
                             rawdat[available_ctr_bool,"Group Name"], 
                             rawdat[available_ctr_bool,"ACTUS Name"], 
-                            list_type[available_ctr_bool], 
-                            rep("some list", length(list_type[available_ctr_bool])), 
+                            rawdat[available_ctr_bool,"Data Format"],
+                            "", 
                             rawdat[available_ctr_bool,"Attribute Description"],
                             rawdat[available_ctr_bool,ctr])
-    
-    
+	# add column names
     colnames(new_forms) <- terms_names
+	new_forms$List=as.character(new_forms$List)
+
+	# add list-values for Enum types
+	new_forms[which(rawdat[available_ctr_bool,"Data Format"]=="Enum"), "List"] = list_values[which(rawdat[available_ctr_bool,"Data Format"]=="Enum")]
     
+	# fix ContractType enum to current ctr
+	new_forms[which(new_forms$Name=="ContractType"),"List"]=paste0("[",ctr,"]")
+
     # append to existing
     forms <- rbind(forms, new_forms)
     ctr_terms <- c(ctr_terms, new_forms)
@@ -86,10 +85,6 @@ for (ctr in build_group) {
   
   
 }
-
-
-# extract required infos
-
 
 # create terms list JSON file for all contracts
 for (ctr in build_group) {
@@ -126,17 +121,4 @@ for (ctr in build_group) {
   path = paste0(forms_path,'form_',ctr,'.json')
   final_form %>% write_lines(path)
 }
-
-
-# To Do
-## define items of list -> parse or manual?
-
-# write as json
-# library(readr)
-# library(jsonlite)
-# library(magrittr)
-# df %>% 
-#     toJSON() %>%
-#     write_lines(path)
-
 
