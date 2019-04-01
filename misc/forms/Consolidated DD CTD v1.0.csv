@@ -1,0 +1,249 @@
+,,,,,,,,,Basic Contract Types,,,,,,,,,,,,,,,,,
+Group Name,ACTUS Name,"Short
+Name",Data Format,Allowed Values,Default If NULL,CNTRL Sensitive,Cash Flow Algorithm relevant,Attribute Description,CSH,UMP,CLM,PAM,LAM,LAX,ANN,NAM,STK,COM,CEG,CEC,SWPPV,SWAPS,FXOUT,FUTUR,OPTNS,CAPFL
+Calendar,Calendar,CLDR,Enum,"NoCalendar = No calendar
+MondayToFriday = Monday to Friday calendar
+<wildcard> = wildcard that links to your own implementation of a calendar",NoCalendar (every day is a business day),,Y,Calendar defines the non-working days which affect the dates of contract events (CDE's) in combination with EOMC and BDC.,,x,x,x,x,x,x,x,x,,x,x,x,,x,x,x,
+Calendar,BusinessDayConvention,BDC,Enum,"SCF = Shift/Calculate following 
+SCMF = Shift/Calculate modified following  
+CSF = Calculate/Shift following 
+CSMF = Calculate/Shift modified following  
+SCP = Shift/Calculate preceding 
+SCMP = Shift/Calculate modified preceding  
+CSP = Calculate/Shift preceding 
+CSMP = Calculate/Shift modified preceding ",[No Shift] (Cash flows fall on regular cycle dates),,Y,"BDC's are linked to a calendar. Calendars have working and non-working days. A BDC value other than N means that cash flows cannot fall on non-working days, they must be shifted to the next business day (following) or the previous on (preceding).
+These two simple rules get refined twofold:
+- Following modified (preceding): Same like following (preceding), however if a cash flow gets shifted into a new month, then  it is shifted to preceding (following) business day.
+- Shift/calculate (SC) and calculate/shift (CS). Accrual, principal, and possibly other calculations are affected by this choice. In the case of SC first the dates are shifted and after the shift cash flows are calculated. In the case of CS it is the other way round.
+Attention: Does not affect non-cyclical dates such as PRD, MD, TD, IPCED since they can be set to the correct date directly.",,x,x,x,x,x,x,x,x,,x,x,x,,x,x,x,
+Calendar,EndOfMonthConvention,EOMC,Enum,"EOM = end of month
+SD = same day","SD (Cycle will go to the same day if possible, else max day)",,Y,"When computing schedules a special problem arises if an anchor date is at the end of a month and a cycle of monthly or quarterly is applied (yearly in the case of leap years only). How do we have to interpret an anchor date April 30 plus 1M cycles? In case where EOM is selected, it will jump to the 31st of May, then June 30, July 31 and so on. If SM is selected, it will jump to the 30st always with of course an exception in February. 
+This logic applies for all months having 30 or less days and an anchor date at the last day. Month with 31 days will at any rate jump to the last of the month if anchor date is on the last day.",,x,x,x,x,x,x,x,x,,x,x,x,,x,x,x,
+Contract identification,ContractType,CT,Enum,"PAM = PrincipalAtMaturity
+ANN = Annuity
+NAM = Negative Amortizer
+LAM = Linear Amortizer
+LAX = Exotic Linear Amortizer
+CLM = Call Money
+UMP = Undefined Maturity Profile
+CSH = Cash
+STK = Stock
+COM = Commodity
+SWAPS = Swap
+SWPPV = Plain Vanilla Swap
+FXOUT = Foreign Exchange Outright
+CAPFL = Cap Floor
+FUTUR = Future
+OPTNS = Option
+CEG = Credit Enhancement Guarantee
+CEC = Credit Enhancement Collateral",,,Y,The ContractType is the most important information. It defines the cash flow generating pattern of a contract. The ContractType information in combination with a given state of the risk factors will produce a deterministic sequence of cash flows which are the basis of any financial analysis.,NN,NN,NN,NN,NN,NN,NN,NN,NN,NN,NN,NN,NN,NN,NN,NN,NN,NN
+Contract identification,StatusDate,SD,Timestamp,ISO8601 Datetime,,,Y,"SD holds the date per which all attributes of the record were updated. This is especially important for the highly dynamic attributes like Accruals, Notional, interest rates in variable instruments etc.",NN,NN,"NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)"
+Contract identification,ContractRole,CNTRL,Enum,"RPA = Real Position Asset(Maturity CTs, UMP, STK)
+RPL = Real Position Liability (Maturity CTs, UMP, STK)
+LG = Long Position (Future)
+ST = Short Position (Future)
+RFL = Receive First Leg (FXOUT, SWAPS)
+PFL = Pay First Leg (FXOUT, SWAPS)
+BUY = Buyer (Option)
+SEL = Seller (Option)
+GUA = Guarantor (Credit Enhancments)
+OBL = Obligor (Credit Enhancments)",,,Y,"CNTRL defines which position the LEIRC ( the creator of the contract record ) takes in a contract. For example, whether the contract is an asset or liability, a long or short position for the LEIRC. 
+Most contracts are simple on or off balance sheet positions which are assets, liabilities. Such contracts can also play a secondary role as a collateral. 
+The attribute is highly significant since it determines the direction of all cash flows. The exact meaning is given with each CT in the ACTUS High Level Specification document.",NN,NN,"NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)",NN,NN,NN,NN,NN,NN,NN,NN
+Contract identification,LegalEntityIDRecordCreator,LEIRC,Varchar,"
+",,,N,"This identifies the legal entity creating the contract record. The counterparty of the contract is tracked in LEICP.
+LEIRC is ideally the official LEI which can be a firm, a government body, even a single person etc. However, this can also refer to a annonymous group in which case this information is not to be disclosed. LEIRC may also refer to a group taking a joint risk.",NN,NN,"NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)"
+Contract identification,ContractID,CID,Integer,,,,Y,"Unique identifier of a contract.  
+If the system is used on a single firm level, an internal unique ID can be generated. If used on a national or globally level, a globally unique ID is required.",NN,NN,NN,NN,NN,NN,NN,NN,NN,NN,NN,NN,NN,NN,NN,NN,NN,NN
+Contract identification,MarketObjectCode,MOC,Varchar,,No market reference available,,N,"Is pointing to the market value at SD (MarketObject).
+Unique codes for market objects must be used.",,,,x,x,x,x,x,x,x,,,x,x,x,x,x,x
+Contract identification,ContractStructure,CTS,ContractStructure,,,,Y,"A structure identifying individual or sets of underlying contracts. E.g. for FUTUR, this structure identifies the single underlying contract, for SWAPS, the FirstLeg and SecondLeg are identified, or for CEG, CEC the structure identifies Covered and Covering contracts.",,,,,,,,,,,NN,NN,,NN,,NN,NN,NN
+Counterparty,LegalEntityIDCounterparty,LEICP,Varchar,,,,Y,"LEICP identifies the counterparty to the LEIRC in this contract.
+LEICP is ideally the official LEI which can be a firm, a government body, even a single person etc. However, this can also refer to a annonymous group in which case this information is not to be disclosed. LEICP may also refer to a group taking a joint risk or more generally, LEICP is the main counterparty, against which the contract has been settled.",,NN,"NN(,,2)","NN(,,2)","NN(,,2)","NN(,,2)","NN(,,2)","NN(,,2)","NN(,,2)",x,"NN(,,2)","NN(,,2)","NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)"
+Counterparty,ContractStatus,CTS,Enum,"PF = performant
+DL = delayed
+DQ = delinquent
+DF = default",PF,,N,Indicates the current contract performance status. Different states of the contract range from performing to default.,,"x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ",,x,,"x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) "
+Counterparty,Seniority,SEN,Enum,"S=Senior
+J=Junior",,,N,Refers to the order of repayment in the event of a sale or default of the issuer. ,,"x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ",,,,"x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) "
+Counterparty,NonPerformingDate,NPD,Timestamp,ISO8601 Datetime,Contract is performing,,N,The date at which the ContractStatus changed to DF (=Default).,,"x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ",,x,,"x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) "
+Counterparty,PrepaymentPeriod,PPP,Period,,0D,,N,"If real payment happens before scheduled payment date minus PPP, then it is considered a prepayment. Effect of prepayments are further described in PPEF and related fields.",,"x(,,1) ","x(,,1) ","x(8,1,1) ","x(8,1,1) ","x(8,1,1) ","x(8,1,1) ","x(8,1,1) ",,,,,,,,,,
+Counterparty,GracePeriod,GRP,Period,,0D,,N,"If real payment happens after scheduled payment date plus GRP, then the payment is in delay.",,"x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ",,,,,"x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) "
+Counterparty,DelinquencyPeriod,DLP,Period,,0D,,N,"If real payment happens after scheduled payment date plus DLP, then the counterparty is in technical default. This means that the creditor legally has the right to declare default of the debtor.",,"x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ",,,,,"x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) "
+Counterparty,DelinquencyRate,DLR,Real,"(0, positive)",0,,Y,Rate at which Delinquency Payments accrue on NT (in addition to the interest rate) during the DelinquencyPeriod,,"x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ",,,,,"x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) "
+Counterparty,GuaranteedExposure,CEGE,Enum,"NO=Nominal Value
+NI=Nominal plus Interst
+MV=Market Value",,,Y,"Defines which value of the exposure is covered:
+- NO: Nominal Value
+- NI: Nominal plus Interest
+- MV: Market Value",,,,,,,,,,,NN,NN,,,,,,
+Counterparty,CoverageOfCreditEnhancement,CECV,Real,"(0,1)",[1] (),,Y,Defines which percentage of the exposure is covered,,,,,,,,,,,x,x,,,,,,
+Dividend,CycleAnchorDateOfDividend,DVANX,Timestamp,ISO8601 Datetime,[NULL] (No dividend),,Y,Date from which the dividend payment date schedule is calculated according to the cycle length. The first dividend payment event takes place on this anchor.,,,,,,,,,"NN(1,1,) ",,,,,,,,,
+Dividend,CycleOfDividend,DVCL,Period,,,,Y,Defines in combination with DVANX the payment points of dividends. The dividend payment schedule will start at DVANX and end at MaximumProjectionPeriod (cf. sheet Modeling Parameters).,,,,,,,,,"x(1,0,) ",,,,,,,,,
+Dividend,NextDividendPaymentAmount,DVNP,Real,"(0, Positive)",0,Y,Y,"Defines the next dividend payment (amount) whereas the date of dividend payment is defined through the DVANX/DVCL pair. If DVCL is defined, then this amount will be used as dividend payment for each future dividend payment date.",,,,,,,,,"x(1,0,)",,,,,,,,,
+Dividend,ExDividendDate,DVEX,Timestamp,ISO8601 Datetime,DVEX same as next DV payment date according to DVANX/DVCL,,Y,"In case contract is traded between DVEX and next DV payment date (i.e. PRD>DVEX & PRD<next DV payment date), then the old “holder” of the contract (previous to the trade) receives the next DV payment. In other words, the next DV payment is “cancelled” for the new (after the trade) holder of the contract.",,,,,,,,,"x(1,1,) ",,,,,,,,,
+Fees,CycleAnchorDateOfFee,FEANX,Timestamp,ISO8601 Datetime,[NULL] (No fee),,Y,Date from which the fee payment date schedule is calculated according to the cycle length. The first fee payment event takes place on this anchor.,,"x(1,2, ) ","x(1,2, ) ","x(1,2, ) ","x(1,2, ) ","x(1,2, ) ","x(1,2, ) ","x(1,2, ) ",,,"x(1,2, ) ",,,,,,,
+Fees,CycleOfFee,FECL,Cycle,"IPS, where I=Integer, P=[D=Days, W=Weeks, M=Months, Q=Quarters, H=Halfyear, Y=Year], S=[+=long stub,- short stub, {} if S empty then - for short stub]",,,Y,Defines in combination with FEANX the payment points of fees,,"x(1,2, ) ","x(1,2, ) ","x(1,2, ) ","x(1,2, ) ","x(1,2, ) ","x(1,2, ) ","x(1,2, ) ",,,"x(1,2, ) ",,,,,,,
+Fees,FeeBasis,FEB,Enum,"A = Absolute Value
+N = Notional of underlying",,,Y,"Basis, on which Fee is calculated. For FEB=’A’, FER is interpreted as an absolute amount to be paid at every FP event and for FEB=’N’, FER represents a rate at which FP amounts accrue on the basis of the contract’s NT.",,"NN(1,1, ) ","NN(1,1, ) ","NN(1,1, ) ","NN(1,1, ) ","NN(1,1, ) ","NN(1,1, ) ","NN(1,1, ) ",,,"NN(1,1, ) ",,,,,,,
+Fees,FeeRate,FER,Real,,,,Y,"Rate of Fee which is a percentage of the underlying or FER is an absolute amount. For all contracts where FEB does not apply (cf. business rules), FER is interpreted as an absolute amount.",,"x(1,0, ) ","x(1,0, ) ","x(1,0, ) ","x(1,0, ) ","x(1,0, ) ","x(1,0, ) ","x(1,0, ) ",,,"x(1,0, ) ",,,,,,,
+Fees,FeeAccrued,FEAC,Real,,[NULL] (Recalculated as per available FE information),,Y,Accrued fees as per SD,,"x(1,1, ) ","x(1,1, ) ","x(1,1, ) ","x(1,1, ) ","x(1,1, ) ","x(1,1, ) ","x(1,1, ) ",,,"x(1,1, ) ",,,,,,,
+Interest,CycleAnchorDateOfInterestPayment,IPANX,Timestamp,ISO8601 Datetime,IED (Interest accrual starts at IED),,Y,Date from which the interest payment date schedule is calculated according to the cycle length. The first interest payment event takes place on this anchor.,,x,x,"x(2,0,) ","x(2,0,) ",,"x(,,) ",x,,,,,"x(2,0,) ",,,,,
+Interest,ArrayCycleAnchorDateOfInterestPayment,ARIPANXi,"[Timestamp,Timestamp,…]",ISO8601 Datetime,IED (Interest accrual starts at IED),,Y,Same like IPANX but as array,,,,,,"x(2,0,) ",,,,,,,,,,,,
+Interest,CycleOfInterestPayment,IPCL,Cycle,"IPS, where I=Integer, P=[D=Days, W=Weeks, M=Months, Q=Quarters, H=Halfyear, Y=Year], S=[+=long stub,- short stub, {} if S empty then - for short stub]",No cyclic interest payment events ,,Y,"Cycle according to which the interest payment date schedule will be calculated.
+In case IPCL is not set, then there will only be an interest payment event at MD (and possibly at IPANX if set).
+The interval will be adjusted yet by EOMC and BDC.",,x,x,"x(2,0,) ","x(2,0,) ",,"x(,,) ",x,,,,,"NN(2,0,) ",,,,,
+Interest,ArrayCycleOfInterestPayment,ARIPCLi,"[Cycle,Cycle,…]","Array of IPS, where I=Integer, P=[D=Days, W=Weeks, M=Months, Q=Quarters, H=Halfyear, Y=Year], S=[+=long stub,- short stub, {} if S empty then - for short stub]",No cyclic interest payment events ,,Y,Same like IPCL but as array,,,,,,"x(2,0,) ",,,,,,,,,,,,
+Interest,NominalInterestRate,IPNR,Real,,,,Y,"The nominal interest rate which will be used to calculate accruals and the next interest payment at the next IP date. NT multiplied with IPNR is the base for the interest payment calculation. The relevant time period is a function of IPDC. 
+If the contract is variable (RRANX set) this field is periodically updated per SD. 
+In the case of plan vanilla interest rate swaps (IRSPV) this defines the rate of fixed leg.",,NN,NN,NN,NN,NN,NN,NN,,,,,NN,,,,,
+Interest,NominalInterestRate2,IPNR2,Real,,,,Y,"The nominal interest rate which will be used to calculate accruals and the next interest payment at the next IP date on the second leg (the one not mentioned in CNTRL) of a plain vanilla swap. The relevant time period is a function of IPDC. 
+It is periodically updated per SD.",,,,,,,,,,,,,NN,,,,,
+Interest,DayCountConvention,IPDC,Enum,"A/AISDA = Actual/Actual ISDA
+A/360 = Actual/360
+A/365 = Actual/365
+30E/360ISDA = 30E/360 ISDA
+30E/360 = 30E/360
+B/252 = Business / 252
+<wildcard> = wildcard for your own day count convention",,,Y,Method defining how days are counted between two dates. This finally defines the year fraction in accrual calculations.,,NN,NN,NN,NN,NN,NN,NN,,,,,NN,,,,,
+Interest,AccruedInterest,IPAC,Real,,[NULL] (Recalculated as per available IP information),Y,Y,"Accrued interest as per SD. In case of NULL, this value will be recalculated using IPANX, IPCL and IPNR information. Can be used to represent irregular next IP payments.",,x,x,x,x,x,x,x,,,,,,,,,,
+Interest,CapitalizationEndDate,IPCED,Timestamp,ISO8601 Datetime,[NULL] (No capitalization takes place),,Y,"If IPCED is set, then interest is not paid or received but added to the balance (NT) until IPCED. If IPCED does not coincide with an IP cycle, one additional interest payment gets calculated at IPCED and capitalized. Thereafter normal interest payments occur.",,,,x,x,x,x,x,,,,,,,,,,
+Interest,CycleAnchorDateOfInterestCalculationBase,IPCBANX,Timestamp,ISO8601 Datetime,,,Y,Date from which the interest calculation base date schedule is calculated according to the cycle length. The first interest calculation base event takes place on this anchor.,,,,,"x(3,4 ,) ","x(3,4 ,) ","x(3,4 ,) ","x(3,4 ,) ",,,,,,,,,,
+Interest,CycleOfInterestCalculationBase,IPCBCL,Cycle,"IPS, where I=Integer, P=[D=Days, W=Weeks, M=Months, Q=Quarters, H=Halfyear, Y=Year], S=[+=long stub,- short stub, {} if S empty then - for short stub]",,,Y,"Concerning the format see PRCL. 
+Defines the subsequent adjustment points to NT of the interest payment calculation base.",,,,,"x(3,4 ,) ","x(3,4 ,) ","x(3,4 ,) ","x(3,4 ,) ",,,,,,,,,,
+Interest,InterestCalculationBase,IPCB,Enum,"NT= Calculation base always equal to NT
+NTIED = Notional remains constantamount as per IED
+NTL = Calculation base is notional base laged ",[NT] (NT is the base of interest calculation),Y,Y,"This is important for amortizing instruments. The basis of interest calculation is normally the notional outstanding amount as per SD. This is considered the fair basis and in many countries the only legal basis. If NULL or NTSD is selected, this is the case. 
+Alternative bases (normally in order to favor the lending institution) are found. In the extreme case the original balance (PCDD=NT+PDCDD) never gets adjusted. In this case PCDD must be chosen. 
+An intermediate case exist wherre balances do get adjusted, however with lags. In this case NTL mut be selected and anchor dates and cycles must be set.",,,,,"x(3,0,) ","x(3,0,) ","x(3,0,) ","x(3,0,) ",,,,,,,,,,
+Interest,InterestCalculationBaseAmount,IPCBA,Real,Positive,,Y,Y,This is the amount used for the calculation of interest. Calculation base per SD.,,,,,"NN(3,3 ,) ","NN(3,3 ,) ","NN(3,3 ,) ","NN(3,3 ,) ",,,,,,,,,,
+Interest,CyclePointOfInterestPayment,IPPNT,Enum,"B = interest is paid at the beginning of the cycle (B, BeginningOf can be used interchangeably)
+E = interest is paid at the end of the cycle (E, EndOf can be used interchangeably)
+","[E] (=EndOf, Interest is paid at the end of the cycle)",,Y,"Usually, interest is paid at the end of each IPCL which corresponds to a IPPNT value of E which is also the default. If interest payment occurs at the beginning of the cycle, the value is B.",,,,"x(2,1,)1 ","x(2,1,)1 ","x(2,1,)1 ",,,,,,,,,,,,
+Margining,ClearingHouse,MRCLH,Enum,"Y = Yes 
+N = No",,,Y,"Indicates wheter LEIRC takes a clearing house function or not. In other word, whether LEIRC receive margins (MRIM, MRVM).",,,,,,,,,,,,,,,,"NN(1,1,)",,
+Margining,InitialMargin,MRIM,Real,"0, positive, 2 decimals",[] ()No periodic margening,Y*,Y,"Margin to cover losses which may be incurred as a result of market fluctuations. 
+Upon contract closing or maturity, the MRIM is reimbursed.",,,,,,,,,,,,,,,,"x(1,0,) ",,
+Margining,MaintenanceMarginLowerBound,MRMML,Real,"0, positive, 2 decimals",,,Y,"Defines the lower bound of the Maintenance Margin. If MRVM falls below MRMML, then capital must be added to reach the original MRIM.",,,,,,,,,,,,,,,,"x(1,1,) ",,
+Margining,MaintenanceMarginUpperrBound,MRMMU,Real,"0, positive, 2 decimals",,,Y,"Defines the upper bound of the Maintenance Margin. If MRVM falls above MRMMU, then capital is refunded to reach the original MRIM.",,,,,,,,,,,,,,,,"x(1,1,) ",,
+Margining,CycleAnchorDateOfMargining,MRANX,Timestamp,ISO8601 Datetime,,,Y,Date from which the margin call date schedule is calculated according to the cycle length. The first margin call event takes place on this anchor.,,,,,,,,,,,,,,,,"x(1,1,) ",,
+Margining,CycleOfMargining,MRCL,Cycle,"IPS, where I=Integer, P=[D=Days, W=Weeks, M=Months, Q=Quarters, H=Halfyear, Y=Year], S=[+=long stub,- short stub, {} if S empty then - for short stub]",,,Y,Defines together with MRANX the points where margins can be called.,,,,,,,,,,,,,,,,"x(1,1,) ",,
+Margining,VariationMargin,MRVM,Real,"0, positive, 2 decimals",,,Y,"MRVM reflects the accrued but not yet paid margin as per SD.  
+Open traded positions are revalued by the exchange at the end of every trading day using mark-to-market valuation. Often clearing members do not credit or debit their clients daily with MRVM, but rather use a Maintenance Margin. If the balance falls outside MRMML (and MRMMU), then  capital must be added (is refunded) to reach the original margin amount MRIM. We can also say that MVO+MRVM is equal to the reference value as per last margin update.",,,,,,,,,,,,,,,,"x(1,1,) ",,
+Notional Principal,Currency,CUR,Varchar,,,,Y,The currency of the cash flows.,NN,NN,NN,NN,NN,NN,NN,NN,NN,NN,NN,,NN,NN,NN,NN,NN,NN*
+Notional Principal,Currency2,CUR2,Varchar,,,,Y,Currency attribute for the second leg of FXOUT contracts.,,,,,,,,,,,,,,,NN,,,
+Notional Principal,AmortizationDate,AMD,Timestamp,ISO8601 Datetime,[MD] (NT will reach zero at MD),,Y,This Date is used to calculate the annuity amounts for ANN and ANX NGX CT's. Needs only to be set in case where the contract balloon at MD and MD is less than AD.,,,,,,,x,,,,,,,,,,,
+Notional Principal,ContractDealDate,CDD,Timestamp,ISO8601 Datetime,,,Y,"This date signifies the origination of the contract where an agreement between the customer and the bank has been settled. From this date on, the institution will have a (market) risk position for financial contracts. This is even the case when IED is in future.",,"NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)",NN,NN,"NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)","NN(,,1)"
+Notional Principal,InitialExchangeDate,IED,Timestamp,ISO8601 Datetime,,,Y,Date of the initial cash flow for Maturity and Non-Maturity CT's. It also coincides with the beginning of interest accrual calculation.,,NN,NN,NN,NN,NN,NN,NN,,,,,NN,,,,,
+Notional Principal,PremiumDiscountAtIED,PDIED,Real,,[0] (No premium or discount at origination),Y,Y,"Total original premium or discount that has been set at CDD and will be added to the (notional) cash flow at IED (cash flow at IED = NT+PDIED, w.r.t. an RPA CT). 
+Negative value for discount and positive for premium.
+Note, similar to interest the PDIED portion is part of P&L.",,,,x,x,x,x,x,,,,,,,,,,
+Notional Principal,MaturityDate,MD,Timestamp,ISO8601 Datetime,[NULL {only ANN}] (Value gets internally calculated),,Y,"Marks the contractual end of the lifecycle of a CT. Generally, date of the last cash flows. 
+This includes normally a principal and an interest payment. Some Maturity CTs as perpetuals (PBN) do not have such a date. For variable amortizing contracts of the ANN CT, this date might be less than the scheduled end of the contract (which is deduced from the periodic payment amount 
+PRNXT). In this case it balloons.",,,x,NN,x,x,x,x,,,x,,NN,,NN,,,
+Notional Principal,NotionalPrincipal,NT,Real,"0, positive, 2 decimals",,Y,Y,"Total remaining outstanding principal as per SD. Hence, for amortizing instruments NT will be updated per SD in order to represent current outstanding principal. 
+Although initial NT will be defined at CDD it will only flow at IED or PRD. The first Cash Flow at IED or PRD is equal to NT+PDIED.
+NT is generally the basis on which interest payments are calculated. If IPCBS is set, IPCBS may introduce a different basis for interest payment calculation.",NN,NN,NN,NN,NN,NN,NN,NN,,,x,,NN,,NN,,,
+Notional Principal,NotionalPrincipal2,NT2,Real,"0, positive, 2 decimals",,"""-Y (!)",Y,Notional amount of the second currency to be exchanged in an FXOUT CT.,,,,,,,,,,,,,,,NN,,,
+Notional Principal,Quantity,QT,Real,Positive,[1] (NT reflects single contract),,Y,"This attribute relates either to physical contracts (COM) or underlyings of traded contracts. 
+In case of physical contracts it holds the number of underlying units of the specific good (e.g. number of barrels of oil). 
+In case of well defined traded contracts it holds the number of defined underlying instruments. Example: QT of STK CTs underlying a FUTUR indicates the number of those specific STK CTs which underlie the FUTUR.",,,,,,,,,"NN(,,3)",NN,,,,,,,,
+Notional Principal,Unit,UT,Enum,"BRL = barrel 
+BSH = bushel 
+GLN = gallon 
+CUU = currency unit 
+MWH = mega watt hours 
+PND = pound (lb) 
+STN = short ton 
+TON = ton 
+TRO = troy ounce
+<wildcard> = wildcard for your own unit",,,N,The physical unit of the contract. Example: “Barrels” for an Oil COM CT.,,,,,,,,,,NN,,,,,,,,
+Notional Principal,CycleAnchorDateOfPrincipalRedemption,PRANX,Timestamp,ISO8601 Datetime,[IED plus one cycle] (First principle pazment one czle after IED),,Y,Date from which the principal payment date schedule is calculated according to the cycle length. The first principal payment event takes place on this anchor.,,,,,"x(4,2,) ",,"x(4,2,)2 ","x(4,2,) ",,,,,,,,,,
+Notional Principal,ArrayCycleAnchorDateOfPrincipalRedemption,ARPRANXj,"[Timestamp,Timestamp,…]",Array of Timestamps,Not yet defined,,Y,Same like PRANX but as array,,,,,,"NN(4,0,) ",,,,,,,,,,,,
+Notional Principal,CycleOfPrincipalRedemption,PRCL,Cycle,"IPS, where I=Integer, P=[D=Days, W=Weeks, M=Months, Q=Quarters, H=Halfyear, Y=Year], S=[+=long stub,- short stub, {} if S empty then - for short stub]",[NULL] All payments at MD),,Y,"Cycle according to which the interest payment date schedule will be calculated.
+In case PRCL is not set, then there will only be one principal payment event at MD (and possibly at PRANX if set).
+The interval will be adjusted yet by EOMC and BDC.",,,,,"x(4,2,) ",,"x(4,2,)2 ","x(4,2,) ",,,,,,,,,,
+Notional Principal,ArrayCycleOfPrincipalRedemption,ARPRCLj,"[Cycle,Cycle,…]","Array of IPS, where I=Integer, P=[D=Days, W=Weeks, M=Months, Q=Quarters, H=Halfyear, Y=Year], S=[+=long stub,- short stub, {} if S empty then - for short stub]",Not yet defined,,Y,Same like PRCL but as array,,,,,,"x(4,0,) ",,,,,,,,,,,,
+Notional Principal,NextPrincipalRedemptionPayment,PRNXT,Real,"Positive, 2 decimals",[NULL {only ANN}] (Value gets internally calculated),Y,Y,"Amount of principal that will be paid during the redemption cycle at the next payment date. For amortizing contracts like ANN, NAM, ANX, and NAX this is the total periodic payment amount (sum of interest and principal).",,,,,x,,x,NN,,,,,,,,,,
+Notional Principal,ArrayNextPrincipalRedemptionPayment,ARPRNXTj,"[Real,Real,…]",Array of Real positive numbers,Not yet defined,,Y,Same like PRNXT but as array,,,,,,"x(4,0,) ",,,,,,,,,,,,
+Notional Principal,ArrayIncreaseDecrease,ARINCDEC,"[Varchar,Varchar,…]","Array of Varchars which take one of the following values:
+INC = Increase of NT
+DEC = Decrease of NT",Not yet defined,,Y,"Indicates whether a certain PRNXT element in ARPRNX increases the principal (NT) or decreases it.
+Applies only for ANX, NAX, LAX Maturity CTs. For all other Maturity CTs the first principal payment is always in the opposite direction of all other (following) payments. ",,,,,,"x(4,0,) ",,,,,,,,,,,,
+Notional Principal,PurchaseDate,PRD,Timestamp,ISO8601 Datetime,[IED] (Contract was initiated at IED),,Y,"If a contract is bought after initiation (for example a bond on the secondary market) this date has to be set. It refers to the date at which the payment (of PPRD) and transfer of the security happens. In other words, PRD - if set - takes the role otherwise IED has from a cash flow perspective. 
+Note, LEICP of the CT is not the counterparty of the transaction!",,,,"x(5,0,1) ","x(5,0,1) ","x(5,0,1) ","x(5,0,1) ","x(5,0,1) ",NN,NN,"x(5,0,1) ",,"x(5,0,1) ","x(5,0,1) ","x(5,0,1) ","NN(,,2)","NN(,,2)","x(5,0,1) "
+Notional Principal,PriceAtPurchaseDate,PPRD,Real,,,Y*,Y,"Purchase price exchanged at PRD.  
+PPRD represents a “clean” price (includes premium/discount but not IPAC).",,,,"NN(5,1,1)","NN(5,1,1)","NN(5,1,1)","NN(5,1,1)","NN(5,1,1)",NN,NN,"NN(5,1,1)",,"NN(5,1,1)","NN(5,1,1)","NN(5,1,1)","NN(,,2)","NN(,,2)","NN(5,1,1)"
+Notional Principal,TerminationDate,TD,Timestamp,ISO8601 Datetime,[MD] (Contract is not terminated before MD),,Y,"If a contract is sold before MD (for example a bond on the secondary market) this date has to be set. It refers to the date at which the payment (of PTD) and transfer of the security happens. In other words, TD - if set - takes the role otherwise MD has from a cash flow perspective. 
+Note, LEICP of the CT is not the counterparty of the transaction!",,"x(6,0,1) ",,"x(6,0,1) ","x(6,0,1) ","x(6,0,1) ","x(6,0,1) ","x(6,0,1) ","x(6,0,1) ","x(6,0,1) ",,,"x(6,0,1) ","x(6,0,1) ","x(6,0,1) ","x(6,0,1) ","x(6,0,1) ","x(6,0,1) "
+Notional Principal,PriceAtTerminationDate,PTD,Real,,,Y*,Y,Sellingprice exchanged at PTD  PTDrepresents a “clean” price (includes premium/discount but not IPAC,,"NN(6,1,1)",,"NN(6,1,1)","NN(6,1,1)","NN(6,1,1)","NN(6,1,1)","NN(6,1,1)","NN(6,1,1)","NN(6,1,1)",,,"NN(6,1,1)","NN(6,1,1)","NN(6,1,1)","NN(6,1,1)","NN(6,1,1)","NN(6,1,1)"
+Notional Principal,XDayNotice,XDN,Period,,[NULL] (No rolling takes place),,Y,"Used as rolling attribute with the callable CT's UMP and CLM uniquely. CLM's and UMP's will not be settled (MD not set) until the client uses his option to call the contract X_Day_Notice after Current Date. As long as MD or TD is not set, the client postpones his right to call to the future. The cycle is normally defined in number of business days.",,x,NN,,,,,,,,,,,,,,,
+Notional Principal,CreditLineAmount,CLA,Real,Positive,No credit line option,Y,Y,"If defined, gives the total amount that can be drawn from a credit line. The remaining amount that can still be drawn is given by CLA-NT.
+For ANN, NAM, the credit line can only be drawn prior to PRANX-1PRCL.
+For CRL, the remaining amount that can still be drawn is given by CLA-Sum(NT of attached contracts).",,,,x,x,,x,x,,,,,,,,,,
+Notional Principal,MarketObjectCodeOfScalingIndex ,SCMO,Varchar,,[NULL] (No scaling),,Y,,,,,"NN(7,1,)","NN(7,1,)","NN(7,1,)","NN(7,1,)","NN(7,1,)",,,,,,,,,,
+Notional Principal,ScalingIndexAtStatusDate ,SCIXSD,Real,"Positive, 2 decimals",,,Y,,,,,"NN(7,1,)","NN(7,1,)","NN(7,1,)","NN(7,1,)","NN(7,1,)",,,,,,,,,,
+Notional Principal,CycleAnchorDateOfScalingIndex,SCANX,Timestamp,ISO8601 Datetime,,,Y,Date from which the scaling date schedule is calculated according to the cycle length. The first scaling event takes place on this anchor.,,,,"x(7,2,) ","x(7,2,) ","x(7,2,) ","x(7,2,) ","x(7,2,) ",,,,,,,,,,
+Notional Principal,CycleOfScalingIndex,SCCL,Cycle,"IPS, where I=Integer, P=[D=Days, W=Weeks, M=Months, Q=Quarters, H=Halfyear, Y=Year], S=[+=long stub,- short stub, {} if S empty then - for short stub]",,,Y,"Cycle according to which the scaling date schedule will be calculated.
+In case SCCL is not set, then there will only be one scaling event at SCANX given SCANX is set.
+The interval will be adjusted yet by EOMC and BDC.",,,,"x(7,2,) ","x(7,2,) ","x(7,2,) ","x(7,2,) ","x(7,2,) ",,,,,,,,,,
+Notional Principal,ScalingEffect,SCEF,Varchar,"xyz where x=I OR 0
+y=N OR 0
+z=M OR 0",[000] (Nothing is scaled),,Y,"Indicates which payments are scaled. I = Interest payments, N = Nominal payments and M = Maximum deferred interest amount. They can be scaled in any combination.",,,,"x(7,0,) ","x(7,0,) ","x(7,0,) ","x(7,0,) ","x(7,0,) ",,,,,,,,,,
+Notional Principal,MarketValueObserved,MVO,Real,,[NULL] (Value must be supplied via Connector),Y*,N,Value as observed in the market at SD per unit. Incase of fixed income instruments it is a fraction.,,,,x,x,x,x,x,x,x,,,x,x,x,x,x,x
+Optionality,OptionExecutionType,OPXT,Enum,"E = European 
+B = Bermudan  
+A = American",,,Y,"Defines whether the option is European (exercised at a specific date), American (exercised during a span of time) or Bermudan (exercised at certain points during a span of time).",,,,,,,,,,,,,,,,,NN,
+Optionality,OptionExerciseEndDate,OPXED,Timestamp,ISO8601 Datetime,[NULL] (No option executed),,Y,"Final exercise date for American and Bermudan options, expiry date for European options. ",,,,"x(8,1,) ","x(8,1,) ","x(8,1,) ","x(8,1,) ","x(8,1,) ",,,,,,,,,NN,
+Optionality,OptionStrike1,OPS1,Real,Positive,,Y,Y,"Strike price of the option. Whether it is a call/put is determined by the attribute OPTP, i.e a call or a put (or a combination of call/put).
+This attribute is used for price related options such as options on bonds, stocks or FX. Interest rate related options (caps/floos) are handled within th RatReset group.",,,,,,,,,,,,,,,,,NN,
+Optionality,OptionStrike2,OPS2,Real,Positive,,Y,Y,Put price in case of call/put.,,,,,,,,,,,,,,,,,x,
+Optionality,OptionType,OPTP,Enum,"C = Call
+P = Put 
+CP = Call and Put in combination",,,Y,Defines whether the option is a call or put or a combination of it. This field has to be seen in combination with CNTRL where it is defined whether LEIRC is the buyer or the seller.,,,,,,,,,,,,,,,,,NN,
+Optionality,CycleAnchorDateOfOptionality,OPANX,Timestamp,ISO8601 Datetime,[NULL] (No cycle single srike),,Y,"Used for Basic Maturities (such as PAM, RGM, ANN, NGM and their Step-up versions) and American and Bermudan style options. 
+- Basic Maturities: Within the group of these Maturities, it indicates the possibility of prepayments. Prepayment features are controlled by Behavior. 
+- American and Bermudan style Options: Begin of exercise period.",,,,"x(8,1,) ","x(8,1,) ","x(8,1,) ","x(8,1,) ","x(8,1,) ",,,,,,,,,x,
+Optionality,CycleOfOptionality,OPCL,Cycle,"IPS, where I=Integer, P=[D=Days, W=Weeks, M=Months, Q=Quarters, H=Halfyear, Y=Year], S=[+=long stub,- short stub, {} if S empty then - for short stub]",,,Y,"Cycle according to which the option execution date schedule will be calculated.
+OPCL can be NULL for American Options or Prepayment Optionality in which case the optionality period starts at OPANX and ends at OPXED (for american options) or MD (in case of prepayment optionality).
+The interval will be adjusted yet by EOMC and BDC.",,,,"x(8,1,) ","x(8,1,) ","x(8,1,) ","x(8,1,) ","x(8,1,) ",,,,,,,,,x,
+Optionality,PenaltyType,PYTP,Enum,"O=No penalty
+A=Absolute
+N=Nominal Rate
+I=Current Interest Rate Differential",O,,Y,Defines whether prepayment is linked to a penalty and of which kind.,,,,"x(8,1,) ","x(8,1,) ","x(8,1,) ","x(8,1,) ","x(8,1,) ",,,,,,,,,,
+Optionality,PenaltyRate,PYRT,Real,Positive,0,Y,Y,Either the rate or the absolute amount of the prepayment.,,,,"x(8,1,) ","x(8,1,) ","x(8,1,) ","x(8,1,) ","x(8,1,) ",,,,,,,,,,
+Optionality,PrepaymentEffect,PPEF,Enum,"N=No prepayment
+A=Prepayment allowed, prepayment results in reduction of PRNXT while MD remains
+M=Prepayment allowed, prepayment results in reduction of MD while PRNXT remains",N (No prepayment),,Y,"This attribute defines whether or not the right of prepayment exists and if yes, how prepayment affects the remaining principal redemption schedule of the contract",,,,"x(8,0,) ","x(8,0,) ","x(8,0,) ","x(8,0,) ","x(8,0,) ",,,,,,,,,,
+Optionality,MaximumPenaltyFreeDisbursement,MPFD,Real,"0, positive, 2 decimals",[NT] (Entire amount can be drawn without penalty),,N,Defines the notional amount which can be withdrawn before XDN without penalty,,x,,,,,,,,,,,,,,,,
+Rate Reset,CycleAnchorDateOfRateReset,RRANX,Timestamp,ISO8601 Datetime,[IED plus one RR cycle] (Firs reset one RRCL after IED),,Y,Date from which the rate reset date schedule is calculated according to the cycle length. The first rate reset event takes place on this anchor.,,"x(9,0,) ","x(9,0,) ","x(9,0,) ","x(9,0,) ",,"x(9,0,)2 ","x(9,2,) ",,,,,"x(9,2,) ",,,,,
+Rate Reset,ArrayCycleAnchorDateOfRateReset,ARRRANX,"[Timestamp,Timestamp,…]",Array of Timestamps,,,Y,Same like RRANX but as array,,,,,,"x(9,0,) ",,,,,,,,,,,,
+Rate Reset,CycleOfRateReset,RRCL,Cycle,"IPS, where I=Integer, P=[D=Days, W=Weeks, M=Months, Q=Quarters, H=Halfyear, Y=Year], S=[+=long stub,- short stub, {} if S empty then - for short stub]",[NULL] (No rate reset after RRANX),,Y,"Cycle according to which the rate reset date schedule will be calculated.
+In case RRCL is not set, then there will only be one rate reset event at RRANX given RRANX if set.
+The interval will be adjusted yet by EOMC and BDC.",,"x(9,0,) ","x(9,0,) ","x(9,0,) ","x(9,0,) ",,"x(9,0,)2 ","x(9,2,) ",,,,,"x(9,2,) ",,,,,
+Rate Reset,ArrayCycleOfRateReset,ARRRCL,"[Cycle,Cycle,…]","Array of IPS, where I=Integer, P=[D=Days, W=Weeks, M=Months, Q=Quarters, H=Halfyear, Y=Year], S=[+=long stub,- short stub, {} if S empty then - for short stub]",,,Y,Same like RRCL but as array,,,,,,"x(9,1,) ",,,,,,,,,,,,
+Rate Reset,RateSpread,RRSP,Real,,[0] (RRMO will be the rate),,Y,"Interest rate spread. A typical rate resetting rule is LIBOR plus x basis point where x represents the interest rate spread.  
+The following equation can be taken if RRMLT is not set: IPNR after rate reset = Rate selected from the market object  + RRSP.",,"NN(9,1,) ","NN(9,1,) ","NN(9,1,) ","NN(9,1,) ",,"NN(9,1,) ",NN,,,,,NN,,,,,
+Rate Reset,ArrayRate,ARRATE,"[Real,Real,…]",,,,Y,"For array-type rate reset schedules, this attribute represents either an interest rate (corresponding to IPNR) or a spread (corresponding to RRSP). Which case applies depends on the attribute ARFIXVAR: if ARFIXVAR=”FIX” then it represents the new IPNR and if ARFIXVAR=”VAR” then the applicable RRSP.",,,,,,"NN(9,1,) ",,,,,,,,,,,,
+Rate Reset,ArrayFixedVariable,ARFIXVAR,"[ Enum, Enum, ...]","F = Fixed rate
+V = Variable rate",,,Y,"For array-type rate reset schedules, this attributes defines the meaning of ARRATE.",,,,,,"NN(9,1,) ",,,,,,,,,,,,
+Rate Reset,MarketObjectCodeRateReset,RRMO,Varchar,,"[Primary object of CUR] (Every CUR has a primary object, this will be taken)",,Y,"Is pointing to the interest rate driver (MarketObject) used for rate reset uniquely.
+Unique codes for market objects must be used.",,"NN(9,1,) ","NN(9,1,) ","NN(9,1,) ","NN(9,1,) ","NN(9,1,) ","NN(9,1,) ",NN,,,,,NN,,,,,
+Rate Reset,LifeCap,RRLC,Real,,[NULL] (no life cap applies),,Y,"For variable rate basic CTs this represents a cap on the interest rate that applies during the entire lifetime of the contract.
+For CAPFL CTs this represents the cap strike rate.",,,,"x(9,1,) ","x(9,1,) ","x(9,1,) ","x(9,1,) ","x(9,1,) ",,,,,,,,,,"x(7,2,) "
+Rate Reset,LifeFloor,RRLF,Real,,[NULL] (no life floor applies),,Y,"For variable rate basic CTs this represents a floor on the interest rate that applies during the entire lifetime of the contract.
+For CAPFL CTs this represents the floor strike rate.",,,,"x(9,1,) ","x(9,1,) ","x(9,1,) ","x(9,1,) ","x(9,1,) ",,,,,,,,,,"x(7,2,) "
+Rate Reset,PeriodCap,RRPC,Real,Positive,[NULL] (no period cap applies),,Y,For variable rate basic CTs this represents the maximum positive rate change per rate reset cycle.,,,,"x(9,1,) ","x(9,1,) ","x(9,1,) ","x(9,1,) ","x(9,1,) ",,,,,,,,,,
+Rate Reset,PeriodFloor,RRPF,Real,Positive,[NULL] (no period floor applies),,Y,For variable rate basic CTs this represents the maximum negative rate change per rate reset cycle.,,,,"x(9,1,) ","x(9,1,) ","x(9,1,) ","x(9,1,) ","x(9,1,) ",,,,,,,,,,
+Rate Reset,CyclePointOfRateReset,RRPNT,Enum,"B = at the beginning of the cycle (B, BeginningOf can be used interchangeably)
+E = at the end of the cycle (E, EndOf can be used interchangeably)",[BeginningOf] (Rates are fixed at the beginning of the cycle),,Y,"Normally rates get reset at the beginning of any resetting cycles. There are contracts where the rate is not set at the beginning but at the end of the cycle and then applied to the previous cycle (post-fixing); in other words the rate applies before it is fixed. Hence, the new rate is not known during the entire cycle where it applies. Therefore, the rate will be applied backwards at the end of the cycle. This happens through a correction of interest accrued.",,,,"x(9,1,)1  ","x(9,1,)1  ","x(9,1,)1  ",,,,,,,"x(9,1,)1  ",,,,,
+Rate Reset,FixingDays,RRFIX,Period,,[0D] (Rates are fixed and applied at the same date),,Y,Interest rate resets (adjustments) are usually fixed one or two days (usually Business Days) before the new rate applies (defined by the rate reset schedule). This field holds the period between fixing and application of a rate.,,,"x(9,1,) ","x(9,1,) ","x(9,1,) ","x(9,1,) ","x(9,1,) ","x(9,1,) ",,,,,"x(9,1,) ",,,,,
+Rate Reset,NextResetRate,RRNXT,Real,,[NULL] (No next rate exists yet),,Y,"Holds the new rate that has been fixed already (cf. attribute FixingDays) but not applied. This new rate will be applied at the next rate reset event (after SD and according to the rate reset schedule). Attention, RRNXT must be set to NULL after it is applied!",,,"x(9,1,) ","x(9,1,) ","x(9,1,) ","x(9,1,) ","x(9,1,) ","x(9,1,) ",,,,,"x(9,1,) ",,,,,
+Rate Reset,RateMultiplier,RRMLT,Real,,[1] (Rate will be taken as per observation),,Y,"Interest rate multiplier. A typical rate resetting rule is LIBOR plus x basis point where x represents the interest rate spread.
+However, in some cases like reverse or super floater contracts an additional rate multiplier applies. In this case, the new rate is determined as: IPNR after rate reset = Rate selected from the market object * RRMLT + RRSP. ",,,"x(9,1,) ","x(9,1,) ","x(9,1,) ","x(9,1,) ","x(9,1,) ","x(9,1,) ",,,,,"x(9,1,) ",,,,,
+Settlement,SettlementDate,STD,Timestamp,ISO8601 Datetime,[NULL] (Settlement will take place at the end of the contracts),,Y,"Date where combined contracts are settled (cash or physical delivery). This can be after the actual fixing date (OPXED for OPTNS or MD for FXOUT).
+Type of settlement, cash or physical delivery, is determined by the attribute DeliverySettlement.",,,,,,,,,,,,,,,"x(,,1) ","NN(,,1) ","x(,,1) ",
+Settlement,DeliverySettlement,DS,Enum,"S=Settlement(Cash)
+D=Delivery","[D for basic CT, S for combined CT´s] (Basic contracts are delivered, combined contracts settled)",,Y,"Indicates whether the contract is settled in cash or physical delivery.
+In case of “physical delivery”, the underlying contract and associated (future) cash flows are effectively exchanged. In case of “cash” settlement, the current market value of the underlying contract determines the cash flow exchanged.",,,,,,,,,,,,,"x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ","x(,,1) ",
+Settlement,FuturesPrice,PFUT,Real,,,,Y,"The price the counterparties agreed upon at which the underlying contract (of a FUTUR) is exchanged/settled at STD. Quoting is different for different types of underlyings: Fixed Income = in percentage, all others in nominal terms.",,,,,,,,,,,,,,,,NN,,
