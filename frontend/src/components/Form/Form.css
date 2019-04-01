@@ -17,15 +17,26 @@
     margin-bottom: 2rem;
     text-transform: uppercase;
     background: #1a6395;
+    cursor: pointer;
 }
-.contract-main-wrapper .contract-title{
+.contract-main-wrapper.demo {
+    margin-bottom: 0;
+}
+
+.contract-main-wrapper.demo .demo-row {
+    padding: 0.5rem 0;
+}
+.contract-main-wrapper .contract-title {
     font-weight: bold;
+    user-select: none;
 }
 .contract-main-wrapper .contract-description{
     font-weight: normal;
     color: #fff;
     padding-left: 1rem;
+    user-select: none;
 }
+
 .inactive input {
     pointer-events: none;
     opacity: 0.7;

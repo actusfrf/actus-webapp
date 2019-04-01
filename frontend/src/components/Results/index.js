@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import {Col, Grid, Row} from 'react-bootstrap';
-import axios from 'axios';
+//import axios from 'axios';
 import './Results.css';
 import { Graph } from '../Graph';
 
@@ -19,9 +19,6 @@ export class Results extends PureComponent {
 
     render() {        
         let { results, currentTab } = this.state;
-        results.map((e) => {
-            console.log(e);
-        })
         return (
             <div id="results-container" identifier="" version="">
                 <Grid fluid>
