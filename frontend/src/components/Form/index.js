@@ -48,6 +48,7 @@ export class Form extends PureComponent {
         results:{},
         isFetching: false,
         redirect: false,
+        host: "http://localhost", //http://190.141.20.26/
     }
 
     assemble(a, b) {
@@ -56,8 +57,6 @@ export class Form extends PureComponent {
     }
 
     handleChange(date) {
-        console.log(date);
-        console.log(this.state);
         this.setState({
             startDate: date
         });
@@ -70,8 +69,8 @@ export class Form extends PureComponent {
     handleSubmit(e) {
         e.preventDefault();
         let allAnswers = Object.assign({},this.state.requiredFields, this.state.nonRequiredFields);
-        //console.log(allAnswers);
-
+        //let host = "http://190.141.20.26/"; //http://localhost //"http://190.141.20.26/"
+        
         let tf = this.state.testFields;
         let config = {
             'mode': 'cors',
@@ -82,7 +81,7 @@ export class Form extends PureComponent {
             'withCredentials': true,
             'credentials': 'omit'
         }
-        axios.post('http://localhost/events',tf)
+        axios.post(this.state.host+'/events',tf)
             .then(res => {
                 console.log(res.data);
                 this.setState({
@@ -90,7 +89,6 @@ export class Form extends PureComponent {
                     isFetching: false,
                     redirect: true,
                 })
-                //console.log(res.data);
             });
     }
 
@@ -120,6 +118,7 @@ export class Form extends PureComponent {
     }
 
     onComponentUpdate(e){
+        console.log('Did Update');
         this.setState({
             nonRequiredFields:{
                 ...this.state.nonRequiredFields,
@@ -129,10 +128,10 @@ export class Form extends PureComponent {
     }
     
     componentDidMount() {
-        console.log('did mount');
+        console.log('Did Mount');
         let {match} = this.props;
         axios
-            .get(`http://localhost/terms/meta/${match.params.id}`)
+            .get(`${this.state.host}/terms/meta/${match.params.id}`)
             .then(res => {
                 if (!res.data[0].terms || !res || !res.data) {
                     return false;
