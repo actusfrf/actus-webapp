@@ -29,7 +29,7 @@ export class Form extends PureComponent {
         contractType: "",
         identifier: "",
         version: "",
-        testFields:{
+        testFields: {
             "ContractType": "PAM",
             "StatusDate": "2015-01-01T00:00:00",
             "ContractRole": "RPA",
@@ -52,7 +52,7 @@ export class Form extends PureComponent {
         results:{},
         isFetching: false,
         redirect: false,
-        host: "http://localhost", //http://190.141.20.26/
+        host: "http://190.141.20.26", //http://190.141.20.26/
     }
 
     assemble(a, b) {
@@ -73,9 +73,8 @@ export class Form extends PureComponent {
     handleSubmit(e) {
         e.preventDefault();
         let allAnswers = Object.assign({},this.state.requiredFields, this.state.nonRequiredFields);
-        //let host = "http://190.141.20.26/"; //http://localhost //"http://190.141.20.26/"
         
-        let tf = this.state.requiredFields;
+        let tf = this.state.testFields;
         let config = {
             'mode': 'cors',
             'headers': {
@@ -86,9 +85,8 @@ export class Form extends PureComponent {
             'credentials': 'omit'
         }
 
-        axios.post(this.state.host+'/events',tf)
+        axios.post(this.state.host+'/events', tf)
             .then(res => {
-                console.log(res.data);
                 this.setState({
                     results: res.data,
                     isFetching: false,
@@ -181,7 +179,6 @@ export class Form extends PureComponent {
                     });
 
                 this.fetchDemos(id);
-
                 this.setState({
                     groups: groups,
                     isFetching:false,
@@ -198,7 +195,6 @@ export class Form extends PureComponent {
                         ...this.state.error
                     }
                 });
-                //console.log(this.state);
             })
             .catch(error => {
                 console.log('>>>>>>>>>>> error:', error);
@@ -322,21 +318,11 @@ export class Form extends PureComponent {
                                 </Col>
                                 <Col sm={7} className="optional choices">
                                     <div className="term-group-header">Below are your Optional choices</div>
-                                    {/* DatePicker component do not remove.
-                                        <div>
-                                            <DatePicker
-                                                selected={this.state.startDate}
-                                                onChange={this
-                                                .handleChange
-                                                .bind(this)}
-                                                className="item-fields"
-                                                accept/>
-                                        </div> 
-                                        */}
                                     {
-                                        groups.map((group, groupId) => {
+                                        groups.map((group, index) => {
+                                            //console.log(group, index);
                                             return (
-                                                <div key={`term_wrapper${groupId}`} className="term-wrapper">
+                                                <div key={`term_wrapper${index}`} className="term-wrapper">
                                                     <Term
                                                         className="item"
                                                         groupName={group.group}
@@ -344,7 +330,7 @@ export class Form extends PureComponent {
                                                         items={group.Items}
                                                         action={e => this.onComponentUpdate(e)}
                                                         fields={this.state.fields}
-                                                        key={`item${groupId}`}/>
+                                                        key={`item${index}`}/>
                                                 </div>
                                             )
                                         })
@@ -364,7 +350,7 @@ export class Form extends PureComponent {
                     </div>
                 );
             }  
-            
+            return null;
         }
     }
 }

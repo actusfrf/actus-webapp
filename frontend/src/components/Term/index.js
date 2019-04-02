@@ -44,6 +44,8 @@ export class Term extends PureComponent {
                     </Grid>
                 </div>
             );
-        }   
+        } else{
+            return null;
+        }  
     }
 }
