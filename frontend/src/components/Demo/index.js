@@ -14,8 +14,7 @@ export default class Demo extends PureComponent {
         passDemoData: null
     }
 
-    passDemoData(){
-        //console.log(this.state.terms);
+    passDemoData(){        
         this.state.passDemoData(this.state.terms, this.state.demoId)
     }
 

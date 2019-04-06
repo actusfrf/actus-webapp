@@ -21,6 +21,10 @@ export class Form extends PureComponent {
         validated: false,
         optionalFields: [],
         mandatoryFields: [],
+        originalRequiredFields:{},
+        originalNonRequiredFields:{},
+        requiredFields:{},
+        nonRequiredFields:{},
         demos:[],
         showDemos: false,
         showForm: true,
@@ -29,7 +33,12 @@ export class Form extends PureComponent {
         contractType: "",
         identifier: "",
         version: "",
-        testFields: {
+        results:{},
+        isFetching: false,
+        redirect: false,
+        host: "http://190.141.20.26", //http://190.141.20.26/
+    }
+    /*testFields: {
             "ContractType": "PAM",
             "StatusDate": "2015-01-01T00:00:00",
             "ContractRole": "RPA",
@@ -48,12 +57,7 @@ export class Form extends PureComponent {
             "RateMultiplier": 1,
             "MarketValueObserved": 10,
             "PremiumDiscountAtIED": -5
-        },
-        results:{},
-        isFetching: false,
-        redirect: false,
-        host: "http://190.141.20.26", //http://190.141.20.26/
-    }
+        }, */
 
     assemble(a, b) {
         a.Group[b.Name] = b.Name;
@@ -74,7 +78,7 @@ export class Form extends PureComponent {
         e.preventDefault();
         let allAnswers = Object.assign({},this.state.requiredFields, this.state.nonRequiredFields);
         
-        let tf = this.state.testFields;
+        let tf = this.state.requiredFields;
         let config = {
             'mode': 'cors',
             'headers': {
@@ -111,6 +115,14 @@ export class Form extends PureComponent {
              validated: errorCount === 0
          });
     }
+    updateNonRequiredField(e) {
+        this.setState({
+            nonRequiredFields: {
+                ...this.state.nonRequiredFields,
+                [e.target.id]: e.target.value
+            }
+        });
+    }
 
     updateField(e) {
         this.setState({
@@ -123,14 +135,10 @@ export class Form extends PureComponent {
         this.validateFields();
     }
 
-    onComponentUpdate(e){
-        console.log('Did Update');
-        this.setState({
-            nonRequiredFields:{
-                ...this.state.nonRequiredFields,
-                [e.target.id]: e.target.value
-            }
-        });
+    onGroupUpdate(e){
+        console.log(e.target.id);
+        console.log(e.target.title);
+        console.log(e.target.group);
     }
     
     componentDidMount() {
@@ -186,6 +194,8 @@ export class Form extends PureComponent {
                     mandatoryFields: [...mandatoryFields],
                     requiredFields: {...requiredFields},
                     nonRequiredFields: {...nonRequiredFields},
+                    originalRequiredFields: {...requiredFields},
+                    originalNonRequiredFields: {...requiredFields},
                     totalFields: Object.keys(fields).length,
                     groupDescription: responseData.description,
                     contractType: responseData.contractType,
@@ -205,10 +215,10 @@ export class Form extends PureComponent {
         axios
             .get(`${this.state.host}/demos/meta/${id}`)
             .then(res => {
-                console.log(res);
                 this.setState({
                     demos: res.data
-                })
+                });
+                console.log(res.data);
             })
             .catch(error => {
                 console.log('>>>>>>>>>>> error:', error);
@@ -230,8 +240,8 @@ export class Form extends PureComponent {
     passDemoData(terms, id) {
         this.setState({
             requiredFields: {
-                ...this.state.requiredFields,
-                ...terms,
+                ...this.state.originalRequiredFields,
+                ...terms
             }
         })
     }
@@ -320,17 +330,56 @@ export class Form extends PureComponent {
                                     <div className="term-group-header">Below are your Optional choices</div>
                                     {
                                         groups.map((group, index) => {
-                                            //console.log(group, index);
+                                            //console.log(group);
                                             return (
                                                 <div key={`term_wrapper${index}`} className="term-wrapper">
-                                                    <Term
+                                                    <div id={group} className="items-group">
+                                                        <div className="item-header">{group.group}</div>
+                                                        <Grid fluid>
+                                                            <Row>
+                                                            {
+                                                                group.Items.map((item, index) => {
+                                                                    let itemName = item.name;
+                                                                    let group = item.group;
+                                                                    itemName = itemName.replace(/([a-z])([A-Z])/g, '$1 $2');
+                                                                    itemName = itemName.replace(/([A-Z])([A-Z])/g, '$1 $2');
+                                                                    
+                                                                    return(
+                                                                        <Col key={`key${item.name}`} sm={4} className="item nopadding">
+                                                                            <div className="input-container">
+                                                                                <label className="item-labels" htmlFor={item.name}>{itemName}</label>
+                                                                                <div className="input-wrapper term">
+                                                                                    <input 
+                                                                                    id={item.name} 
+                                                                                    group={group}
+                                                                                    applicability={item.applicability}
+                                                                                    title={`Optional Choice`} 
+                                                                                    placeholder={`...`}
+                                                                                    value={this.state.nonRequiredFields[item.name]}
+                                                                                    onChange={e=>this.updateNonRequiredField(e)}
+                                                                                    className="item-fields"
+                                                                                    type="text" />
+                                                                                    <ToolTip description={item.description} />
+                                                                                </div>                                        
+                                                                            </div>
+                                                                        </Col>
+                                                                    )
+                                                                })
+                                                            }
+                                                            </Row>
+                                                        </Grid>
+                                                    </div>
+                                                    {/* 
+                                                        <Term
                                                         className="item"
-                                                        groupName={group.group}
+                                                        group={group.group}
                                                         groupLabel={group.Items[0].group}
-                                                        items={group.Items}
-                                                        action={e => this.onComponentUpdate(e)}
+                                                        items={group.Items}                                       
+                                                        nonRequiredFields={this.state.nonRequiredFields}
+                                                        action={e=>this.onGroupUpdate(e)}
                                                         fields={this.state.fields}
-                                                        key={`item${index}`}/>
+                                                        key={`item${index}`}/> 
+                                                    */}
                                                 </div>
                                             )
                                         })
@@ -349,8 +398,7 @@ export class Form extends PureComponent {
                         </Grid>
                     </div>
                 );
-            }  
-            return null;
+            }
         }
     }
 }

@@ -5,33 +5,35 @@ import './Term.css';
 
 export class Term extends PureComponent {
     render() {
-        let { items, groupName, groupLabel, action} = this.props;  
+        var { items, group, groupLabel, action} = this.props;  
                
         if(items.length > 1){
             return ( 
-                <div id={groupName} className="items-group">
+                <div id={group} className="items-group">
                     <div className="item-header">{groupLabel}</div>
                     <Grid fluid>
                         <Row>
                         {
-                        items.map(item => {
+                        items.map((item, index) => {
                                 let itemName = item.name;
-                                //let itemValue = fields[itemName];
-
+                                let group = item.group;
                                 itemName = itemName.replace(/([a-z])([A-Z])/g, '$1 $2');
                                 itemName = itemName.replace(/([A-Z])([A-Z])/g, '$1 $2');
-
+                                
                                 return(
                                     <Col key={`key${item.name}`} sm={4} className="item nopadding">
                                         <div className="input-container">
                                             <label className="item-labels" htmlFor={item.name}>{itemName}</label>
-                                            <div className="input-wrapper">
-                                                <input id={item.name} 
+                                            <div className="input-wrapper term">
+                                                {console.log(group)}
+                                                <input 
+                                                id={item.name} 
+                                                group={group}
                                                 applicability={item.applicability}
                                                 title={`Optional Choice`} 
                                                 placeholder={`...`}
                                                 onKeyUp={e=> action(e)}
-                                                className="item-fields" 
+                                                className="item-fields"
                                                 type="text" />
                                                 <ToolTip description={item.description} />
                                             </div>                                        
