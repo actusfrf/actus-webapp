@@ -64,6 +64,30 @@ export class Form extends PureComponent {
         return a;
     }
 
+    getTestFields(){
+        var t = {
+            "ContractType": "PAM",
+            "StatusDate": "2015-01-01T00:00:00",
+            "ContractRole": "RPA",
+            "ContractID": 101,
+            "LegalEntityIDCounterparty": "TEST_LEI_CP",
+            "NominalInterestRate": 0,
+            "DayCountConvention": "30E/360",
+            "CyclePointOfInterestPayment": 1,
+            "Currency": "USD",
+            "ContractDealDate": "2015-01-01T00:00:00",
+            "InitialExchangeDate": "2015-01-02T00:00:00",
+            "MaturityDate": "2015-04-02T00:00:00",
+            "NotionalPrincipal": 1000,
+            "RateSpread": 0,
+            "CyclePointOfRateReset": 0,
+            "RateMultiplier": 1,
+            "MarketValueObserved": 10,
+            "PremiumDiscountAtIED": -5
+        }
+        return t;
+    }
+
     handleChange(date) {
         this.setState({
             startDate: date
@@ -88,8 +112,9 @@ export class Form extends PureComponent {
             'withCredentials': true,
             'credentials': 'omit'
         }
-        console.log(allAnswers);
-        axios.post(this.state.host+'/events', allAnswers)
+        console.log(tf);
+        console.log(this.getTestFields());
+        axios.post(this.state.host+'/events', this.getTestFields())
             .then(res => {
                 this.setState({
                     results: res.data,
@@ -243,9 +268,17 @@ export class Form extends PureComponent {
     passDemoData(terms, id) {
         let groups = [...this.state.groups];
         let nonRequired = {...this.state.nonRequiredFields};
-        console.log(terms);
-        console.log(Object.entries(terms));
+        let required = {...this.state.requiredFields};
+
         let termArray = Object.entries(terms);
+        let requiredArray = Object.entries(required);
+
+        termArray.map(t=>{
+            requiredArray.map(r=>{
+                console.log(t[0], r[0])
+            });
+        });
+
         groups.map(g =>{
             //console.log(g);
             g.Items.map(i => {
@@ -256,13 +289,14 @@ export class Form extends PureComponent {
                });
             });
         })
+
         this.setState({
             requiredFields: {
                 ...this.state.originalRequiredFields,
                 ...terms
             },
             nonRequiredFields: {
-                ...this.state.nonRequiredFields,
+                ...this.state.originalNonRequiredFields,
                 ...nonRequired
             }
         })
