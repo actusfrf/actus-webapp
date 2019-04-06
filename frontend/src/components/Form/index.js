@@ -88,8 +88,8 @@ export class Form extends PureComponent {
             'withCredentials': true,
             'credentials': 'omit'
         }
-
-        axios.post(this.state.host+'/events', tf)
+        console.log(allAnswers);
+        axios.post(this.state.host+'/events', allAnswers)
             .then(res => {
                 this.setState({
                     results: res.data,
@@ -172,6 +172,8 @@ export class Form extends PureComponent {
                         return obj;
                     }, Object.create(null));
 
+                console.log(groupToValues);
+
                 let fields = {};
 
                 //auto populate fields with values for testing
@@ -183,6 +185,7 @@ export class Form extends PureComponent {
                 let groups = Object
                     .keys(groupToValues)
                     .map(function (key) {
+                        //console.log(key);
                         return {group: key, Items: groupToValues[key]};
                     });
 
@@ -218,7 +221,7 @@ export class Form extends PureComponent {
                 this.setState({
                     demos: res.data
                 });
-                console.log(res.data);
+                //console.log("demos", res.data);
             })
             .catch(error => {
                 console.log('>>>>>>>>>>> error:', error);
@@ -238,10 +241,29 @@ export class Form extends PureComponent {
     }
 
     passDemoData(terms, id) {
+        let groups = [...this.state.groups];
+        let nonRequired = {...this.state.nonRequiredFields};
+        console.log(terms);
+        console.log(Object.entries(terms));
+        let termArray = Object.entries(terms);
+        groups.map(g =>{
+            //console.log(g);
+            g.Items.map(i => {
+               termArray.map(t=>{
+                   if(t[0] == i.name){
+                        nonRequired[t[0]] = t[1];
+                   }
+               });
+            });
+        })
         this.setState({
             requiredFields: {
                 ...this.state.originalRequiredFields,
                 ...terms
+            },
+            nonRequiredFields: {
+                ...this.state.nonRequiredFields,
+                ...nonRequired
             }
         })
     }
