@@ -82,6 +82,7 @@ public class EventController {
         switch (ContractType) {
         case "PAM":
             events = PrincipalAtMaturity.lifecycle(analysisTimes, model, riskFactors);
+            break;
         case "ANN":
             events = Annuity.lifecycle(analysisTimes, model, riskFactors);
             break;
