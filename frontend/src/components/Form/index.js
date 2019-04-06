@@ -82,7 +82,7 @@ export class Form extends PureComponent {
         e.preventDefault();
         let allAnswers = Object.assign({},this.state.requiredFields, this.state.nonRequiredFields);
         
-        let tf = this.state.requiredFields;
+        let requiredFields = this.state.requiredFields;
         let config = {
             'mode': 'cors',
             'headers': {
@@ -92,8 +92,7 @@ export class Form extends PureComponent {
             'withCredentials': true,
             'credentials': 'omit'
         }
-
-        axios.post(this.state.host+'/events', this.getTestFields())
+        axios.post(this.state.host+'/events', requiredFields)
             .then(res => {
                 this.setState({
                     results: res.data,
@@ -102,6 +101,7 @@ export class Form extends PureComponent {
                 })
             })
             .catch(error => {
+                console.log(this);
                 console.log(error.message);
             });
     }
@@ -246,7 +246,6 @@ export class Form extends PureComponent {
     passDemoData(terms, id) {
         let groups = [...this.state.groups];
         let nonRequired = {...this.state.originalNonRequiredFields};
-        console.log(nonRequired);
         let required = {...this.state.originalRequiredFields};
 
         let termArray = Object.entries(terms);
@@ -271,7 +270,6 @@ export class Form extends PureComponent {
                });
             });
         });
-        console.log("original nonrequired",nonRequired);
         this.setState({
             requiredFields: {
                 ...this.state.originalRequiredFields,
