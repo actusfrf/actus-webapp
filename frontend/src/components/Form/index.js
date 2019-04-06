@@ -78,11 +78,23 @@ export class Form extends PureComponent {
         console.log('Reset');
     }
 
+    cleanUpData(obj){
+        let newObj={};
+        for(var prop in obj){
+            if(obj[prop] === ''){
+                delete obj[prop];
+            }
+        }
+
+        newObj = obj;
+        return newObj;
+    }
+
     handleSubmit(e) {
         e.preventDefault();
         let allAnswers = Object.assign({},this.state.requiredFields, this.state.nonRequiredFields);
         
-        let requiredFields = this.state.requiredFields;
+        let requiredFields = allAnswers;
         let config = {
             'mode': 'cors',
             'headers': {
@@ -92,7 +104,10 @@ export class Form extends PureComponent {
             'withCredentials': true,
             'credentials': 'omit'
         }
-        axios.post(this.state.host+'/events', requiredFields)
+        let dataToSend = {...allAnswers};//this.state.demos[5].terms;
+        //console.log("Cleaned Up:",this.cleanUpData(dataToSend));
+        //console.log("Test data:",this.getTestFields());
+        axios.post(this.state.host+'/events', dataToSend)
             .then(res => {
                 this.setState({
                     results: res.data,
@@ -163,7 +178,7 @@ export class Form extends PureComponent {
                     return false;
                 }
                 let responseData = res.data[0];
-                console.log(responseData);
+                //console.log(responseData);
 
                 let optionalFields = res.data[0].terms.filter(n => (n.applicability.indexOf('NN') <= -1));
                 let mandatoryFields = res.data[0].terms.filter(n => (n.applicability.indexOf('NN') > -1));
@@ -224,7 +239,8 @@ export class Form extends PureComponent {
                 this.setState({
                     demos: res.data
                 });
-                //console.log("demos", res.data);
+                console.log(`%cdemos:`,"background: black; padding:1rem; color: #fff", res.data );
+                console.log(res.data.filter(a => (a.terms.ContractID).toString() === '101'));
             })
             .catch(error => {
                 console.log('>>>>>>>>>>> error:', error);
@@ -244,6 +260,7 @@ export class Form extends PureComponent {
     }
 
     passDemoData(terms, id) {
+        console.log(terms.ContractID);
         let groups = [...this.state.groups];
         let nonRequired = {...this.state.originalNonRequiredFields};
         let required = {...this.state.originalRequiredFields};
