@@ -38,26 +38,6 @@ export class Form extends PureComponent {
         redirect: false,
         host: "http://190.141.20.26", //http://190.141.20.26/
     }
-    /*testFields: {
-            "ContractType": "PAM",
-            "StatusDate": "2015-01-01T00:00:00",
-            "ContractRole": "RPA",
-            "ContractID": 101,
-            "LegalEntityIDCounterparty": "TEST_LEI_CP",
-            "NominalInterestRate": 0,
-            "DayCountConvention": "30E/360",
-            "CyclePointOfInterestPayment": 1,
-            "Currency": "USD",
-            "ContractDealDate": "2015-01-01T00:00:00",
-            "InitialExchangeDate": "2015-01-02T00:00:00",
-            "MaturityDate": "2015-04-02T00:00:00",
-            "NotionalPrincipal": 1000,
-            "RateSpread": 0,
-            "CyclePointOfRateReset": 0,
-            "RateMultiplier": 1,
-            "MarketValueObserved": 10,
-            "PremiumDiscountAtIED": -5
-        }, */
 
     assemble(a, b) {
         a.Group[b.Name] = b.Name;
@@ -112,8 +92,7 @@ export class Form extends PureComponent {
             'withCredentials': true,
             'credentials': 'omit'
         }
-        console.log(tf);
-        console.log(this.getTestFields());
+
         axios.post(this.state.host+'/events', this.getTestFields())
             .then(res => {
                 this.setState({
@@ -184,6 +163,7 @@ export class Form extends PureComponent {
                     return false;
                 }
                 let responseData = res.data[0];
+                console.log(responseData);
 
                 let optionalFields = res.data[0].terms.filter(n => (n.applicability.indexOf('NN') <= -1));
                 let mandatoryFields = res.data[0].terms.filter(n => (n.applicability.indexOf('NN') > -1));
@@ -196,8 +176,6 @@ export class Form extends PureComponent {
                         obj[item.group].push(item);
                         return obj;
                     }, Object.create(null));
-
-                console.log(groupToValues);
 
                 let fields = {};
 
@@ -223,7 +201,7 @@ export class Form extends PureComponent {
                     requiredFields: {...requiredFields},
                     nonRequiredFields: {...nonRequiredFields},
                     originalRequiredFields: {...requiredFields},
-                    originalNonRequiredFields: {...requiredFields},
+                    originalNonRequiredFields: {...nonRequiredFields},
                     totalFields: Object.keys(fields).length,
                     groupDescription: responseData.description,
                     contractType: responseData.contractType,
@@ -267,18 +245,22 @@ export class Form extends PureComponent {
 
     passDemoData(terms, id) {
         let groups = [...this.state.groups];
-        let nonRequired = {...this.state.nonRequiredFields};
-        let required = {...this.state.requiredFields};
+        let nonRequired = {...this.state.originalNonRequiredFields};
+        console.log(nonRequired);
+        let required = {...this.state.originalRequiredFields};
 
         let termArray = Object.entries(terms);
         let requiredArray = Object.entries(required);
 
         termArray.map(t=>{
             requiredArray.map(r=>{
-                console.log(t[0], r[0])
+                if(t[0] == r[0]){
+                    required[t[0]] = t[1];
+                }
             });
         });
 
+        //console.log(terms);
         groups.map(g =>{
             //console.log(g);
             g.Items.map(i => {
@@ -288,18 +270,17 @@ export class Form extends PureComponent {
                    }
                });
             });
-        })
-
+        });
+        console.log("original nonrequired",nonRequired);
         this.setState({
             requiredFields: {
                 ...this.state.originalRequiredFields,
-                ...terms
-            },
+                ...required},
             nonRequiredFields: {
                 ...this.state.originalNonRequiredFields,
-                ...nonRequired
-            }
-        })
+                ...nonRequired}
+        });
+
     }
 
     render() {
