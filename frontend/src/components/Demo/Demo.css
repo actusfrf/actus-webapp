@@ -1,0 +1,34 @@
+.demo-items-wrapper {
+    padding: 0;
+}
+
+.demo-text {
+    font-size: 1.4rem;
+    min-height: 125px;
+}
+
+.demo-col {
+    margin: 0;
+    padding: 0;
+}
+
+.demo-row {
+    padding: 1rem;
+}
+
+.demo-item {
+    padding: 1rem;
+}
+
+.demo-case-title {
+    cursor: pointer;
+    color: blue;
+    display: inline-block;
+}
+
+.demo-item-content {
+    padding: 1rem 2rem;
+    border: 1px solid #777;
+    border-radius: 0.5rem;
+    background: rgb(219, 238, 244);
+}

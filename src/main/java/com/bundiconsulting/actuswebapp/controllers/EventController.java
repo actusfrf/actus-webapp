@@ -4,7 +4,13 @@ import com.bundiconsulting.actuswebapp.models.Event;
 import com.bundiconsulting.actuswebapp.repositories.EventRepository;
 import org.actus.attributes.ContractModel;
 import org.actus.attributes.ContractModelProvider;
+import org.actus.contracts.Annuity;
+import org.actus.contracts.ForeignExchangeOutright;
+import org.actus.contracts.LinearAmortizer;
+import org.actus.contracts.NegativeAmortizer;
 import org.actus.contracts.PrincipalAtMaturity;
+import org.actus.contracts.Stock;
+import org.actus.contracts.Swap;
 import org.actus.events.ContractEvent;
 import org.actus.externals.RiskFactorModelProvider;
 import org.actus.states.StateSpace;
@@ -26,27 +32,36 @@ public class EventController {
     @Autowired
     EventRepository eventRepository;
 
-class MarketModel implements RiskFactorModelProvider {
-    public Set<String> keys() {
-        Set<String> keys = new HashSet<String>();
-        return keys;
-    }
+    class MarketModel implements RiskFactorModelProvider {
+        public Set<String> keys() {
+            Set<String> keys = new HashSet<String>();
+            return keys;
+        }
 
-    public double stateAt(String id,LocalDateTime time,StateSpace contractStates,ContractModelProvider contractAttributes) {
-        return 0.0;
+        public double stateAt(String id, LocalDateTime time, StateSpace contractStates,
+                ContractModelProvider contractAttributes) {
+            return 0.0;
+        }
     }
-}
 
     // String -> ArrayList<ContractEvent>
-    @RequestMapping(method=RequestMethod.POST, value="/events")
+    @RequestMapping(method = RequestMethod.POST, value = "/events")
     @CrossOrigin(origins = "*")
-    public List<Event> solveContract(@RequestBody Map<String, Object> json ) {
+    public List<Event> solveContract(@RequestBody Map<String, Object> json) {
 
-        Map<String,String> map = new HashMap<String,String>();
+        String ContractType = "";
+
+        Map<String, String> map = new HashMap<String, String>();
 
         for (Map.Entry<String, Object> entry : json.entrySet()) {
-         System.out.println(entry.getKey() + ":" + entry.getValue());
-           map.put(entry.getKey(),  entry.getValue().toString());
+
+            System.out.println(entry.getKey() + ":" + entry.getValue());
+
+            map.put(entry.getKey(), entry.getValue().toString());
+
+            if (entry.getKey().toString().equals("ContractType")) {
+                ContractType = entry.getValue().toString();
+            }
 
         }
 
@@ -54,18 +69,46 @@ class MarketModel implements RiskFactorModelProvider {
         ContractModel model = ContractModel.parse(map);
 
         // define analysis times
-       Set<LocalDateTime> analysisTimes = new HashSet<LocalDateTime>();
+        Set<LocalDateTime> analysisTimes = new HashSet<LocalDateTime>();
 
-          // needs to be synced with dates in terms objects
+        // needs to be synced with dates in terms objects
         analysisTimes.add(LocalDateTime.parse("2015-01-01T00:00:00"));
-        
+
         // define risk factor model
-          MarketModel riskFactors = new MarketModel();
+        MarketModel riskFactors = new MarketModel();
 
-        // lifecycle PAM contract
-        ArrayList<ContractEvent> events = PrincipalAtMaturity.lifecycle(analysisTimes,model,riskFactors);
+        ArrayList<ContractEvent> events = new ArrayList<ContractEvent>();
 
-        List<Event> output  = events.stream().map(e -> new Event(e)).collect(Collectors.toList());
+        switch (ContractType) {
+        case "PAM":
+            events = PrincipalAtMaturity.lifecycle(analysisTimes, model, riskFactors);
+            break;
+        case "ANN":
+            events = Annuity.lifecycle(analysisTimes, model, riskFactors);
+            break;
+        case "NAM":
+            events = NegativeAmortizer.lifecycle(analysisTimes, model, riskFactors);
+            break;
+        case "LAM":
+            events = LinearAmortizer.lifecycle(analysisTimes, model, riskFactors);
+        case "LAX":
+            events = LinearAmortizer.lifecycle(analysisTimes, model, riskFactors);
+            break;
+        case "STK":
+            events = Stock.lifecycle(analysisTimes, model, riskFactors);
+            break;
+        case "SWAPS":
+            events = Swap.lifecycle(analysisTimes, model, riskFactors);
+            break;
+        case "FXOUT":
+            events = ForeignExchangeOutright.lifecycle(analysisTimes, model, riskFactors);
+            break;
+
+        default:
+            System.out.println("no match");
+        }
+
+        List<Event> output = events.stream().map(e -> new Event(e)).collect(Collectors.toList());
 
         return output;
 
