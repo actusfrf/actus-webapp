@@ -1,0 +1,574 @@
+{
+    "Identifier": "form_LAM",
+    "ContractType": "LAM",
+    "Description": "TODO: Contract description here!",
+    "Version": "20190411",
+    "Terms": [
+  {
+    "Group": "Calendar",
+    "Name": "Calendar",
+    "Type": "Enum",
+    "List": "[NoCalendar,MondayToFriday,<wildcard>]",
+    "Description": "Calendar defines the non-working days which affect the dates of contract events (CDE's) in combination with EOMC and BDC.",
+    "Applicability": "x"
+  },
+  {
+    "Group": "Calendar",
+    "Name": "BusinessDayConvention",
+    "Type": "Enum",
+    "List": "[SCF,SCMF,CSF,CSMF,SCP,SCMP,CSP,CSMP]",
+    "Description": "BDC's are linked to a calendar. Calendars have working and non-working days. A BDC value other than N means that cash flows cannot fall on non-working days, they must be shifted to the next business day (following) or the previous on (preceding).nThese two simple rules get refined twofold:n- Following modified (preceding): Same like following (preceding), however if a cash flow gets shifted into a new month, then  it is shifted to preceding (following) business day.n- Shift/calculate (SC) and calculate/shift (CS). Accrual, principal, and possibly other calculations are affected by this choice. In the case of SC first the dates are shifted and after the shift cash flows are calculated. In the case of CS it is the other way round.nAttention: Does not affect non-cyclical dates such as PRD, MD, TD, IPCED since they can be set to the correct date directly.",
+    "Applicability": "x"
+  },
+  {
+    "Group": "Calendar",
+    "Name": "EndOfMonthConvention",
+    "Type": "Enum",
+    "List": "[EOM,SD]",
+    "Description": "When computing schedules a special problem arises if an anchor date is at the end of a month and a cycle of monthly or quarterly is applied (yearly in the case of leap years only). How do we have to interpret an anchor date April 30 plus 1M cycles? In case where EOM is selected, it will jump to the 31st of May, then June 30, July 31 and so on. If SM is selected, it will jump to the 30st always with of course an exception in February. nThis logic applies for all months having 30 or less days and an anchor date at the last day. Month with 31 days will at any rate jump to the last of the month if anchor date is on the last day.",
+    "Applicability": "x"
+  },
+  {
+    "Group": "Contract identification",
+    "Name": "ContractType",
+    "Type": "Enum",
+    "List": "[PAM]",
+    "Description": "The ContractType is the most important information. It defines the cash flow generating pattern of a contract. The ContractType information in combination with a given state of the risk factors will produce a deterministic sequence of cash flows which are the basis of any financial analysis.",
+    "Applicability": "NN"
+  },
+  {
+    "Group": "Contract identification",
+    "Name": "StatusDate",
+    "Type": "Timestamp",
+    "List": "[ISO8601 Datetime]",
+    "Description": "SD holds the date per which all attributes of the record were updated. This is especially important for the highly dynamic attributes like Accruals, Notional, interest rates in variable instruments etc.",
+    "Applicability": "NN(,,1)"
+  },
+  {
+    "Group": "Contract identification",
+    "Name": "ContractRole",
+    "Type": "Enum",
+    "List": "[RPA,RPL,LG,ST,RFL,PFL,BUY,SEL,GUA,OBL]",
+    "Description": "CNTRL defines which position the LEIRC ( the creator of the contract record ) takes in a contract. For example, whether the contract is an asset or liability, a long or short position for the LEIRC. nMost contracts are simple on or off balance sheet positions which are assets, liabilities. Such contracts can also play a secondary role as a collateral. nThe attribute is highly significant since it determines the direction of all cash flows. The exact meaning is given with each CT in the ACTUS High Level Specification document.",
+    "Applicability": "NN(,,1)"
+  },
+  {
+    "Group": "Contract identification",
+    "Name": "LegalEntityIDRecordCreator",
+    "Type": "Varchar",
+    "List": "[NA]",
+    "Description": "This identifies the legal entity creating the contract record. The counterparty of the contract is tracked in LEICP.nLEIRC is ideally the official LEI which can be a firm, a government body, even a single person etc. However, this can also refer to a annonymous group in which case this information is not to be disclosed. LEIRC may also refer to a group taking a joint risk.",
+    "Applicability": "NN(,,1)"
+  },
+  {
+    "Group": "Contract identification",
+    "Name": "ContractID",
+    "Type": "Integer",
+    "List": "[NA]",
+    "Description": "Unique identifier of a contract.  nIf the system is used on a single firm level, an internal unique ID can be generated. If used on a national or globally level, a globally unique ID is required.",
+    "Applicability": "NN"
+  },
+  {
+    "Group": "Contract identification",
+    "Name": "MarketObjectCode",
+    "Type": "Varchar",
+    "List": "[NA]",
+    "Description": "Is pointing to the market value at SD (MarketObject).nUnique codes for market objects must be used.",
+    "Applicability": "x"
+  },
+  {
+    "Group": "Counterparty",
+    "Name": "LegalEntityIDCounterparty",
+    "Type": "Varchar",
+    "List": "[NA]",
+    "Description": "LEICP identifies the counterparty to the LEIRC in this contract.nLEICP is ideally the official LEI which can be a firm, a government body, even a single person etc. However, this can also refer to a annonymous group in which case this information is not to be disclosed. LEICP may also refer to a group taking a joint risk or more generally, LEICP is the main counterparty, against which the contract has been settled.",
+    "Applicability": "NN(,,2)"
+  },
+  {
+    "Group": "Counterparty",
+    "Name": "ContractStatus",
+    "Type": "Enum",
+    "List": "[PF,DL,DQ,DF]",
+    "Description": "Indicates the current contract performance status. Different states of the contract range from performing to default.",
+    "Applicability": "x(,,1)"
+  },
+  {
+    "Group": "Counterparty",
+    "Name": "Seniority",
+    "Type": "Enum",
+    "List": "[S,J]",
+    "Description": "Refers to the order of repayment in the event of a sale or default of the issuer. ",
+    "Applicability": "x(,,1)"
+  },
+  {
+    "Group": "Counterparty",
+    "Name": "NonPerformingDate",
+    "Type": "Timestamp",
+    "List": "[ISO8601 Datetime]",
+    "Description": "The date at which the ContractStatus changed to DF (=Default).",
+    "Applicability": "x(,,1)"
+  },
+  {
+    "Group": "Counterparty",
+    "Name": "PrepaymentPeriod",
+    "Type": "Period",
+    "List": "[NA]",
+    "Description": "If real payment happens before scheduled payment date minus PPP, then it is considered a prepayment. Effect of prepayments are further described in PPEF and related fields.",
+    "Applicability": "x(8,1,1)"
+  },
+  {
+    "Group": "Counterparty",
+    "Name": "GracePeriod",
+    "Type": "Period",
+    "List": "[NA]",
+    "Description": "If real payment happens after scheduled payment date plus GRP, then the payment is in delay.",
+    "Applicability": "x(,,1)"
+  },
+  {
+    "Group": "Counterparty",
+    "Name": "DelinquencyPeriod",
+    "Type": "Period",
+    "List": "[NA]",
+    "Description": "If real payment happens after scheduled payment date plus DLP, then the counterparty is in technical default. This means that the creditor legally has the right to declare default of the debtor.",
+    "Applicability": "x(,,1)"
+  },
+  {
+    "Group": "Counterparty",
+    "Name": "DelinquencyRate",
+    "Type": "Real",
+    "List": "[(0, positive)]",
+    "Description": "Rate at which Delinquency Payments accrue on NT (in addition to the interest rate) during the DelinquencyPeriod",
+    "Applicability": "x(,,1)"
+  },
+  {
+    "Group": "Fees",
+    "Name": "CycleAnchorDateOfFee",
+    "Type": "Timestamp",
+    "List": "[ISO8601 Datetime]",
+    "Description": "Date from which the fee payment date schedule is calculated according to the cycle length. The first fee payment event takes place on this anchor.",
+    "Applicability": "x(1,2, )"
+  },
+  {
+    "Group": "Fees",
+    "Name": "CycleOfFee",
+    "Type": "Cycle",
+    "List": "[IPS, where I]",
+    "Description": "Defines in combination with FEANX the payment points of fees",
+    "Applicability": "x(1,2, )"
+  },
+  {
+    "Group": "Fees",
+    "Name": "FeeBasis",
+    "Type": "Enum",
+    "List": "[A,N]",
+    "Description": "Basis, on which Fee is calculated. For FEB=’A’, FER is interpreted as an absolute amount to be paid at every FP event and for FEB=’N’, FER represents a rate at which FP amounts accrue on the basis of the contract’s NT.",
+    "Applicability": "NN(1,1, )"
+  },
+  {
+    "Group": "Fees",
+    "Name": "FeeRate",
+    "Type": "Real",
+    "List": "[NA]",
+    "Description": "Rate of Fee which is a percentage of the underlying or FER is an absolute amount. For all contracts where FEB does not apply (cf. business rules), FER is interpreted as an absolute amount.",
+    "Applicability": "x(1,0, )"
+  },
+  {
+    "Group": "Fees",
+    "Name": "FeeAccrued",
+    "Type": "Real",
+    "List": "[NA]",
+    "Description": "Accrued fees as per SD",
+    "Applicability": "x(1,1, )"
+  },
+  {
+    "Group": "Interest",
+    "Name": "CycleAnchorDateOfInterestPayment",
+    "Type": "Timestamp",
+    "List": "[ISO8601 Datetime]",
+    "Description": "Date from which the interest payment date schedule is calculated according to the cycle length. The first interest payment event takes place on this anchor.",
+    "Applicability": "x(2,0,)"
+  },
+  {
+    "Group": "Interest",
+    "Name": "CycleOfInterestPayment",
+    "Type": "Cycle",
+    "List": "[IPS, where I]",
+    "Description": "Cycle according to which the interest payment date schedule will be calculated.nIn case IPCL is not set, then there will only be an interest payment event at MD (and possibly at IPANX if set).nThe interval will be adjusted yet by EOMC and BDC.",
+    "Applicability": "x(2,0,)"
+  },
+  {
+    "Group": "Interest",
+    "Name": "NominalInterestRate",
+    "Type": "Real",
+    "List": "[NA]",
+    "Description": "The nominal interest rate which will be used to calculate accruals and the next interest payment at the next IP date. NT multiplied with IPNR is the base for the interest payment calculation. The relevant time period is a function of IPDC. nIf the contract is variable (RRANX set) this field is periodically updated per SD. nIn the case of plan vanilla interest rate swaps (IRSPV) this defines the rate of fixed leg.",
+    "Applicability": "NN"
+  },
+  {
+    "Group": "Interest",
+    "Name": "DayCountConvention",
+    "Type": "Enum",
+    "List": "[A/AISDA,A/360,A/365,30E/360ISDA,30E/360,B/252,<wildcard>]",
+    "Description": "Method defining how days are counted between two dates. This finally defines the year fraction in accrual calculations.",
+    "Applicability": "NN"
+  },
+  {
+    "Group": "Interest",
+    "Name": "AccruedInterest",
+    "Type": "Real",
+    "List": "[NA]",
+    "Description": "Accrued interest as per SD. In case of NULL, this value will be recalculated using IPANX, IPCL and IPNR information. Can be used to represent irregular next IP payments.",
+    "Applicability": "x"
+  },
+  {
+    "Group": "Interest",
+    "Name": "CapitalizationEndDate",
+    "Type": "Timestamp",
+    "List": "[ISO8601 Datetime]",
+    "Description": "If IPCED is set, then interest is not paid or received but added to the balance (NT) until IPCED. If IPCED does not coincide with an IP cycle, one additional interest payment gets calculated at IPCED and capitalized. Thereafter normal interest payments occur.",
+    "Applicability": "x"
+  },
+  {
+    "Group": "Interest",
+    "Name": "CycleAnchorDateOfInterestCalculationBase",
+    "Type": "Timestamp",
+    "List": "[ISO8601 Datetime]",
+    "Description": "Date from which the interest calculation base date schedule is calculated according to the cycle length. The first interest calculation base event takes place on this anchor.",
+    "Applicability": "x(3,4 ,)"
+  },
+  {
+    "Group": "Interest",
+    "Name": "CycleOfInterestCalculationBase",
+    "Type": "Cycle",
+    "List": "[IPS, where I]",
+    "Description": "Concerning the format see PRCL. nDefines the subsequent adjustment points to NT of the interest payment calculation base.",
+    "Applicability": "x(3,4 ,)"
+  },
+  {
+    "Group": "Interest",
+    "Name": "InterestCalculationBase",
+    "Type": "Enum",
+    "List": "[NT,NTIED,NTL]",
+    "Description": "This is important for amortizing instruments. The basis of interest calculation is normally the notional outstanding amount as per SD. This is considered the fair basis and in many countries the only legal basis. If NULL or NTSD is selected, this is the case. nAlternative bases (normally in order to favor the lending institution) are found. In the extreme case the original balance (PCDD=NT+PDCDD) never gets adjusted. In this case PCDD must be chosen. nAn intermediate case exist wherre balances do get adjusted, however with lags. In this case NTL mut be selected and anchor dates and cycles must be set.",
+    "Applicability": "x(3,0,)"
+  },
+  {
+    "Group": "Interest",
+    "Name": "InterestCalculationBaseAmount",
+    "Type": "Real",
+    "List": "[Positive]",
+    "Description": "This is the amount used for the calculation of interest. Calculation base per SD.",
+    "Applicability": "NN(3,3 ,)"
+  },
+  {
+    "Group": "Interest",
+    "Name": "CyclePointOfInterestPayment",
+    "Type": "Enum",
+    "List": "[B,E]",
+    "Description": "Usually, interest is paid at the end of each IPCL which corresponds to a IPPNT value of E which is also the default. If interest payment occurs at the beginning of the cycle, the value is B.",
+    "Applicability": "x(2,1,)1"
+  },
+  {
+    "Group": "Notional Principal",
+    "Name": "Currency",
+    "Type": "Varchar",
+    "List": "[NA]",
+    "Description": "The currency of the cash flows.",
+    "Applicability": "NN"
+  },
+  {
+    "Group": "Notional Principal",
+    "Name": "ContractDealDate",
+    "Type": "Timestamp",
+    "List": "[ISO8601 Datetime]",
+    "Description": "This date signifies the origination of the contract where an agreement between the customer and the bank has been settled. From this date on, the institution will have a (market) risk position for financial contracts. This is even the case when IED is in future.",
+    "Applicability": "NN(,,1)"
+  },
+  {
+    "Group": "Notional Principal",
+    "Name": "InitialExchangeDate",
+    "Type": "Timestamp",
+    "List": "[ISO8601 Datetime]",
+    "Description": "Date of the initial cash flow for Maturity and Non-Maturity CT's. It also coincides with the beginning of interest accrual calculation.",
+    "Applicability": "NN"
+  },
+  {
+    "Group": "Notional Principal",
+    "Name": "PremiumDiscountAtIED",
+    "Type": "Real",
+    "List": "[NA]",
+    "Description": "Total original premium or discount that has been set at CDD and will be added to the (notional) cash flow at IED (cash flow at IED = NT+PDIED, w.r.t. an RPA CT). nNegative value for discount and positive for premium.nNote, similar to interest the PDIED portion is part of P&L.",
+    "Applicability": "x"
+  },
+  {
+    "Group": "Notional Principal",
+    "Name": "MaturityDate",
+    "Type": "Timestamp",
+    "List": "[ISO8601 Datetime]",
+    "Description": "Marks the contractual end of the lifecycle of a CT. Generally, date of the last cash flows. nThis includes normally a principal and an interest payment. Some Maturity CTs as perpetuals (PBN) do not have such a date. For variable amortizing contracts of the ANN CT, this date might be less than the scheduled end of the contract (which is deduced from the periodic payment amount nPRNXT). In this case it balloons.",
+    "Applicability": "x"
+  },
+  {
+    "Group": "Notional Principal",
+    "Name": "NotionalPrincipal",
+    "Type": "Real",
+    "List": "[0, positive, 2 decimals]",
+    "Description": "Total remaining outstanding principal as per SD. Hence, for amortizing instruments NT will be updated per SD in order to represent current outstanding principal. nAlthough initial NT will be defined at CDD it will only flow at IED or PRD. The first Cash Flow at IED or PRD is equal to NT+PDIED.nNT is generally the basis on which interest payments are calculated. If IPCBS is set, IPCBS may introduce a different basis for interest payment calculation.",
+    "Applicability": "NN"
+  },
+  {
+    "Group": "Notional Principal",
+    "Name": "CycleAnchorDateOfPrincipalRedemption",
+    "Type": "Timestamp",
+    "List": "[ISO8601 Datetime]",
+    "Description": "Date from which the principal payment date schedule is calculated according to the cycle length. The first principal payment event takes place on this anchor.",
+    "Applicability": "x(4,2,)"
+  },
+  {
+    "Group": "Notional Principal",
+    "Name": "CycleOfPrincipalRedemption",
+    "Type": "Cycle",
+    "List": "[IPS, where I]",
+    "Description": "Cycle according to which the interest payment date schedule will be calculated.nIn case PRCL is not set, then there will only be one principal payment event at MD (and possibly at PRANX if set).nThe interval will be adjusted yet by EOMC and BDC.",
+    "Applicability": "x(4,2,)"
+  },
+  {
+    "Group": "Notional Principal",
+    "Name": "NextPrincipalRedemptionPayment",
+    "Type": "Real",
+    "List": "[Positive, 2 decimals]",
+    "Description": "Amount of principal that will be paid during the redemption cycle at the next payment date. For amortizing contracts like ANN, NAM, ANX, and NAX this is the total periodic payment amount (sum of interest and principal).",
+    "Applicability": "x"
+  },
+  {
+    "Group": "Notional Principal",
+    "Name": "PurchaseDate",
+    "Type": "Timestamp",
+    "List": "[ISO8601 Datetime]",
+    "Description": "If a contract is bought after initiation (for example a bond on the secondary market) this date has to be set. It refers to the date at which the payment (of PPRD) and transfer of the security happens. In other words, PRD - if set - takes the role otherwise IED has from a cash flow perspective. nNote, LEICP of the CT is not the counterparty of the transaction!",
+    "Applicability": "x(5,0,1)"
+  },
+  {
+    "Group": "Notional Principal",
+    "Name": "PriceAtPurchaseDate",
+    "Type": "Real",
+    "List": "[NA]",
+    "Description": "Purchase price exchanged at PRD.  nPPRD represents a “clean” price (includes premium/discount but not IPAC).",
+    "Applicability": "NN(5,1,1)"
+  },
+  {
+    "Group": "Notional Principal",
+    "Name": "TerminationDate",
+    "Type": "Timestamp",
+    "List": "[ISO8601 Datetime]",
+    "Description": "If a contract is sold before MD (for example a bond on the secondary market) this date has to be set. It refers to the date at which the payment (of PTD) and transfer of the security happens. In other words, TD - if set - takes the role otherwise MD has from a cash flow perspective. nNote, LEICP of the CT is not the counterparty of the transaction!",
+    "Applicability": "x(6,0,1)"
+  },
+  {
+    "Group": "Notional Principal",
+    "Name": "PriceAtTerminationDate",
+    "Type": "Real",
+    "List": "[NA]",
+    "Description": "Sellingprice exchanged at PTD  PTDrepresents a “clean” price (includes premium/discount but not IPAC",
+    "Applicability": "NN(6,1,1)"
+  },
+  {
+    "Group": "Notional Principal",
+    "Name": "CreditLineAmount",
+    "Type": "Real",
+    "List": "[Positive]",
+    "Description": "If defined, gives the total amount that can be drawn from a credit line. The remaining amount that can still be drawn is given by CLA-NT.nFor ANN, NAM, the credit line can only be drawn prior to PRANX-1PRCL.nFor CRL, the remaining amount that can still be drawn is given by CLA-Sum(NT of attached contracts).",
+    "Applicability": "x"
+  },
+  {
+    "Group": "Notional Principal",
+    "Name": "MarketObjectCodeOfScalingIndex",
+    "Type": "Varchar",
+    "List": "[NA]",
+    "Applicability": "NN(7,1,)"
+  },
+  {
+    "Group": "Notional Principal",
+    "Name": "ScalingIndexAtStatusDate",
+    "Type": "Real",
+    "List": "[Positive, 2 decimals]",
+    "Applicability": "NN(7,1,)"
+  },
+  {
+    "Group": "Notional Principal",
+    "Name": "CycleAnchorDateOfScalingIndex",
+    "Type": "Timestamp",
+    "List": "[ISO8601 Datetime]",
+    "Description": "Date from which the scaling date schedule is calculated according to the cycle length. The first scaling event takes place on this anchor.",
+    "Applicability": "x(7,2,)"
+  },
+  {
+    "Group": "Notional Principal",
+    "Name": "CycleOfScalingIndex",
+    "Type": "Cycle",
+    "List": "[IPS, where I]",
+    "Description": "Cycle according to which the scaling date schedule will be calculated.nIn case SCCL is not set, then there will only be one scaling event at SCANX given SCANX is set.nThe interval will be adjusted yet by EOMC and BDC.",
+    "Applicability": "x(7,2,)"
+  },
+  {
+    "Group": "Notional Principal",
+    "Name": "ScalingEffect",
+    "Type": "Varchar",
+    "List": "[xyz where x,y,z]",
+    "Description": "Indicates which payments are scaled. I = Interest payments, N = Nominal payments and M = Maximum deferred interest amount. They can be scaled in any combination.",
+    "Applicability": "x(7,0,)"
+  },
+  {
+    "Group": "Notional Principal",
+    "Name": "MarketValueObserved",
+    "Type": "Real",
+    "List": "[NA]",
+    "Description": "Value as observed in the market at SD per unit. Incase of fixed income instruments it is a fraction.",
+    "Applicability": "x"
+  },
+  {
+    "Group": "Optionality",
+    "Name": "OptionExerciseEndDate",
+    "Type": "Timestamp",
+    "List": "[ISO8601 Datetime]",
+    "Description": "Final exercise date for American and Bermudan options, expiry date for European options.",
+    "Applicability": "x(8,1,)"
+  },
+  {
+    "Group": "Optionality",
+    "Name": "CycleAnchorDateOfOptionality",
+    "Type": "Timestamp",
+    "List": "[ISO8601 Datetime]",
+    "Description": "Used for Basic Maturities (such as PAM, RGM, ANN, NGM and their Step-up versions) and American and Bermudan style options. n- Basic Maturities: Within the group of these Maturities, it indicates the possibility of prepayments. Prepayment features are controlled by Behavior. n- American and Bermudan style Options: Begin of exercise period.",
+    "Applicability": "x(8,1,)"
+  },
+  {
+    "Group": "Optionality",
+    "Name": "CycleOfOptionality",
+    "Type": "Cycle",
+    "List": "[IPS, where I]",
+    "Description": "Cycle according to which the option execution date schedule will be calculated.nOPCL can be NULL for American Options or Prepayment Optionality in which case the optionality period starts at OPANX and ends at OPXED (for american options) or MD (in case of prepayment optionality).nThe interval will be adjusted yet by EOMC and BDC.",
+    "Applicability": "x(8,1,)"
+  },
+  {
+    "Group": "Optionality",
+    "Name": "PenaltyType",
+    "Type": "Enum",
+    "List": "[O,A,N,I]",
+    "Description": "Defines whether prepayment is linked to a penalty and of which kind.",
+    "Applicability": "x(8,1,)"
+  },
+  {
+    "Group": "Optionality",
+    "Name": "PenaltyRate",
+    "Type": "Real",
+    "List": "[Positive]",
+    "Description": "Either the rate or the absolute amount of the prepayment.",
+    "Applicability": "x(8,1,)"
+  },
+  {
+    "Group": "Optionality",
+    "Name": "PrepaymentEffect",
+    "Type": "Enum",
+    "List": "[N,A,M]",
+    "Description": "This attribute defines whether or not the right of prepayment exists and if yes, how prepayment affects the remaining principal redemption schedule of the contract",
+    "Applicability": "x(8,0,)"
+  },
+  {
+    "Group": "Rate Reset",
+    "Name": "CycleAnchorDateOfRateReset",
+    "Type": "Timestamp",
+    "List": "[ISO8601 Datetime]",
+    "Description": "Date from which the rate reset date schedule is calculated according to the cycle length. The first rate reset event takes place on this anchor.",
+    "Applicability": "x(9,0,)"
+  },
+  {
+    "Group": "Rate Reset",
+    "Name": "CycleOfRateReset",
+    "Type": "Cycle",
+    "List": "[IPS, where I]",
+    "Description": "Cycle according to which the rate reset date schedule will be calculated.nIn case RRCL is not set, then there will only be one rate reset event at RRANX given RRANX if set.nThe interval will be adjusted yet by EOMC and BDC.",
+    "Applicability": "x(9,0,)"
+  },
+  {
+    "Group": "Rate Reset",
+    "Name": "RateSpread",
+    "Type": "Real",
+    "List": "[NA]",
+    "Description": "Interest rate spread. A typical rate resetting rule is LIBOR plus x basis point where x represents the interest rate spread.  nThe following equation can be taken if RRMLT is not set: IPNR after rate reset = Rate selected from the market object  + RRSP.",
+    "Applicability": "NN(9,1,)"
+  },
+  {
+    "Group": "Rate Reset",
+    "Name": "MarketObjectCodeRateReset",
+    "Type": "Varchar",
+    "List": "[NA]",
+    "Description": "Is pointing to the interest rate driver (MarketObject) used for rate reset uniquely.nUnique codes for market objects must be used.",
+    "Applicability": "NN(9,1,)"
+  },
+  {
+    "Group": "Rate Reset",
+    "Name": "LifeCap",
+    "Type": "Real",
+    "List": "[NA]",
+    "Description": "For variable rate basic CTs this represents a cap on the interest rate that applies during the entire lifetime of the contract.nFor CAPFL CTs this represents the cap strike rate.",
+    "Applicability": "x(9,1,)"
+  },
+  {
+    "Group": "Rate Reset",
+    "Name": "LifeFloor",
+    "Type": "Real",
+    "List": "[NA]",
+    "Description": "For variable rate basic CTs this represents a floor on the interest rate that applies during the entire lifetime of the contract.nFor CAPFL CTs this represents the floor strike rate.",
+    "Applicability": "x(9,1,)"
+  },
+  {
+    "Group": "Rate Reset",
+    "Name": "PeriodCap",
+    "Type": "Real",
+    "List": "[Positive]",
+    "Description": "For variable rate basic CTs this represents the maximum positive rate change per rate reset cycle.",
+    "Applicability": "x(9,1,)"
+  },
+  {
+    "Group": "Rate Reset",
+    "Name": "PeriodFloor",
+    "Type": "Real",
+    "List": "[Positive]",
+    "Description": "For variable rate basic CTs this represents the maximum negative rate change per rate reset cycle.",
+    "Applicability": "x(9,1,)"
+  },
+  {
+    "Group": "Rate Reset",
+    "Name": "CyclePointOfRateReset",
+    "Type": "Enum",
+    "List": "[B,E]",
+    "Description": "Normally rates get reset at the beginning of any resetting cycles. There are contracts where the rate is not set at the beginning but at the end of the cycle and then applied to the previous cycle (post-fixing); in other words the rate applies before it is fixed. Hence, the new rate is not known during the entire cycle where it applies. Therefore, the rate will be applied backwards at the end of the cycle. This happens through a correction of interest accrued.",
+    "Applicability": "x(9,1,)1"
+  },
+  {
+    "Group": "Rate Reset",
+    "Name": "FixingDays",
+    "Type": "Period",
+    "List": "[NA]",
+    "Description": "Interest rate resets (adjustments) are usually fixed one or two days (usually Business Days) before the new rate applies (defined by the rate reset schedule). This field holds the period between fixing and application of a rate.",
+    "Applicability": "x(9,1,)"
+  },
+  {
+    "Group": "Rate Reset",
+    "Name": "NextResetRate",
+    "Type": "Real",
+    "List": "[NA]",
+    "Description": "Holds the new rate that has been fixed already (cf. attribute FixingDays) but not applied. This new rate will be applied at the next rate reset event (after SD and according to the rate reset schedule). Attention, RRNXT must be set to NULL after it is applied!",
+    "Applicability": "x(9,1,)"
+  },
+  {
+    "Group": "Rate Reset",
+    "Name": "RateMultiplier",
+    "Type": "Real",
+    "List": "[NA]",
+    "Description": "Interest rate multiplier. A typical rate resetting rule is LIBOR plus x basis point where x represents the interest rate spread.nHowever, in some cases like reverse or super floater contracts an additional rate multiplier applies. In this case, the new rate is determined as: IPNR after rate reset = Rate selected from the market object * RRMLT + RRSP.",
+    "Applicability": "x(9,1,)"
+  }
+]
+  }
