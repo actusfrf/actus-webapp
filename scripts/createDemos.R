@@ -5,9 +5,9 @@ library(readr)
 library(readxl)
 
 
-terms_path <- "forms/terms/"
-folder_path <- "demos/csv/"
-save_location <- "demos/json/"
+terms_path <- "../data/forms/terms/"
+folder_path <- "../data/demos/csv/"
+save_location <- "../data/demos/json/"
 
 # read data csv demo files
 file_names <- list.files(path = folder_path)
@@ -22,7 +22,7 @@ file_names <- c("ANN_TestBed.xls","FXOUT_TestBed.xls","LAM_TestBed.xls",
   
   for ( file_name in file_names ) {
     path <- paste(folder_path, file_name, sep = "")
-    file <- read_excel(paste("demos/csv/",file_name, sep = ""), sheet = "Demo Cases", na = "NA")
+    file <- read_excel(paste0(folder_path,file_name), sheet = "Demo Cases", na = "NA")
     file_fields <- colnames(file)
     
     # create folder and path for saving the demos
