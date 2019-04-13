@@ -8,3 +8,11 @@
 .section-description {
     padding: 1.5rem 0;
 }
+
+.section-intro {
+    font-size: 1.6rem;
+    font-weight: 400;
+    text-align: center;
+    font-style: oblique;
+    padding: 1rem;
+}

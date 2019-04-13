@@ -21,6 +21,8 @@ export class Landing extends PureComponent {
     render() {  
         let {contracts} = this.state;  
         return (
+		<div>
+	    <div className="section-intro">Choose a Contract Type from the list below in order to define and evaluate specific financial contracts:</div>
             <div>
                 {
                     contracts.map((contract, index) => {
@@ -30,6 +32,7 @@ export class Landing extends PureComponent {
                     })
                 }
             </div>
+		</div>
         );
     }
 }
