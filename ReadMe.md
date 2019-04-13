@@ -55,3 +55,27 @@ gradlew
 
 You can now build and rund your app
 
+
+
+### Run Frontend
+
+Node js [NodeJS](https://nodejs.org/en/) must be installed. 
+
+cd ./frontend
+
+npm start -- if it doesn't start, probably need to download packages
+
+npm update
+
+
+### Setup Mongo DB
+
+App needs two collections to run. 
+
+Forms and Demos
+
+Look in folders containing jsons. They have an import.bat that loads data into there respective collections. 
+
+Make sure mongoimport.exe is in the system path.
+
+
