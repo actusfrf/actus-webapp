@@ -39,21 +39,6 @@ Make sure mongoimport.exe is in the system path.
 
 
 
-### Run the frontend
-
-Navigate to the frontend root folder 
-
-```sh
-cd ./frontend
-```
-
-start the frontend
-
-```sh
-npm start -- if it doesn't start, probably need to download packages
-```
-
-
 ## Build the app
 
 Navigate to the actus-webapp root folder and execute
@@ -90,5 +75,19 @@ curl -i -H "Accept: application/json" localhost:8080/terms/meta/pam
 ```sh
 # Fetch demo data for PAM contract
 curl -i -H "Accept: application/json" localhost:8080/demos/pam
+```
+
+### Run the frontend
+
+Navigate to the frontend root folder 
+
+```sh
+cd ./frontend
+```
+
+start the frontend
+
+```sh
+npm start -- if it doesn't start, probably need to download packages
 ```
 
