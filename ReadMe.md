@@ -4,20 +4,53 @@ This demo will show you an easy application of the actus-core library to evaluat
 ## Getting started
 These instructions will get you a copy of the demo up and running on your local machine for testing purposes.
 
-### Prerequesits
+## Requirements
 
-* Install [Maven](https://maven.apache.org/).
-* The Actus core library has to be built to your local maven repository.
+* java: 8(+)
+* mongodb: 5(*)
+* maven: 3(+)
+* gradle: 11(+)
 
-### Building the actus-core library
 
-* Verify your [Maven installation](https://maven.apache.org/install.html).
-* Get access and pull actus-core from [Actusfrf.org](https://www.actusfrf.org/developers).
-* Navigate to your actus-core folder and execute the following snippet:
+1. build actus-core dependency
 
-```
+* Request an auth-token for access to the actus-core library through [Actusfrf.org](https://www.actusfrf.org/developers).
+* Build actus-core dependency and add to your local maven repository
+
+```sh
+# actus-core/
 mvn clean install -Dmaven.test.failure.ignore=true
 ```
+
+3. build app
+
+Navigate to the actus-webapp root folder and execute
+
+```sh
+# actus-webapp/
+chmod +x gradlew
+./gradlew
+```
+
+4. start third party services
+
+```sh
+sudo service mongod start
+```
+
+4. run app
+
+
+```sh
+# actus-webapp
+./gradlew bootRun
+```
+
+
+
+
+
+
 
 ### Add the actus-core dependencies to your app
 
@@ -48,10 +81,53 @@ For this information check the **pom.xml** file in your actus-core project folde
 
 Run the gradle wrapper. In your project directory:
 
-```
+```sh
+# actus-webapp
 chmod +x gradlew
-gradlew
+./gradlew
 ```
 
 You can now build and rund your app
 
+
+
+# Requirements
+
+
+Java 8+
+Spring Boot
+MongoDB
+Node
+NPM
+create-react-app
+react-router-dom
+
+
+# Run the application
+
+In your terminal execute
+
+```sh
+# start MongoDB
+sudo service mongod start
+```
+
+
+
+# Build and run the application
+
+```sh
+./gradlew bootRun
+```
+
+# Test REST endpoints
+
+In another terminal execute
+
+```sh
+# Fetch meta data for PAM contract
+curl -i -H "Accept: application/json" localhost:8080/terms/meta/pam
+```
+
+
+curl -i -H "Accept: application/json" http://190.141.20.26/demos
