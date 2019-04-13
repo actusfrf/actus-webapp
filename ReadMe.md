@@ -27,68 +27,62 @@ These instructions will get you a copy of the demo up and running on your local 
 mvn clean install -Dmaven.test.failure.ignore=true
 ```
 
-## Setup Mongo DB
+## Set up local environment
 
-App needs two collections to run. 
-
-Forms and Demos
-
-Look in folders containing jsons. They have an import.bat that loads data into their respective collections. 
-
-Make sure mongoimport.exe is in the system path.
-
-
-
-### Run the frontend
-
-Navigate to the frontend root folder 
+Start services and set up the database for running the app locally by running the start script in your terminal (needs sudo privileges)
 
 ```sh
-cd ./frontend
+# actus-webapp/
+sudo sh ./scripts/start.sh
 ```
 
-start the frontend
+## Build and run the app
 
-```sh
-npm start -- if it doesn't start, probably need to download packages
-```
-
-
-## Build the app
-
-Navigate to the actus-webapp root folder and execute
+Build and run the app through the following commands in your terminal
 
 ```sh
 # actus-webapp/
 chmod +x gradlew
-./gradlew
-```
-
-Start third party services
-
-```sh
-sudo service mongod start
-```
-
-Run app
-
-```sh
-# actus-webapp
+./gradlew build
 ./gradlew bootRun
 ```
+
+Yey, you made it to the first level - the backend to the ACTUS App is now running!
 
 
 ## Test REST endpoints
 
-In another terminal execute
+In a fresh terminal execute the following commands
 
 ```sh
-# Fetch meta data for PAM contract
-curl -i -H "Accept: application/json" localhost:8080/terms/meta/pam
+# Fetch terms for the PAM contract
+curl -i -H "Accept: application/json" localhost:8080/terms/meta/PAM
 ```
 
 ```sh
 # Fetch demo data for PAM contract
-curl -i -H "Accept: application/json" localhost:8080/demos/pam
+curl -i -H "Accept: application/json" localhost:8080/demos/meta/PAM
 ```
+
+
+### Build and run the frontend
+
+Welcome to level 2! Now you are going to build and run the frontend to the ACTUS App.
+
+First, navigate to the frontend root folder
+
+```sh
+# /actus-webapp
+cd ./frontend
+```
+
+Then, build and start the frontend
+
+```sh
+# /frontend
+npm run build
+npm start
+```
+
+Now, open your browser and the app through url <a href="http://localhost:3000">http://localhost:3000</a>.
 
