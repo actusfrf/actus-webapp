@@ -77,6 +77,8 @@ public class EventController {
         // define risk factor model
         MarketModel riskFactors = new MarketModel();
 
+
+/*
         ArrayList<ContractEvent> events = new ArrayList<ContractEvent>();
 
         switch (ContractType) {
@@ -107,6 +109,9 @@ public class EventController {
         default:
             System.out.println("no match");
         }
+*/
+
+ArrayList<ContractEvent> events = ContractType.lifecycle(analysisTimes, model, riskFactors);
 
         List<Event> output = events.stream().map(e -> new Event(e)).collect(Collectors.toList());
 

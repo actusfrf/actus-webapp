@@ -22,10 +22,6 @@ export class Landing extends PureComponent {
         let {contracts} = this.state;  
         return (
             <div>
-                <div className="section-title">Contract Calculator Manual</div>
-                <div className="section-description">
-                    <a href="http://projectactus.org/ACTUS/data/CT_Calculator_Manual.odt" rel="noopener noreferrer" target="_blank">Click Here</a> to access Contract Calculator Manual
-                </div>
                 {
                     contracts.map((contract, index) => {
                         return (
