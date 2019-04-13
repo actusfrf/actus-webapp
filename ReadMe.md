@@ -74,7 +74,7 @@ App needs two collections to run.
 
 Forms and Demos
 
-Look in folders containing jsons. They have an import.bat that loads data into there respective collections. 
+Look in folders containing jsons. They have an import.bat that loads data into their respective collections. 
 
 Make sure mongoimport.exe is in the system path.
 
