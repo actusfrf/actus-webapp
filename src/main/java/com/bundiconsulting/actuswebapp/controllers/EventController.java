@@ -4,13 +4,7 @@ import com.bundiconsulting.actuswebapp.models.Event;
 import com.bundiconsulting.actuswebapp.repositories.EventRepository;
 import org.actus.attributes.ContractModel;
 import org.actus.attributes.ContractModelProvider;
-import org.actus.contracts.Annuity;
-import org.actus.contracts.ForeignExchangeOutright;
-import org.actus.contracts.LinearAmortizer;
-import org.actus.contracts.NegativeAmortizer;
-import org.actus.contracts.PrincipalAtMaturity;
-import org.actus.contracts.Stock;
-import org.actus.contracts.Swap;
+import org.actus.contracts.ContractType;
 import org.actus.events.ContractEvent;
 import org.actus.externals.RiskFactorModelProvider;
 import org.actus.states.StateSpace;
@@ -49,8 +43,6 @@ public class EventController {
     @CrossOrigin(origins = "*")
     public List<Event> solveContract(@RequestBody Map<String, Object> json) {
 
-        String ContractType = "";
-
         Map<String, String> map = new HashMap<String, String>();
 
         for (Map.Entry<String, Object> entry : json.entrySet()) {
@@ -58,10 +50,6 @@ public class EventController {
             System.out.println(entry.getKey() + ":" + entry.getValue());
 
             map.put(entry.getKey(), entry.getValue().toString());
-
-            if (entry.getKey().toString().equals("ContractType")) {
-                ContractType = entry.getValue().toString();
-            }
 
         }
 
@@ -111,7 +99,7 @@ public class EventController {
         }
 */
 
-ArrayList<ContractEvent> events = ContractType.lifecycle(analysisTimes, model, riskFactors);
+        ArrayList<ContractEvent> events = ContractType.lifecycle(analysisTimes, model, riskFactors);
 
         List<Event> output = events.stream().map(e -> new Event(e)).collect(Collectors.toList());
 
