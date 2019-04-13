@@ -91,6 +91,7 @@ You can now build and rund your app
 
 
 
+<<<<<<< HEAD
 # Requirements
 
 
@@ -131,3 +132,27 @@ curl -i -H "Accept: application/json" localhost:8080/terms/meta/pam
 
 
 curl -i -H "Accept: application/json" http://190.141.20.26/demos
+=======
+### Run Frontend
+
+Node js [NodeJS](https://nodejs.org/en/) must be installed. 
+
+cd ./frontend
+
+npm start -- if it doesn't start, probably need to download packages
+
+npm update
+
+
+### Setup Mongo DB
+
+App needs two collections to run. 
+
+Forms and Demos
+
+Look in folders containing jsons. They have an import.bat that loads data into their respective collections. 
+
+Make sure mongoimport.exe is in the system path.
+
+
+>>>>>>> 5c7c6f72ed8b94d2276b2f52748db192ae86b2a1
