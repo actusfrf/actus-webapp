@@ -88,10 +88,18 @@ export class Graph extends Component {
                 y = this.getHeight(results[n].payoff, yScale, canvas);
                 ctx.textAlign = "center";
                 ctx.font = "bold 10px Arial";
+                ctx.fillStyle = "#000000";
                 ctx.fillText(results[n].type.toUpperCase(), n===0?rowSize+10:xScale * (n + 1), y - margin - 15);
                 ctx.fillText(results[n].payoff, n===0?rowSize+10:xScale * (n + 1), y - margin - 4);
+                
+                ctx.beginPath();
+                ctx.fillStyle = "#ff0000";
+                ctx.arc(n===0?rowSize+10:xScale * (n + 1), y - margin, 3, 0, 2 * Math.PI, false);
+                ctx.fill();
+                
             }
         }
+        ctx.stroke();
     }
 
     getHeight(value, yScale, canvas){
