@@ -30,8 +30,8 @@ export class Graph extends Component {
         ctx.clearRect(0,0,canvas.width, canvas.height);
         ctx.fillStyle = '#000';
 
-        let max = Math.ceil(Math.max.apply(Math, results.map(o =>{ return o.payoff})))+1;
-        let stepSize = Math.ceil(max / 15);
+        let max = Math.ceil(Math.max.apply(Math, results.map(o =>{ return o.nominalValue})));
+        let stepSize = Math.ceil(max / 10);
         let sections = results.length;
 
         let yScale = (canvas.height - columnSize - margin) / max;
@@ -70,9 +70,9 @@ export class Graph extends Component {
         ctx.moveTo(rowSize + 10, canvas.height - 16);
         for (var i = 0; i < results.length; i++) {
             //computeHeight(itemValue[i]);
-            if(results[i].payoff >= 0){
+            if(results[i].nominalValue >= 0){
 
-                y = this.getHeight(results[i].payoff, yScale, canvas)
+                y = this.getHeight(results[i].nominalValue, yScale, canvas)
                 ctx.fillStyle = "#000";
                 ctx.strokeStyle = "#FF0000";
                 ctx.lineTo(i===0?rowSize+10:xScale * (i + 1), i===0?canvas.height-16:y - margin);
@@ -83,14 +83,14 @@ export class Graph extends Component {
         
         for (var n = 0; n < results.length; n++) {
             //computeHeight(itemValue[i]);
-            if(results[n].payoff >= 0){
+            if(results[n].nominalValue >= 0){
 
-                y = this.getHeight(results[n].payoff, yScale, canvas);
+                y = this.getHeight(results[n].nominalValue, yScale, canvas);
                 ctx.textAlign = "center";
                 ctx.font = "bold 10px Arial";
                 ctx.fillStyle = "#000000";
                 ctx.fillText(results[n].type.toUpperCase(), n===0?rowSize+10:xScale * (n + 1), y - margin - 15);
-                ctx.fillText(results[n].payoff.toFixed(3), n===0?rowSize+10:xScale * (n + 1), y - margin - 4);
+                ctx.fillText(results[n].nominalValue.toFixed(1), n===0?rowSize+10:xScale * (n + 1), y - margin - 4);
                 
                 ctx.beginPath();
                 ctx.lineWidth = 1.1;
