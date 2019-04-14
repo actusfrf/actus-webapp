@@ -50,6 +50,8 @@ export class Graph extends Component {
 
         ctx.moveTo(rowSize+10, canvas.height-margin + 10);
         ctx.lineTo(rowSize+10,margin+16);
+        ctx.moveTo(canvas.width - margin - 10, canvas.height-margin + 10);
+        ctx.lineTo(canvas.width - margin - 10, margin+10)
         //ctx.strokeStyle="rgba(0,0,0,.5);"
 
         for (scale = max; scale >= 0; scale = scale - stepSize) {
@@ -90,16 +92,6 @@ export class Graph extends Component {
                 ctx.fillText(results[n].payoff, n===0?rowSize+10:xScale * (n + 1), y - margin - 4);
             }
         }
-
-        //Draw background lines and values
-        // for (var scale = max; scale >= 0; scale = scale - stepSize) {
-        //     let y = columnSize + (yScale * count * stepSize); 
-        //     ctx.fillText(scale, margin, y + margin - 16);
-        //     ctx.moveTo(rowSize,y)
-        //     ctx.lineTo(canvas.width-margin,y)
-        //     count++;
-        // }
-        // ctx.stroke();
     }
 
     getHeight(value, yScale, canvas){
@@ -110,7 +102,7 @@ export class Graph extends Component {
         return (
             <div>
                 <div className="text-center">RESULTS</div>
-                <canvas ref='canvas' id="GraphRender" className="graph-render" width="680" height="480" />
+                <canvas ref='canvas' id="GraphRender" className="graph-render" width="1024" height="723" />
             </div>
         )
     }
