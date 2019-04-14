@@ -105,8 +105,8 @@ export class Form extends PureComponent {
             'credentials': 'omit'
         }
         let dataToSend = {...allAnswers};//this.state.demos[5].terms;
-        console.log("Cleaned Up:",this.cleanUpData(dataToSend));
-        console.log("Test data:",this.getTestFields());
+        //console.log("Cleaned Up:",this.cleanUpData(dataToSend));
+        //console.log("Test data:",this.getTestFields());
         axios.post(this.state.host+'/events', this.cleanUpData(dataToSend))
             .then(res => {
                 this.setState({

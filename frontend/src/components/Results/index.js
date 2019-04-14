@@ -30,7 +30,7 @@ export class Results extends PureComponent {
                     </Row>
                     <Row>
                         <Col sm={12} className="results-graph-wrapper">
-                            <Graph data={results} />
+                            <Graph results={results} />
                         </Col>
                     </Row>
                     {currentTab === 'Table' && 
@@ -49,7 +49,7 @@ export class Results extends PureComponent {
                             {
                                 results.map((result, index) => {                                    
                                     let d = new Date(result.time.toString());
-                                    console.log(d.getDate(), (d.getDate()).toString().length);
+                                    //console.log(d.getDate(), (d.getDate()).toString().length);
                                     let month = (d.getMonth()+1).toString().length < 2? "0"+(d.getMonth()+1):d.getMonth()+1;
                                     let day = (d.getDate()).toString().length < 2? "0"+(d.getDate()):d.getDate();
                                     let dateString = d.getFullYear()+"-"+month+"-"+day;
