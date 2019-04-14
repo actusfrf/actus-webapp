@@ -1,7 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Redirect } from 'react-router-dom'
-import { Col, Grid, Row}  from 'react-bootstrap';
-import axios from 'axios';
+import { Col }  from 'react-bootstrap';
 import './Demo.css';
 
 export default class Demo extends PureComponent { 

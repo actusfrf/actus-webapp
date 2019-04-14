@@ -239,8 +239,8 @@ export class Form extends PureComponent {
                 this.setState({
                     demos: res.data
                 });
-                console.log(`%cdemos:`,"background: black; padding:1rem; color: #fff", res.data );
-                console.log(res.data.filter(a => (a.terms.ContractID).toString() === '101'));
+                //console.log(`%cdemos:`,"background: black; padding:1rem; color: #fff", res.data );
+                //console.log(res.data.filter(a => (a.terms.ContractID).toString() === '101'));
             })
             .catch(error => {
                 console.log('>>>>>>>>>>> error:', error);
@@ -260,7 +260,7 @@ export class Form extends PureComponent {
     }
 
     passDemoData(terms, id) {
-        console.log(terms.ContractID);
+        //console.log(terms.ContractID);
         let groups = [...this.state.groups];
         let nonRequired = {...this.state.originalNonRequiredFields};
         let required = {...this.state.originalRequiredFields};

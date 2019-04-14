@@ -1,51 +1,98 @@
-import React, {PureComponent} from 'react';
+import React, {Component} from 'react';
 import './Graph.css';
 
-export class Graph extends PureComponent {
-    state = {
-        data:[],
-        sections: 5,
-        maxValue: 0,
-        stepSize: 0,
-        columnSize: 50,
-        rowSize: 60,
-        margin:0,
-        header:'',
+export class Graph extends Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            data:[props.results],
+            maxValue: 10,
+            stepSize: 0,
+            columnSize: 50,
+            rowSize: 60,
+            margin: 20,
+            header:'HEADER',
+        }
     }
 
-    componentDidMount() {
-        this.setState({
-            data:[...this.props.results]
-        });     
-        console.log(">>results>>",this.props.results);
-        //this.renderGraph();
-        //TODO: get top nominal value for vertical values
-        //Increment by 250
-        //TODO: get event type for horizontal values
-        //distribute horizontally by percent 100% / total length of event types
+    componentWillReceiveProps(props){
+        //this.state.data.setData
+        console.log("props", props.results);
+        this.renderGraph(props.results);
     }
 
-    renderGraph() {
-        let {maxValue, stepSize, columnSize, rowSize, margin, header, sections} = this.state;
+    renderGraph(results) {
+        console.log(">>>>>>>>>>",results);
+        let {columnSize, rowSize, margin, header} = this.state;
+        
         const canvas = this.refs.canvas;
         const ctx = this.refs.canvas.getContext('2d');
         ctx.clearRect(0,0,canvas.width, canvas.height);
         ctx.fillStyle = '#000';
 
-        let yScale = (canvas.height - columnSize - margin) / maxValue;
-        let xScale = (canvas.width - rowSize) / (sections + 1);
-        let count =  0;
-        let scale = 0;
+        let max = Math.ceil(Math.max.apply(Math, results.map(o =>{ return o.payoff})))+1;
+        let stepSize = Math.ceil(max / 15);
+        let sections = results.length;
 
-        ctx.strokeStyle="#000;"; // background black lines
+        let yScale = (canvas.height - columnSize - margin) / max;
+        let xScale = (canvas.width - rowSize) / (sections + 1);
+        let scale = max;
+        let count =  0;
+        let y = 0;
+
+        ctx.strokeStyle="rgba(0,0,0,1);"; // background black lines
         ctx.beginPath();
         ctx.font = "25 pt Arial;"
         ctx.fillText(header, margin, columnSize - margin);
         ctx.font = "16 pt Helvetica";
-        console.log("maxValue",maxValue);
+        ctx.stroke();
+        console.log(yScale, xScale, count);
+
+        ctx.moveTo(rowSize+10, canvas.height-margin + 10);
+        ctx.lineTo(rowSize+10,margin+16);
+        //ctx.strokeStyle="rgba(0,0,0,.5);"
+
+        for (scale = max; scale >= 0; scale = scale - stepSize) {
+            y = columnSize + (yScale * count * stepSize);
+            ctx.fillText(scale, margin, y + margin - 16);
+            ctx.moveTo(rowSize, y)
+            ctx.lineTo(canvas.width - margin, y);
+            count++;
+        }
+        ctx.stroke();
+
+        ctx.font = "20 pt Verdana";
+        ctx.textBaseline = "bottom";
+        ctx.beginPath();
+        ctx.lineWidth = 2;
+        ctx.moveTo(rowSize + 10, canvas.height - 16);
+        for (var i = 0; i < results.length; i++) {
+            //computeHeight(itemValue[i]);
+            if(results[i].payoff >= 0){
+
+                y = this.getHeight(results[i].payoff, yScale, canvas)
+                ctx.fillStyle = "#000";
+                ctx.strokeStyle = "#FF0000";
+                ctx.lineTo(i===0?rowSize+10:xScale * (i + 1), i===0?canvas.height-16:y - margin);
+                
+            }
+        }
+        ctx.stroke();
+        
+        for (var n = 0; n < results.length; n++) {
+            //computeHeight(itemValue[i]);
+            if(results[n].payoff >= 0){
+
+                y = this.getHeight(results[n].payoff, yScale, canvas);
+                ctx.textAlign = "center";
+                ctx.font = "bold 10px Arial";
+                ctx.fillText(results[n].type.toUpperCase(), n===0?rowSize+10:xScale * (n + 1), y - margin - 15);
+                ctx.fillText(results[n].payoff, n===0?rowSize+10:xScale * (n + 1), y - margin - 4);
+            }
+        }
 
         //Draw background lines and values
-        // for (scale = maxValue; scale >= 0 ; scale = scale - stepSize) {
+        // for (var scale = max; scale >= 0; scale = scale - stepSize) {
         //     let y = columnSize + (yScale * count * stepSize); 
         //     ctx.fillText(scale, margin, y + margin - 16);
         //     ctx.moveTo(rowSize,y)
