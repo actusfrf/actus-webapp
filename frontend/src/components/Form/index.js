@@ -36,7 +36,7 @@ export class Form extends PureComponent {
         results:{},
         isFetching: false,
         redirect: false,
-        host: "http://190.141.20.26", //http://190.141.20.26/
+        host: "http://190.141.20.26:8080", //http://190.141.20.26/
     }
 
     assemble(a, b) {
