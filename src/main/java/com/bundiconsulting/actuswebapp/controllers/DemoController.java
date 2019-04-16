@@ -1,6 +1,7 @@
 package com.bundiconsulting.actuswebapp.controllers;
 
 import com.bundiconsulting.actuswebapp.models.Demo;
+import com.bundiconsulting.actuswebapp.models.DemoMeta;
 import com.bundiconsulting.actuswebapp.repositories.DemoRepository;
 import java.io.IOException;
 import java.util.List;
@@ -20,20 +21,9 @@ public class DemoController {
     @Autowired
     DemoRepository demoRepository;
 
-  
-    @RequestMapping(method=RequestMethod.GET, value="/demos/meta/{contractType}")
+    @RequestMapping(method=RequestMethod.GET, value="/demo/{id}")
     @CrossOrigin(origins = "*")
-    public List<Demo> getDemoMeta(@PathVariable String contractType) {
-        System.out.println("Hello World!: " + contractType);
-    
-        List<Demo> meta = demoRepository.findByContractType(contractType);
-        return meta;
-    }
-
-
-    @RequestMapping(method=RequestMethod.GET, value="/demos/{id}")
-    @CrossOrigin(origins = "*")
-    public Map<String, Object> getDemoTerms(@PathVariable String id) {
+    public Map<String, Object> getDemo(@PathVariable String id) {
         
         Optional<Demo> optdemo = demoRepository.findById(id);
         Demo d = optdemo.get();
@@ -41,6 +31,14 @@ public class DemoController {
         return d.getTerms();
     }
 
+    @RequestMapping(method=RequestMethod.GET, value="/demos/{id}")
+    @CrossOrigin(origins = "*")
+    public List<Demo> getDemos(@PathVariable String id) {
+        
+        List<Demo> demo = demoRepository.findByContractType(id);
+
+        return demo;
+    }
    
     @RequestMapping(method=RequestMethod.GET, value="/demos")
     @CrossOrigin(origins = "*")

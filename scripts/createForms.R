@@ -8,15 +8,17 @@ library(magrittr)
 library(readr)
 
 # define paths
-forms_path <- '../data/forms/json/'
-data_path <- '../data/forms/'
+forms_path = '../data/forms/json/'
+data_path = '../data/forms/'
 
-# define contracts to create forms for
-build_contracts <- c("CSH","UMP","CLM","PAM","LAM","LAX","ANN","NAM","STK","COM","CEG","CEC","SWPPV","SWAPS","FXOUT","FUTUR","OPTNS","CAPFL")
-
+# define contracts to create forms for (contracts currently covered in the actus-core lib)
+build_contracts = c("CSH","UMP","CLM","COM","STK","PAM","LAM","NAM","ANN","SWPPV","FXOUT")
 
 # read data dictionary
-rawdat <- read_csv(paste0(data_path,"Consolidated DD CTD v1.0.csv"), skip=1)
+rawdat = read_csv(paste0(data_path,"Consolidated DD CTD v1.0.csv"), skip=1)
+
+# read contract meta information
+meta = read_csv(paste0(data_path,"ACTUS Taxonomy.csv"))
 
 # convert enum values to json array
 rawdat$'Allowed Values' <- sapply(sapply(sapply(rawdat$'Allowed Values',strsplit,"\n"),strsplit,"="),function(x) paste0("[",paste(sapply(x,function(y) trimws(y[1])),collapse=","),"]"))
@@ -24,7 +26,8 @@ rawdat$'Allowed Values' <- sapply(sapply(sapply(rawdat$'Allowed Values',strsplit
 # define json base form
 base_form = data.frame(Identifier = "<Identifier>",
                        ContractType = "<Contract Type>",
-                       Description = "TODO: Contract description here!",
+		       Name = "<Full name>",
+                       Description = "<Contract description>",
                        Version = format(Sys.Date(), format = "%Y%m%d"),
                        Terms = "<Terms>")
 
@@ -35,6 +38,8 @@ for(ct in build_contracts) {
 	form = base_form
 	form$Identifier = paste0("form_",ct)
 	form$ContractType = ct
+	form$Name = ifelse(ct%in%meta$ContractType,subset(meta,ContractType==ct)$Name,"")
+	form$Description = ifelse(ct%in%meta$ContractType,subset(meta,ContractType==ct)$Description,"Please check https://actusfrf.org for a description")
 	jsonForm = toJSON(unbox(form), pretty=TRUE)
 
 	# extract contract specific terms

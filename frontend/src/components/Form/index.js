@@ -1,12 +1,11 @@
 import React, { PureComponent } from 'react';
 import { Redirect } from 'react-router-dom'
 import { Col, Grid, Row}  from 'react-bootstrap';
-import { Term } from '../Term';
 import axios from 'axios';
 import Demo from '../Demo';
 
 import ToolTip from '../ToolTip';
-//import '../Term.css';
+import '../Term/Term.css';
 /* eslint-disable */
 import DatePicker from "react-datepicker";
 
@@ -36,7 +35,7 @@ export class Form extends PureComponent {
         results:{},
         isFetching: false,
         redirect: false,
-        host: "http://190.141.20.26", //http://190.141.20.26/
+        host: "http://localhost:8080" //"http://190.141.20.26", //http://190.141.20.26/
     }
 
     assemble(a, b) {
@@ -172,7 +171,7 @@ export class Form extends PureComponent {
         });
 
         axios
-            .get(`${this.state.host}/terms/meta/${id}`)
+            .get(`${this.state.host}/forms/${id}`)
             .then(res => {
                 if (!res.data[0].terms || !res || !res.data) {
                     return false;
@@ -234,7 +233,7 @@ export class Form extends PureComponent {
 
     fetchDemos(id){
         axios
-            .get(`${this.state.host}/demos/meta/${id}`)
+            .get(`${this.state.host}/demos/${id}`)
             .then(res => {
                 this.setState({
                     demos: res.data

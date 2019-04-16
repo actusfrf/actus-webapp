@@ -1,8 +1,9 @@
 {
     "Identifier": "form_PAM",
     "ContractType": "PAM",
-    "Description": "TODO: Contract description here!",
-    "Version": "20190411",
+    "Name": "Principal at Maturity",
+    "Description": "Principal payment fully at Initial Exchange Date (IED) and repaid at Maturity Date (MD). Fixed and variable rates.",
+    "Version": "20190416",
     "Terms": [
   {
     "Group": "Calendar",

@@ -1,8 +1,9 @@
 {
     "Identifier": "form_ANN",
     "ContractType": "ANN",
-    "Description": "TODO: Contract description here!",
-    "Version": "20190411",
+    "Name": "Annuity",
+    "Description": "Principal payment fully at IED and interest plus principal repaid periodically in constant amounts till MD. If variable rate, total amount for interest and principal is recalculated to be fully matured at MD.",
+    "Version": "20190416",
     "Terms": [
   {
     "Group": "Calendar",
