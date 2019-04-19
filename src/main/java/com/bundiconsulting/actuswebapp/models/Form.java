@@ -18,6 +18,8 @@ public class Form {
     private String identifier;
     @Field (value="ContractType")
     private String contractType;
+    @Field (value="Name")
+    private String name;
     @Field (value="Description")
     private String description;
     @Field (value="Version")
@@ -38,13 +40,15 @@ public class Form {
      * @param description
      * @param terms
      * @param contractType
+     * @param name
      * @param identifier
      * @param version
      */
-    public Form(String identifier, String contractType, String description, String version, List<Term> terms) {
+    public Form(String identifier, String contractType, String name, String description, String version, List<Term> terms) {
         super();
         this.identifier = identifier;
         this.contractType = contractType;
+	this.name = name;
         this.description = description;
         this.version = version;
         this.terms = terms;
@@ -73,6 +77,14 @@ public class Form {
 
     public void setContractType(String contractType) {
         this.contractType = contractType;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {

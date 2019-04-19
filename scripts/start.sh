@@ -6,8 +6,8 @@ echo "Starting MongoDB"
 
 echo "Migrating forms and demos data to MongoDB"
 # list of all form and demo files
-forms=$(find ./misc/forms/json -name '*.json')
-demos=$(find ./misc/demos/json -name '*.json')
+forms=$(find ./data/forms/json -name '*.json')
+demos=$(find ./data/demos/json -name '*.json')
 
 # remove database
 `mongo actusweb --eval "printjson(db.dropDatabase())"`
@@ -23,3 +23,8 @@ for f in $forms; do
 	echo "Adding demo " & $f
 	`mongoimport --db actusweb --collection forms --file $f`
 done
+
+echo "Starting the app"
+echo "start the actus-webapp using:"
+echo "./gradlew bootRun"
+

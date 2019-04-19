@@ -1,8 +1,7 @@
 package com.bundiconsulting.actuswebapp.controllers;
 
-import com.bundiconsulting.actuswebapp.models.Form;
 import com.bundiconsulting.actuswebapp.models.Contract;
-import com.bundiconsulting.actuswebapp.repositories.FormRepository;
+import com.bundiconsulting.actuswebapp.repositories.ContractRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,28 +10,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
-import java.util.*;
 import java.util.Optional;
 
 @RestController
-public class FormController {
+public class ContractController {
 
     @Autowired
-    FormRepository formRepository;
+    ContractRepository contractRepository;
 
-    @RequestMapping(method=RequestMethod.GET, value="/forms")
+    @RequestMapping(method=RequestMethod.GET, value="/contracts")
     @CrossOrigin(origins = "*")
-    public Iterable<Form> forms() {
-        return formRepository.findAll();
-    }
-
-    @RequestMapping(method=RequestMethod.GET, value="/forms/{contractType}")
-    @CrossOrigin(origins = "*")
-    public List<Form> form(@PathVariable String contractType) {
-   
-        List<Form> meta = formRepository.findByContractType(contractType);
-
-        return meta;
+    public Iterable<Contract> contracts() {
+        return contractRepository.findAll();
     }
 
 }

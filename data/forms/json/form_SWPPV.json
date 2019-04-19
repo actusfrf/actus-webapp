@@ -1,8 +1,9 @@
 {
     "Identifier": "form_SWPPV",
     "ContractType": "SWPPV",
-    "Description": "TODO: Contract description here!",
-    "Version": "20190411",
+    "Name": "Plain Vanilla Swap",
+    "Description": "Plain vanilla swaps where the underlyings are always two identical PAM´s however with one leg fixed and the other variable.",
+    "Version": "20190416",
     "Terms": [
   {
     "Group": "Calendar",

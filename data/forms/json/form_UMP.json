@@ -1,8 +1,9 @@
 {
     "Identifier": "form_UMP",
     "ContractType": "UMP",
-    "Description": "TODO: Contract description here!",
-    "Version": "20190411",
+    "Name": "Undefined Maturity Profile",
+    "Description": "Principal paid in and out at any point in time without prefixed schedule. Interest calculated on outstanding and capitalized periodically. Needs link to a behavioral function describing expected flows.",
+    "Version": "20190416",
     "Terms": [
   {
     "Group": "Calendar",

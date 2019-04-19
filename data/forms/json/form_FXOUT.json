@@ -1,8 +1,9 @@
 {
     "Identifier": "form_FXOUT",
     "ContractType": "FXOUT",
-    "Description": "TODO: Contract description here!",
-    "Version": "20190411",
+    "Name": "Foreign Ex-change Outright",
+    "Description": "Two parties agree to exchange two fixed cash flows in different currencies at a certain point in time in future.",
+    "Version": "20190416",
     "Terms": [
   {
     "Group": "Calendar",

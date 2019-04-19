@@ -1,8 +1,9 @@
 {
     "Identifier": "form_STK",
     "ContractType": "STK",
-    "Description": "TODO: Contract description here!",
-    "Version": "20190411",
+    "Name": "Stock",
+    "Description": "Any instrument which is bought at a certain amount (market price normally) and then follows an index.",
+    "Version": "20190416",
     "Terms": [
   {
     "Group": "Calendar",

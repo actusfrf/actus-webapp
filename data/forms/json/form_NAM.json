@@ -1,8 +1,9 @@
 {
     "Identifier": "form_NAM",
     "ContractType": "NAM",
-    "Description": "TODO: Contract description here!",
-    "Version": "20190411",
+    "Name": "NAM:",
+    "Description": "Similar as ANN. However when resetting rate, total amount (interest plus principal) stay constant. MD shifts. Only variable rates.",
+    "Version": "20190416",
     "Terms": [
   {
     "Group": "Calendar",

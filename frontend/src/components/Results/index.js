@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import {Col, Grid, Row} from 'react-bootstrap';
 //import axios from 'axios';
 import './Results.css';
-import { Graph } from '../Graph';
+import { Graph2 } from '../Graph2';
 
 export class Results extends PureComponent {
     state = {
@@ -30,7 +30,7 @@ export class Results extends PureComponent {
                     </Row>
                     <Row>
                         <Col sm={12} className="results-graph-wrapper">
-                            <Graph results={results} />
+                            <Graph2 results={results} />
                         </Col>
                     </Row>
                     {currentTab === 'Table' && 

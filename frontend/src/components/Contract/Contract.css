@@ -13,10 +13,11 @@
     width: 80%;
 }
 
-.contract-title{
-    font-size: 2rem;
-    font-weight: 400;
+.contract-name{
+    font-weight: bold;
+    font-size: 1.45rem;
 }
+
 .contract-description{
     font-size: 1.45rem;
 }

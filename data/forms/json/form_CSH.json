@@ -1,8 +1,9 @@
 {
     "Identifier": "form_CSH",
     "ContractType": "CSH",
-    "Description": "TODO: Contract description here!",
-    "Version": "20190411",
+    "Name": "Cash",
+    "Description": "Cash or cash equivalent position",
+    "Version": "20190416",
     "Terms": [
   {
     "Group": "Contract identification",

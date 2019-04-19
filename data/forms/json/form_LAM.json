@@ -1,8 +1,9 @@
 {
     "Identifier": "form_LAM",
     "ContractType": "LAM",
-    "Description": "TODO: Contract description here!",
-    "Version": "20190411",
+    "Name": "Linear Amortizer",
+    "Description": "Principal payment fully at IED. Principal repaid periodically in constant amounts till MD. Interest gets reduced accordingly. If variable rate, only interest payment is recalculated. Fixed and variable rates.",
+    "Version": "20190416",
     "Terms": [
   {
     "Group": "Calendar",
