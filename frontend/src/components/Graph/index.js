@@ -31,7 +31,7 @@ export class Graph extends Component {
         ctx.fillStyle = '#000';
 
         let max = Math.ceil(Math.max.apply(Math, results.map(o =>{ return o.nominalValue})));
-        let stepSize = Math.ceil(max / 10);
+        let stepSize = Math.ceil(max / 5);
         let sections = results.length;
 
         let yScale = (canvas.height - columnSize - margin) / max;
