@@ -9,8 +9,8 @@ export class Graph2 extends React.Component {
         this.state = {
             data:[props.results],
             width:900,
-	    height:600,
-	    margin:50,
+						height:600,
+						margin:50,
             header:'HEADER',
         }
   }
@@ -156,14 +156,18 @@ export class Graph2 extends React.Component {
 		const eventLinesDown = data.map(
 			function(d){
 				let raw = [{time:d.time, payoff:0},{time:d.time, payoff:Math.abs(d.payoff)}];
-				return(
-					<path
-						key={'line' + d.time + d.type}
-						d={eventLine(raw)}
-						className='line'
-						style={{fill:'none',strokeWidth: size(d.type), stroke: col(d.type)}}
-					/>
-				)
+				if(col(d.type) === 'green'){
+					return(
+						<path
+							key={'line' + d.time + d.type}
+							d={eventLine(raw)}
+							className='line'
+							style={{fill:'none',strokeWidth: 2, stroke: col(d.type)}}
+						/>
+					)
+				}else{
+					return null;
+				}
 			}
 		)
 
@@ -211,6 +215,9 @@ export class Graph2 extends React.Component {
 					{/* draw event lines */}
 					<g transform={"translateY(${height-2*margin}px)"}>
 						{eventLines}
+					</g>
+					<g transform={"translateY(${height-2*margin}px)"}>
+						{eventLinesDown}
 					</g>
 					{/* draw event labels */}
 					<g transform={"translateY(${height-2*margin}px)"}>
