@@ -195,11 +195,11 @@ export class Graph2 extends React.Component {
 							</marker>
 						</defs> */}
 						<defs>
-						<marker viewBox="0 0 10 10" id="arrow" markerWidth="5" markerHeight="5" refX="8" refY="3" orient="90deg" markerUnits="strokeWidth">
-								<path d="M0,0 L0,6 L9,3 z" style={{fill:'red', strokeWidth:1, stroke:'red'}}  />
+							<marker viewBox="0 0 10 10" id="arrow" markerWidth="5" markerHeight="5" refX="5" refY="5" orient="0deg" markerUnits="strokeWidth">
+								<path d="M0,0 L5,5 L10,0" style={{fill:'none', strokeWidth:2, stroke:'red'}}  />
 							</marker>
-							<marker viewBox="0 0 10 10" id="arrow2" markerWidth="5" markerHeight="5" refX="8" refY="3" orient="90deg" markerUnits="strokeWidth">
-								<path d="M0,0 L0,6 L9,3 z" style={{fill:'green', strokeWidth:1, stroke:'green'}}  />
+							<marker viewBox="0 0 10 10" id="arrow2" markerWidth="5" markerHeight="5" refX="5" refY="5" orient="0deg" markerUnits="strokeWidth">
+								<path d="M0,0 L5,5 L10,0" style={{fill:'none', strokeWidth:2, stroke:'green'}}  />
 							</marker>
 						</defs>
 						{/* draw axes*/}
