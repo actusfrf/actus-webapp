@@ -56,7 +56,7 @@ In a fresh terminal execute the following commands
 
 ```sh
 # Fetch terms for the PAM contract
-curl -i -H "Accept: application/json" localhost:8080/terms/meta/PAM
+curl -i -H "Accept: application/json" localhost:8080/forms/PAM
 ```
 
 ```sh
