@@ -76,7 +76,14 @@ First, navigate to the frontend root folder
 cd ./frontend
 ```
 
-Then, build and start the frontend
+Then, install the NPM packages required to build and run the frontend
+
+```sh
+# /frontend
+npm install
+```
+
+Finally, build and start the frontend
 
 ```sh
 # /frontend
