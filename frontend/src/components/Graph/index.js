@@ -22,14 +22,16 @@ export class Graph extends React.Component {
     }
 
   render() {
-		// extract states
-		let { data, width, height, margin } = this.state;
-		console.log(">>>>>>>>>>",data);
-		
-		// convert strings to dates
-		data.forEach(function(d){d.time = new Date(d.time)});
-		console.log(">>>>>>>>>>", data);
-	
+
+    // extract states
+    let { data, width, height, margin } = this.state;
+    console.log(">>>>>>>>>>",data);
+
+    // convert strings to dates
+    data.forEach(function(d){d.time = new Date(d.time)});
+    console.log(">>>>>>>>>>", data);
+
+    // create axes scales
     let xScale = d3
       .scaleTime()
       .domain(d3.extent(data, d=>d.time))
@@ -41,12 +43,6 @@ export class Graph extends React.Component {
       .range([height - 2*margin, 0])
 			.nice();
 
-    var nominalLine = d3
-	.line()
-	.x(d => xScale(d.time))
-	.y(d => yScale(Math.abs(d.nominalValue)))
-	.curve(d3.curveStepAfter);
-
     // create axis objects
     var xAxis = d3.axisBottom(xScale).tickFormat(d3.timeFormat("%Y/%m/%d"));
     var yAxis = d3.axisLeft(yScale);
@@ -56,14 +52,14 @@ export class Graph extends React.Component {
     var ticks = yAxis.scale().ticks();
     console.log("---------->" + ticks);
 
-    // define line type	
+    // define grid line type	
     var gridLine = d3
 	.line()
 	.x(d => xScale(d.time))
 	.y(d => yScale(d.value))
 	.curve(d3.curveLinear);
 
-    // create lines
+    // create grid lines
     const gridLines = ticks.map(function(d) {
 	let raw=[{time:xScale.domain()[0],value:d},{time:xScale.domain()[1],value:d}];
 	console.log(d + " -- " + raw[1].time);
@@ -79,8 +75,15 @@ export class Graph extends React.Component {
 		)
     });
 
+    // create the nominal value state line
+    var nominalLine = d3
+	.line()
+	.x(d => xScale(d.time))
+	.y(d => yScale(Math.abs(d.nominalValue)))
+	.curve(d3.curveStepAfter);
+
     // create event arrows
-    // define color mapping
+    // define event color mapping
     var col = function(type) {
 	switch(type) {
 		case "AD":
@@ -91,14 +94,16 @@ export class Graph extends React.Component {
 			return("red");
 		case "IP":
 			return("green");
+		case "IPCI":
+			return("white");
 		case "RR":
-			return("blue");
+			return("white");
 		default:
 			return("black");
 	}
     };
 
-    // define size mapping
+    // define event size mapping
     var size = function(type) {
 	switch(type) {
 		case "AD":
@@ -109,72 +114,85 @@ export class Graph extends React.Component {
 			return(2);
 		case "IP":
 			return(5);
+		case "IPCI":
+			return(0);
 		case "RR":
-			return(5);
+			return(0);
 		default:
 			return("black");
 	}
     };
 
-    // define line type
+    // define event line type
     var eventLine = d3
 	.line()
 	.x(d => xScale(d.time))
 	.y(d => yScale(d.payoff))
 	.curve(d3.curveLinear);
 
-
-    let before = {time:0, payoff:0};
+    // create event lines
     let lastPayoff = 0;
-    let counter = [];
-    // create lines	
+    let counter = [];	
     const eventLines = data.map(function(d) {
 	console.log(">>>>",col(d.type), d.payoff);
 	let raw;
-	if(col(d.type) === "green"){
-		raw = [{time:d.time, payoff:Math.abs(d.payoff)}, before];
-		lastPayoff = Math.abs(d.payoff);
+	if(d.type === "PR"){
+		raw = [{time:d.time, payoff:Math.abs(d.payoff)+lastPayoff}, {time:d.time, payoff:lastPayoff}];
 	}else{
-		raw = [{time:d.time, payoff:Math.abs(d.payoff)}, {time:d.time, payoff:lastPayoff}];
+		raw = [{time:d.time, payoff:Math.abs(d.payoff)}, {time:d.time, payoff:0}];
+		lastPayoff = Math.abs(d.payoff);
 	}
-	before = {time:d.time, payoff:0};
 	return(
 		<path
 			key={'line' + d.time + d.type}
 			d={eventLine(raw)}
 			className='line'
-			style={{fill:'none',strokeWidth: 2, stroke: col(d.type), strokeDasharray: "3,3"}}
+			style={{fill:'none',strokeWidth: 2, stroke: col(d.type)}}
 			markerEnd={col(d.type) === "green"?'url(#arrow2)':'url(#arrow)'}
 		/>
 		)
     });
 
     console.log(counter);
-
-    const eventLinesDown = data.map(
+    
+    // create accrued state lines
+    let lastTime = 0;
+    let lastAccrued = 0;
+    const accruedLines = data.map(
 	function(d){
-		let raw = [{time:d.time, payoff:0},{time:d.time, payoff:Math.abs(d.payoff)}];
+		let raw;	
 		if(col(d.type) === 'green'){
-			return(
-				<path
-					key={'line' + d.time + d.type}
-					d={eventLine(raw)}
-					className='line'
-					style={{fill:'none',strokeWidth: 2, stroke: col(d.type)}}
-				/>
-			)
+			raw = [{time:d.time, payoff:Math.abs(d.payoff)}, {time:lastTime, payoff:lastAccrued}];
 		}else{
-			return null;
+			raw = [{time:d.time, payoff:Math.abs(d.nominalAccrued)}, {time:lastTime, payoff:lastAccrued}];
 		}
+		lastTime = d.time;
+		lastAccrued = Math.abs(d.nominalAccrued);
+		return(
+			<path
+				key={'line' + d.time + d.type}
+				d={eventLine(raw)}
+				className='line'
+				style={{fill:'none',strokeWidth: 2, stroke: "green", strokeDasharray: "3,3"}}
+			/>
+			)
 	})
 
     // create event labels
     const eventLabels = data.map(function(d) {
-	return(
-		<text key={'label' + d.time + d.type} 
-		x={xScale(d.time)} y={yScale(Math.abs(d.payoff))} 
-		fontSize="18px">
-		{d.type} </text>)
+	if(d.type === 'IPCI'){
+		return(
+			<text key={'label' + d.time + d.type} 
+			x={xScale(d.time)} y={yScale(Math.abs(d.nominalValue))} 
+			fontSize="18px">
+			{d.type} </text>)
+	}else{
+		return(
+			<text key={'label' + d.time + d.type} 
+			x={xScale(d.time)} y={yScale(Math.abs(d.payoff))} 
+			fontSize="18px">
+			{d.type} </text>)
+	}
     })
     console.log("000000 " + eventLines);
 
@@ -214,7 +232,7 @@ export class Graph extends React.Component {
 			{eventLines}
 		</g>
 		<g transform={"translateY(${height-2*margin}px)"}>
-			{eventLinesDown}
+			{accruedLines}
 		</g>
 		{/* draw event labels */}
 		<g transform={"translateY(${height-2*margin}px)"}>
