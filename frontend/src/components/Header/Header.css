@@ -1,5 +1,19 @@
-.header-wrapper{
+header {
     padding: 0rem 0;
     border-bottom: 1px solid #ccc;
     margin-bottom: 2rem;
+}
+
+.header-img {
+    height: 9%;
+    width: 20%;
+}
+
+header h1{
+    font-size: 30px; 
+    color: #002D59;
+    display: inline-block;
+    position: relative;
+	float: right;
+    padding: 15px 0 0 0;
 }
