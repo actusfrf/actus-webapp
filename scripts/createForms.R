@@ -21,7 +21,9 @@ rawdat = read_csv(paste0(data_path,"Consolidated DD CTD v1.0.csv"), skip=1)
 meta = read_csv(paste0(data_path,"ACTUS Taxonomy.csv"))
 
 # convert enum values to json array
-rawdat$'Allowed Values' <- sapply(sapply(sapply(rawdat$'Allowed Values',strsplit,"\n"),strsplit,"="),function(x) paste0("[",paste(sapply(x,function(y) trimws(y[1])),collapse=","),"]"))
+rawdat$'Allowed Values' = sapply(sapply(sapply(sapply(rawdat$'Allowed Values',strsplit,"\n"),strsplit,"="),function(x) sapply(x,function(y) trimws(y[1]))),toJSON)
+
+#sapply(sapply(sapply(rawdat$'Allowed Values',strsplit,"\n"),strsplit,"="),function(x) paste0("[",paste(sapply(x,function(y) trimws(y[1])),collapse=","),"]"))
 
 # define json base form
 base_form = data.frame(Identifier = "<Identifier>",
@@ -51,11 +53,19 @@ for(ct in build_contracts) {
 
 	# fix ContractType enum to ct
 	terms[which(terms$Name=="ContractType"),"List"]="[PAM]"
-
+	
+	# remove NA strings
+	terms[which(terms$Type!="Enum"),"List"]=""
+	
 	# combine form-json and terms-json
 	jsonTerms = unbox(toJSON(terms, auto_unbox=TRUE,pretty=TRUE))
   	jsonForm = gsub("\"<Terms>\"", jsonTerms, jsonForm)
   
+	# clean up form
+	jsonForm = gsub("\"[", "[", jsonForm,fixed=TRUE)
+	jsonForm = gsub("]\"", "]", jsonForm,fixed=TRUE)
+	jsonForm = gsub("\"\"", "", jsonForm,fixed=TRUE)
+
   	# export final form
 	jsonForm %>% write_lines(paste0(forms_path,'form_',ct,'.json'))
 }
