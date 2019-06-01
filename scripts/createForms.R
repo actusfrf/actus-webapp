@@ -52,7 +52,7 @@ for(ct in build_contracts) {
     	colnames(terms) = c("Group", "Name", "Type", "List", "Description", "Applicability")
 
 	# fix ContractType enum to ct
-	terms[which(terms$Name=="ContractType"),"List"]="[PAM]"
+	terms[which(terms$Name=="ContractType"),"List"]=paste0("[\"",ct,"\"]")
 	
 	# remove NA strings
 	terms[which(terms$Type!="Enum"),"List"]=""
@@ -64,7 +64,7 @@ for(ct in build_contracts) {
 	# clean up form
 	jsonForm = gsub("\"[", "[", jsonForm,fixed=TRUE)
 	jsonForm = gsub("]\"", "]", jsonForm,fixed=TRUE)
-	jsonForm = gsub("\"\"", "", jsonForm,fixed=TRUE)
+	#jsonForm = gsub("\"\"", "", jsonForm,fixed=TRUE)
 
   	# export final form
 	jsonForm %>% write_lines(paste0(forms_path,'form_',ct,'.json'))
