@@ -25,11 +25,11 @@ export class Graph extends React.Component {
 
     // extract states
     let { data, width, height, margin } = this.state;
-    console.log(">>>>>>>>>>",data);
+    //console.log(">>>>>>>>>>",data);
 
     // convert strings to dates
     data.forEach(function(d){d.time = new Date(d.time)});
-    console.log(">>>>>>>>>>", data);
+    //console.log(">>>>>>>>>>", data);
 
     // create axes scales
     let xScale = d3
@@ -50,7 +50,7 @@ export class Graph extends React.Component {
     // create grid
     // extract tick values	
     var ticks = yAxis.scale().ticks();
-    console.log("---------->" + ticks);
+    //console.log("---------->" + ticks);
 
     // define grid line type	
     var gridLine = d3
@@ -134,7 +134,7 @@ export class Graph extends React.Component {
     let lastPayoff = 0;
     let counter = [];	
     const eventLines = data.map(function(d) {
-	console.log(">>>>",col(d.type), d.payoff);
+	//console.log(">>>>",col(d.type), d.payoff);
 	let raw;
 	if(d.type === "PR"){
 		raw = [{time:d.time, payoff:Math.abs(d.payoff)+lastPayoff}, {time:d.time, payoff:lastPayoff}];
@@ -153,7 +153,7 @@ export class Graph extends React.Component {
 		)
     });
 
-    console.log(counter);
+    //console.log(counter);
     
     // create accrued state lines
     let lastTime = 0;
@@ -194,7 +194,7 @@ export class Graph extends React.Component {
 			{d.type} </text>)
 	}
     })
-    console.log("000000 " + eventLines);
+    //console.log("000000 " + eventLines);
 
 
     return (

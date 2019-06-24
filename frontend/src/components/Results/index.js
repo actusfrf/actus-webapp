@@ -7,25 +7,28 @@ import { Graph } from '../Graph';
 export class Results extends PureComponent {
     state = {
         results: [],
-        currentTab: 'Table',        
+        currentTab: 'Table',  
+        contractId: ''      
     }
 
     componentDidMount() { 
         let response = [...this.props.location.state.data];
+
         this.setState({
-            results: response
-        });        
+            results: response,
+            contractId: this.props.location.state.contractId,
+        });      
     }
 
     render() {        
-        let { results, currentTab } = this.state;
+        let { results, currentTab, contractId} = this.state;
         return (
             <div id="results-container" identifier="" version="">
                 <Grid fluid>
                     <Row>
                         <Col sm={12} className="results-main-wrapper">
-                            <span className="results-title">RESULT:</span>
-                            <span className="results-description">group description</span>
+                            <span className="results-title">RESULT: &nbsp;<span class="contract-id">Contract ID - {contractId}</span></span>
+                            <span className="results-description"> </span>
                         </Col>
                     </Row>
                     <Row>

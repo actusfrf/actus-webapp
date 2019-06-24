@@ -28,6 +28,10 @@
     font-weight: bold;
 }
 
+.results-main-wrapper .results-title .contract-id {
+    color: #015289;
+}
+
 .results-main-wrapper .results-description {
     font-weight: normal;
     color: #fff;

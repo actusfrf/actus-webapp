@@ -105,7 +105,7 @@ export class Form extends PureComponent {
         }
         let dataToSend = {...allAnswers};//this.state.demos[5].terms;
         //console.log("Cleaned Up:",this.cleanUpData(dataToSend));
-        //console.log("Test data:",this.getTestFields());
+        console.log("data:", dataToSend);
         axios.post(this.state.host+'/events', this.cleanUpData(dataToSend))
             .then(res => {
                 this.setState({
@@ -309,7 +309,7 @@ export class Form extends PureComponent {
         let formClassName = (this.state.showForm)?"unfolded":"folded";
         //let { match } = this.props;
         if( redirect ) {
-            return <Redirect to={{ pathname: '/results', state: { data: results } }} />
+            return <Redirect to={{ pathname: '/results', state: { contractId: this.state.requiredFields.ContractID ,data: results } }} />
         } else {  
             if(this.state.isFetching){
                 return (
