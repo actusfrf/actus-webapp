@@ -26,7 +26,7 @@ export class Form extends PureComponent {
         nonRequiredFields:{},
         demos:[],
         showDemos: false,
-        showForm: true,
+        showForm: false,
         totalFields: 0,
         groupDescription: "",
         contractType: "",
@@ -266,6 +266,12 @@ export class Form extends PureComponent {
 
         let termArray = Object.entries(terms);
         let requiredArray = Object.entries(required);
+
+        if(this.state.showDemos)
+            this.toggleDemos();
+
+        if(!this.state.showForm)
+            this.toggleForm();
 
         termArray.map(t=>{
             requiredArray.map(r=>{

@@ -8,6 +8,7 @@
     padding: 2rem 1rem;
     text-align: center;
     font-size: 1rem;
+    min-height: 200px;
 }
 .contract-grid{
     width: 80%;
