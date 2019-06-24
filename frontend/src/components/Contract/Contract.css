@@ -1,8 +1,15 @@
-.contract-wrapper{
+/*
+dark blue: #002d56
+light blue: #015289
+grey: #d0d1d3
+*/
+
+.contract-wrapper {
     padding: 1rem;
 }
+
 .contract-content {
-    background: #eeffff;
+    background: #d0d1d3;
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 2rem 1rem;
@@ -10,28 +17,31 @@
     font-size: 1rem;
     min-height: 200px;
 }
-.contract-grid{
+
+.contract-grid {
     width: 80%;
 }
 
-.contract-name{
+.contract-name {
     font-weight: bold;
     font-size: 1.45rem;
+    color: #015289;
 }
 
-.contract-description{
+.contract-description {
     font-size: 1.45rem;
 }
 
-.contract-link{
+.contract-link {
     font-weight: bold;
     font-size: 1.3rem;
     margin-bottom: .5;
     display: block;
+    color: #015289 !important;
 }
 
-@media screen and (min-width:641px){
-    .contract-link{
+@media screen and (min-width:641px) {
+    .contract-link {
         font-weight: bold;
         font-size: 2rem;
         margin-bottom: 1rem;

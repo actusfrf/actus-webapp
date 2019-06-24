@@ -22,13 +22,23 @@
 
 .demo-case-title {
     cursor: pointer;
-    color: #002d56;
+    color: #015289;
     display: inline-block;
+    font-weight: bold;
 }
 
 .demo-item-content {
     padding: 1rem 2rem;
-    border: 1px solid #777;
     border-radius: 0.5rem;
-    background: rgb(219, 238, 244);
+    background: #d0d1d3;
+}
+@media screen and (min-width:641px) {
+    .demo-item-content article {
+        min-height: 140px;
+    }
+}
+@media screen and (max-width:640px) {
+    .demo-item-content article {
+        min-height: initial;
+    }
 }
