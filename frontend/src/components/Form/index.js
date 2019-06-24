@@ -27,6 +27,8 @@ export class Form extends PureComponent {
         demos:[],
         showDemos: false,
         showForm: false,
+        showOptionals: false,
+        optionHidden:[],
         totalFields: 0,
         groupDescription: "",
         contractType: "",
@@ -166,6 +168,8 @@ export class Form extends PureComponent {
     }
 
     fetchTerms(id){
+
+        console.log("fetch data");
         this.setState({
             isFetching: true
         });
@@ -202,8 +206,13 @@ export class Form extends PureComponent {
                 let groups = Object
                     .keys(groupToValues)
                     .map(function (key) {
-                        //console.log(key);
-                        return {group: key, Items: groupToValues[key]};
+                        let shortName = key.split(" ").join("");
+                        return {
+                            group: key, 
+                            Items: groupToValues[key], 
+                            shortName: shortName,
+                            visible: false
+                        }
                     });
 
                 this.fetchDemos(id);
@@ -303,11 +312,19 @@ export class Form extends PureComponent {
 
     }
 
+    foldOptions(index) {
+        var groups = [...this.state.groups];
+        groups[index].visible = !groups[index].visible;
+        this.setState({
+            groups: groups
+        });
+    }
+
     render() {
         let {groups, groupDescription, contractType, identifier, version, mandatoryFields, redirect, results, demos} = this.state;
         let demosClassName = (this.state.showDemos)?"unfolded":"folded";
         let formClassName = (this.state.showForm)?"unfolded":"folded";
-        //let { match } = this.props;
+
         if( redirect ) {
             return <Redirect to={{ pathname: '/results', state: { contractId: this.state.requiredFields.ContractID ,data: results } }} />
         } else {  
@@ -387,56 +404,47 @@ export class Form extends PureComponent {
                                     <div className="term-group-header">Below are your Optional choices</div>
                                     {
                                         groups.map((group, index) => {
-                                            //console.log(group);
+                                            console.log("group.visible",group.visible);
                                             return (
                                                 <div key={`term_wrapper${index}`} className="term-wrapper">
-                                                    <div id={group} className="items-group">
-                                                        <div className="item-header">{group.group}</div>
-                                                        <Grid fluid>
-                                                            <Row>
-                                                            {
-                                                                group.Items.map((item, index) => {
-                                                                    let itemName = item.name;
-                                                                    let group = item.group;
-                                                                    itemName = itemName.replace(/([a-z])([A-Z])/g, '$1 $2');
-                                                                    itemName = itemName.replace(/([A-Z])([A-Z])/g, '$1 $2');
-                                                                    
-                                                                    return(
-                                                                        <Col key={`key${item.name}`} sm={4} className="item nopadding">
-                                                                            <div className="input-container">
-                                                                                <label className="item-labels" htmlFor={item.name}>{itemName}</label>
-                                                                                <div className="input-wrapper term">
-                                                                                    <input 
-                                                                                    id={item.name} 
-                                                                                    group={group}
-                                                                                    applicability={item.applicability}
-                                                                                    title={`Optional Choice`} 
-                                                                                    placeholder={`...`}
-                                                                                    value={this.state.nonRequiredFields[item.name]}
-                                                                                    onChange={e=>this.updateNonRequiredField(e)}
-                                                                                    className="item-fields"
-                                                                                    type="text" />
-                                                                                    <ToolTip description={item.description} />
-                                                                                </div>                                        
-                                                                            </div>
-                                                                        </Col>
-                                                                    )
-                                                                })
-                                                            }
-                                                            </Row>
-                                                        </Grid>
+                                                    <div id={group.shortName} className="items-group">
+                                                        <div className="item-header" onClick={()=>this.foldOptions(index)}>{group.group}</div>
+                                                        {group.visible && 
+                                                            <Grid fluid>
+                                                                <Row>
+                                                                {
+                                                                    group.Items.map((item, index) => {
+                                                                        let itemName = item.name;
+                                                                        let group = item.group;
+                                                                        itemName = itemName.replace(/([a-z])([A-Z])/g, '$1 $2');
+                                                                        itemName = itemName.replace(/([A-Z])([A-Z])/g, '$1 $2');
+                                                                        
+                                                                        return(
+                                                                            <Col key={`key${item.name}`} sm={4} className="item nopadding">
+                                                                                <div className="input-container">
+                                                                                    <label className="item-labels" htmlFor={item.name}>{itemName}</label>
+                                                                                    <div className="input-wrapper term">
+                                                                                        <input 
+                                                                                        id={item.name} 
+                                                                                        group={group}
+                                                                                        applicability={item.applicability}
+                                                                                        title={`Optional Choice`} 
+                                                                                        placeholder={`...`}
+                                                                                        value={this.state.nonRequiredFields[item.name]}
+                                                                                        onChange={e=>this.updateNonRequiredField(e)}
+                                                                                        className="item-fields"
+                                                                                        type="text" />
+                                                                                        <ToolTip description={item.description} />
+                                                                                    </div>                                        
+                                                                                </div>
+                                                                            </Col>
+                                                                        )
+                                                                    })
+                                                                }
+                                                                </Row>
+                                                            </Grid>
+                                                        }
                                                     </div>
-                                                    {/* 
-                                                        <Term
-                                                        className="item"
-                                                        group={group.group}
-                                                        groupLabel={group.Items[0].group}
-                                                        items={group.Items}                                       
-                                                        nonRequiredFields={this.state.nonRequiredFields}
-                                                        action={e=>this.onGroupUpdate(e)}
-                                                        fields={this.state.fields}
-                                                        key={`item${index}`}/> 
-                                                    */}
                                                 </div>
                                             )
                                         })
