@@ -247,8 +247,6 @@ export class Form extends PureComponent {
                 this.setState({
                     demos: res.data
                 });
-                //console.log(`%cdemos:`,"background: black; padding:1rem; color: #fff", res.data );
-                //console.log(res.data.filter(a => (a.terms.ContractID).toString() === '101'));
             })
             .catch(error => {
                 console.log('>>>>>>>>>>> error:', error);
@@ -326,7 +324,7 @@ export class Form extends PureComponent {
         let formClassName = (this.state.showForm)?"unfolded":"folded";
 
         if( redirect ) {
-            return <Redirect to={{ pathname: '/results', state: { contractId: this.state.requiredFields.ContractID ,data: results } }} />
+            return <Redirect to={{ pathname: '/results', state: { contractId: this.state.requiredFields.ContractID, data: results }}} />
         } else {  
             if(this.state.isFetching){
                 return (

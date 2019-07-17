@@ -27,13 +27,16 @@ export class Results extends PureComponent {
                 <Grid fluid>
                     <Row>
                         <Col sm={12} className="results-main-wrapper">
-                            <span className="results-title">RESULT: &nbsp;<span class="contract-id">Contract ID - {contractId}</span></span>
+                            <span className="results-title">RESULT: &nbsp;<span className="contract-id">Contract ID - {contractId}</span></span>
                             <span className="results-description"> </span>
                         </Col>
                     </Row>
                     <Row>
-                        <Col sm={12} className="results-graph-wrapper">
+                        <Col id="resultsGraph" sm={12} className="results-graph-wrapper">
                             <Graph results={results} />
+                            <div className="back-to-form">
+                                <input type="button" value="Back to Form" />
+                            </div>
                         </Col>
                     </Row>
                     {currentTab === 'Table' && 
@@ -41,13 +44,13 @@ export class Results extends PureComponent {
                         <Col sm={12}>
                             <Grid fluid className="results-table-wrapper">
                                 <Row className="table-header-container">
-                                    <Col sm={2} className="table-header">Event Date</Col>
+                                    <Col sm={1} className="table-header">Event Date</Col>
                                     <Col sm={1} className="table-header">Event Type</Col>
                                     <Col sm={2} className="table-header">Event Value</Col>
                                     <Col sm={2} className="table-header">Event Currency</Col>
                                     <Col sm={2} className="table-header">Nominal Value</Col>
                                     <Col sm={2} className="table-header">Nominal Rate</Col>
-                                    <Col sm={1} className="table-header">Nominal Accrued</Col>
+                                    <Col sm={2} className="table-header">Nominal Accrued</Col>
                                 </Row>
                             {
                                 results.map((result, index) => {                                    
@@ -58,13 +61,13 @@ export class Results extends PureComponent {
                                     let dateString = d.getFullYear()+"-"+month+"-"+day;
                                     return (
                                         <Row key={index}>
-                                            <Col className="cell-content" sm={2}>{dateString}</Col>
+                                            <Col className="cell-content" sm={1}>{dateString}</Col>
                                             <Col className="cell-content" sm={1}>{result.type}</Col>
                                             <Col className="cell-content" sm={2}>{result.payoff}</Col>
                                             <Col className="cell-content" sm={2}>{result.currency}</Col>
                                             <Col className="cell-content" sm={2}>{result.nominalValue}</Col>
                                             <Col className="cell-content" sm={2}>{result.nominalRate}</Col>
-                                            <Col className="cell-content" sm={1}>{result.nominalAccrued}</Col>                                            
+                                            <Col className="cell-content" sm={2}>{result.nominalAccrued}</Col>                                            
                                         </Row>
                                     )
                                 })
