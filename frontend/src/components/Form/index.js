@@ -37,7 +37,9 @@ export class Form extends PureComponent {
         results:{},
         isFetching: false,
         redirect: false,
-        host: "http://marbella.myftp.org:8080", //http://190.141.20.26/ // "http://localhost:8080"
+        host: "http://marbella.myftp.org:8080", //http://190.141.20.26/ // "http://localhost:8080",
+        backFromResults: false,
+        allAnswers: {}
     }
 
     assemble(a, b) {
@@ -80,7 +82,9 @@ export class Form extends PureComponent {
     }
 
     cleanUpData(obj){
+
         let newObj={};
+
         for(var prop in obj){
             if(obj[prop] === ''){
                 delete obj[prop];
@@ -105,9 +109,10 @@ export class Form extends PureComponent {
             'withCredentials': true,
             'credentials': 'omit'
         }
-        let dataToSend = {...allAnswers};//this.state.demos[5].terms;
-        //console.log("Cleaned Up:",this.cleanUpData(dataToSend));
-        console.log("data:", dataToSend);
+        let dataToSend = {...allAnswers};
+        this.setState({
+            allAnswers: this.cleanUpData(dataToSend)
+        });
         axios.post(this.state.host+'/events', this.cleanUpData(dataToSend))
             .then(res => {
                 this.setState({
@@ -164,14 +169,21 @@ export class Form extends PureComponent {
     componentDidMount() {
         console.log('Did Mount');
         let {match} = this.props;
-        this.fetchTerms(match.params.id);
+        if(this.props.location.state && this.props.location.state.backFromResults){
+            console.log("[Data incoming]", this.props.location.state.backFromResults);
+            this.fetchTerms(match.params.id, this.props.location.state.allAnswers);
+        }else{
+            this.fetchTerms(match.params.id);
+        }
+
     }
 
-    fetchTerms(id){
+    fetchTerms(id, incoming){
+        console.log("fetch data", id," is incoming ", incoming );
 
-        console.log("fetch data");
         this.setState({
-            isFetching: true
+            isFetching: true,
+            allAnswers: incoming ? {...incoming}: null,
         });
 
         axios
@@ -186,9 +198,18 @@ export class Form extends PureComponent {
                 let optionalFields = res.data[0].terms.filter(n => (n.applicability.indexOf('NN') <= -1));
                 let mandatoryFields = res.data[0].terms.filter(n => (n.applicability.indexOf('NN') > -1));
 
+                
                 let requiredFields = Object.assign({}, ...mandatoryFields.map(o=>({[o.name]: ''})));
-                let nonRequiredFields = Object.assign({}, ...optionalFields.map(o=>({[o.name]: ''})));
+                let nonRequiredFields = Object.assign({}, ...optionalFields.map(o=>({[o.name]: ''})));  
 
+                if(incoming){ // only run if its coming back from results
+                    Object.keys(requiredFields).map(e=>{
+                        requiredFields[e] = incoming[e];
+                    });
+                    console.log(requiredFields);
+                }
+
+                
                 let groupToValues = optionalFields.reduce(function (obj, item) { 
                         obj[item.group] = obj[item.group] || [];
                         obj[item.group].push(item);
@@ -320,11 +341,12 @@ export class Form extends PureComponent {
 
     render() {
         let {groups, groupDescription, contractType, identifier, version, mandatoryFields, redirect, results, demos} = this.state;
+        let {match} = this.props;
         let demosClassName = (this.state.showDemos)?"unfolded":"folded";
         let formClassName = (this.state.showForm)?"unfolded":"folded";
 
         if( redirect ) {
-            return <Redirect to={{ pathname: '/results', state: { contractId: this.state.requiredFields.ContractID, data: results }}} />
+            return <Redirect to={{ pathname: '/results', state: { url:`/form/${match.params.id}`, allAnswers: this.state.allAnswers, contractId: this.state.requiredFields.ContractID, data: results }}} />
         } else {  
             if(this.state.isFetching){
                 return (
@@ -402,7 +424,7 @@ export class Form extends PureComponent {
                                     <div className="term-group-header">Below are your Optional choices</div>
                                     {
                                         groups.map((group, index) => {
-                                            console.log("group.visible",group.visible);
+                                            //console.log("group.visible",group.visible);
                                             return (
                                                 <div key={`term_wrapper${index}`} className="term-wrapper">
                                                     <div id={group.shortName} className="items-group">
@@ -417,6 +439,8 @@ export class Form extends PureComponent {
                                                                         itemName = itemName.replace(/([a-z])([A-Z])/g, '$1 $2');
                                                                         itemName = itemName.replace(/([A-Z])([A-Z])/g, '$1 $2');
                                                                         
+                                                                        //console.log(this.state.allAnswers[])
+
                                                                         return(
                                                                             <Col key={`key${item.name}`} sm={4} className="item nopadding">
                                                                                 <div className="input-container">

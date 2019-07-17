@@ -1,14 +1,17 @@
 import React, {PureComponent} from 'react';
 import {Col, Grid, Row} from 'react-bootstrap';
-//import axios from 'axios';
+import { Redirect } from 'react-router-dom'
 import './Results.css';
 import { Graph } from '../Graph';
 
 export class Results extends PureComponent {
+    
     state = {
         results: [],
         currentTab: 'Table',  
-        contractId: ''      
+        contractId: '',
+        redirect: false,
+        url: '',
     }
 
     componentDidMount() { 
@@ -17,11 +20,23 @@ export class Results extends PureComponent {
         this.setState({
             results: response,
             contractId: this.props.location.state.contractId,
+            url: this.props.location.state.url,
+            allAnswers: this.props.location.state.allAnswers,
         });      
     }
 
+    handleBackToForm(e) {
+        this.setState({
+            redirect: true
+        })
+    }
+
     render() {        
-        let { results, currentTab, contractId} = this.state;
+        let { results, currentTab, contractId, redirect, url} = this.state;
+
+        if(redirect)
+            return <Redirect to={{ pathname: url, state: { backFromResults: true, allAnswers: this.state.allAnswers }}} />
+
         return (
             <div id="results-container" identifier="" version="">
                 <Grid fluid>
@@ -35,7 +50,7 @@ export class Results extends PureComponent {
                         <Col id="resultsGraph" sm={12} className="results-graph-wrapper">
                             <Graph results={results} />
                             <div className="back-to-form">
-                                <input type="button" value="Back to Form" />
+                                <input type="button" value="Back to Form" onClick={()=>this.handleBackToForm()} />
                             </div>
                         </Col>
                     </Row>
