@@ -1,0 +1,16 @@
+{
+    "contracts": [ 
+			"cash", 
+                	"callMoney",
+                	"undefinedMaturityProfile",
+                	"commodities",
+                	"stock",
+                	"principalAtMaturity",
+                	"linearAmortizer",
+			"exoticLinearAmortizer",
+                	"negativeAmortizer",
+                	"annuity",
+                	"foreignExchangeOutright",
+                	"plainVanillaSwap"
+            	]
+}

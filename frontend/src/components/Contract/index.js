@@ -10,20 +10,21 @@ export class Contract extends PureComponent {
         	this.state={
         		contractType:"",
         		name:"",
-			description:""
-		};
+				description:""
+			};
 	}
 
 	componentDidMount(){
 	        this.setState({
-			contractType: this.props.contractType,
+				contractType: this.props.contractType,
         		name:this.props.name,
-			description:this.props.description
-        	});
+				description:this.props.description
+			});
 	}
 
     render(){
 	let contract = this.state;
+	console.log(contract)
 	  return (
 		<Col sm={12} md={6} className="contract-wrapper">
 			<div className="contract-content">

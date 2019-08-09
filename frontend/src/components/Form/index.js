@@ -37,7 +37,7 @@ export class Form extends PureComponent {
         results:{},
         isFetching: false,
         redirect: false,
-        host: "http://marbella.myftp.org:8080", //http://190.141.20.26/ // "http://localhost:8080",
+        host: "http://localhost:8080", //"http://marbella.myftp.org:8080", //http://190.141.20.26/ // "http://localhost:8080",
         backFromResults: false,
         allAnswers: {}
     }
@@ -186,6 +186,7 @@ export class Form extends PureComponent {
             allAnswers: incoming ? {...incoming}: null,
         });
 
+        /*
         axios
             .get(`${this.state.host}/forms/${id}`)
             .then(res => {
@@ -193,23 +194,46 @@ export class Form extends PureComponent {
                     return false;
                 }
                 let responseData = res.data[0];
-                //console.log(responseData);
+                console.log(responseData);
 
                 let optionalFields = res.data[0].terms.filter(n => (n.applicability.indexOf('NN') <= -1));
                 let mandatoryFields = res.data[0].terms.filter(n => (n.applicability.indexOf('NN') > -1));
+        */        
 
-                
-                let requiredFields = Object.assign({}, ...mandatoryFields.map(o=>({[o.name]: ''})));
-                let nonRequiredFields = Object.assign({}, ...optionalFields.map(o=>({[o.name]: ''})));  
-
-                if(incoming){ // only run if its coming back from results
-                    Object.keys(requiredFields).map(e=>{
-                        requiredFields[e] = incoming[e];
-                    });
-                    console.log(requiredFields);
+        axios.get(`/data/actus-dictionary.json`)
+            .then(res => {
+                if (!res || !res.data) {
+                    return false;
                 }
 
+                // get contract identifier from id (accronym)
+                let identifier = Object.keys(res.data.taxonomy).filter(key => (res.data.taxonomy[key].accronym.indexOf(id) > -1))[0];
                 
+                // get taxonomy, applicability and terms lists for respective contract
+                let applicability = res.data.applicability[identifier]
+                let terms = res.data.terms
+                let taxonomy = res.data.taxonomy[identifier]
+                
+                // get optional and mandatory field identifiers
+                let optionalFieldIdentifiers = Object.keys(applicability).filter(key => (applicability[key] !== 'NN'));
+                let mandatoryFieldIdentifiers = Object.keys(applicability).filter(key => (applicability[key] === 'NN'));
+                optionalFieldIdentifiers.splice(optionalFieldIdentifiers.indexOf('contract'),1) // 'contract' is actually not an official term
+
+                // get optional and mandatory fields
+                let optionalFields = optionalFieldIdentifiers.map((identifier) => terms[identifier])
+                let mandatoryFields = mandatoryFieldIdentifiers.map((identifier) => terms[identifier])
+
+                console.log("fields....")
+                console.log(mandatoryFields)
+
+                if(incoming){ // only run if its coming back from results
+                    Object.keys(mandatoryFieldIdentifiers).map(e=>{
+                        mandatoryFieldIdentifiers[e] = incoming[e];
+                    });
+                    console.log(mandatoryFieldIdentifiers);
+                }
+
+                // group terms according to actus groups
                 let groupToValues = optionalFields.reduce(function (obj, item) { 
                         obj[item.group] = obj[item.group] || [];
                         obj[item.group].push(item);
@@ -235,22 +259,24 @@ export class Form extends PureComponent {
                             visible: false
                         }
                     });
-
+                
+                // fetch demos for this specific contract
                 this.fetchDemos(id);
+
+                // add data to state
                 this.setState({
                     groups: groups,
                     isFetching:false,
                     optionalFields: [...optionalFields],
                     mandatoryFields: [...mandatoryFields],
-                    requiredFields: {...requiredFields},
-                    nonRequiredFields: {...nonRequiredFields},
-                    originalRequiredFields: {...requiredFields},
-                    originalNonRequiredFields: {...nonRequiredFields},
+                    requiredFields: {...mandatoryFieldIdentifiers},
+                    nonRequiredFields: {...optionalFieldIdentifiers},
+                    originalRequiredFields: {...mandatoryFieldIdentifiers},
+                    originalNonRequiredFields: {...optionalFieldIdentifiers},
                     totalFields: Object.keys(fields).length,
-                    groupDescription: responseData.description,
-                    contractType: responseData.contractType,
-                    identifier: responseData.identifier,
-                    version: responseData.version,
+                    groupDescription: taxonomy.description,
+                    contractType: taxonomy.accronym,
+                    identifier: identifier,
                     error: {
                         ...this.state.error
                     }
