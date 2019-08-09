@@ -62,46 +62,24 @@ public class EventController {
         // needs to be synced with dates in terms objects
         analysisTimes.add(LocalDateTime.parse("2015-01-01T00:00:00"));
 
-        // define risk factor model
-        MarketModel riskFactors = new MarketModel();
+        // define risk factor (+) observer
+        MarketModel observer = new MarketModel();
 
+        // define projection end-time
+        LocalDateTime to = model.getAs("TerminationDate");
+        if(to == null) to = model.getAs("MaturityDate");
+        if(to == null) to = model.getAs("AmortizationDate");
+        if(to == null) to = model.getAs("SettlementDate");
+        if(to == null) to = LocalDateTime.now().plusYears(5);
 
-/*
-        ArrayList<ContractEvent> events = new ArrayList<ContractEvent>();
+        // compute actus schedule
+        ArrayList<ContractEvent> schedule = ContractType.schedule(to, model);
 
-        switch (ContractType) {
-        case "PAM":
-            events = PrincipalAtMaturity.lifecycle(analysisTimes, model, riskFactors);
-            break;
-        case "ANN":
-            events = Annuity.lifecycle(analysisTimes, model, riskFactors);
-            break;
-        case "NAM":
-            events = NegativeAmortizer.lifecycle(analysisTimes, model, riskFactors);
-            break;
-        case "LAM":
-            events = LinearAmortizer.lifecycle(analysisTimes, model, riskFactors);
-        case "LAX":
-            events = LinearAmortizer.lifecycle(analysisTimes, model, riskFactors);
-            break;
-        case "STK":
-            events = Stock.lifecycle(analysisTimes, model, riskFactors);
-            break;
-        case "SWAPS":
-            events = Swap.lifecycle(analysisTimes, model, riskFactors);
-            break;
-        case "FXOUT":
-            events = ForeignExchangeOutright.lifecycle(analysisTimes, model, riskFactors);
-            break;
+        // apply schedule to contract
+        schedule = ContractType.apply(schedule, model, observer);
 
-        default:
-            System.out.println("no match");
-        }
-*/
-
-        ArrayList<ContractEvent> events = ContractType.lifecycle(analysisTimes, model, riskFactors);
-
-        List<Event> output = events.stream().map(e -> new Event(e)).collect(Collectors.toList());
+        // transform schedule
+        List<Event> output = schedule.stream().map(e -> new Event(e)).collect(Collectors.toList());
 
         return output;
 
