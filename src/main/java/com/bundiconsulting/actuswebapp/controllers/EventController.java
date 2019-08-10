@@ -10,15 +10,14 @@ import org.actus.externals.RiskFactorModelProvider;
 import org.actus.states.StateSpace;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.*;
 
 @RestController
 public class EventController {
@@ -43,24 +42,18 @@ public class EventController {
     @CrossOrigin(origins = "*")
     public List<Event> solveContract(@RequestBody Map<String, Object> json) {
 
+        // convert json terms object to a java map (required input for actus model parsing)
         Map<String, String> map = new HashMap<String, String>();
-
         for (Map.Entry<String, Object> entry : json.entrySet()) {
 
             System.out.println(entry.getKey() + ":" + entry.getValue());
 
-            map.put(entry.getKey(), entry.getValue().toString());
+            map.put(StringUtils.capitalize(entry.getKey()), entry.getValue().toString());
 
         }
 
         // parse attributes
         ContractModel model = ContractModel.parse(map);
-
-        // define analysis times
-        Set<LocalDateTime> analysisTimes = new HashSet<LocalDateTime>();
-
-        // needs to be synced with dates in terms objects
-        analysisTimes.add(LocalDateTime.parse("2015-01-01T00:00:00"));
 
         // define risk factor (+) observer
         MarketModel observer = new MarketModel();

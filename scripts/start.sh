@@ -6,7 +6,6 @@ echo "Starting MongoDB"
 
 echo "Migrating forms and demos data to MongoDB"
 # list of all form and demo files
-#forms=$(find ./data/forms/json -name '*.json')
 demos=$(find ./data/demos/json -name '*.json')
 
 # remove database
@@ -17,12 +16,6 @@ for f in $demos; do
 	echo "Adding demo " & $f
 	`mongoimport --db actusweb --collection demos --file $f`
 done
-
-# add new forms collection
-#for f in $forms; do
-#	echo "Adding demo " & $f
-#	`mongoimport --db actusweb --collection forms --file $f`
-#done
 
 echo "Starting the app"
 echo "start the actus-webapp using:"

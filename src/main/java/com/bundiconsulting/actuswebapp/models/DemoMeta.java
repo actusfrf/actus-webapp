@@ -1,9 +1,5 @@
 package com.bundiconsulting.actuswebapp.models;
 
-import java.util.Map;
-
-import java.util.HashMap;
-import java.util.Map;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -14,15 +10,15 @@ public class DemoMeta {
 
     @Id
     private String _id;
-    @Field(value="Identifier")
+    @Field(value="identifier")
     private String identifier;
-    @Field (value="Label")
+    @Field (value="label")
     private String label;
-    @Field (value="ContractType")
+    @Field (value="contractType")
     private String contractType;
-    @Field (value="Version")
+    @Field (value="version")
     private String version;
-    @Field (value="Description")
+    @Field (value="description")
     private String description;
 
     /**

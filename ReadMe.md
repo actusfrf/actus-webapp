@@ -55,11 +55,6 @@ Yey, you made it to the first level - the backend to the ACTUS App is now runnin
 In a fresh terminal execute the following commands
 
 ```sh
-# Fetch terms for the PAM contract
-curl -i -H "Accept: application/json" localhost:8080/forms/PAM
-```
-
-```sh
 # Fetch demo data for PAM contract
 curl -i -H "Accept: application/json" localhost:8080/demos/meta/PAM
 ```
