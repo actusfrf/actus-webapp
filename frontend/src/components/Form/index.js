@@ -33,11 +33,10 @@ export class Form extends PureComponent {
         groupDescription: "",
         contractType: "",
         identifier: "",
-        version: "",
         results:{},
         isFetching: false,
         redirect: false,
-        host: "http://marbella.myftp.org:8080", //http://190.141.20.26/ // "http://localhost:8080",
+        host: "http://localhost:8080", //"http://marbella.myftp.org:8080", //http://190.141.20.26/ // "http://localhost:8080",
         backFromResults: false,
         allAnswers: {}
     }
@@ -113,6 +112,8 @@ export class Form extends PureComponent {
         this.setState({
             allAnswers: this.cleanUpData(dataToSend)
         });
+        console.log("hello")
+        console.log(this.cleanUpData(dataToSend))
         axios.post(this.state.host+'/events', this.cleanUpData(dataToSend))
             .then(res => {
                 this.setState({
@@ -140,6 +141,7 @@ export class Form extends PureComponent {
              validated: errorCount === 0
          });
     }
+
     updateNonRequiredField(e) {
         this.setState({
             nonRequiredFields: {
@@ -186,6 +188,7 @@ export class Form extends PureComponent {
             allAnswers: incoming ? {...incoming}: null,
         });
 
+        /*
         axios
             .get(`${this.state.host}/forms/${id}`)
             .then(res => {
@@ -193,23 +196,46 @@ export class Form extends PureComponent {
                     return false;
                 }
                 let responseData = res.data[0];
-                //console.log(responseData);
+                console.log(responseData);
 
                 let optionalFields = res.data[0].terms.filter(n => (n.applicability.indexOf('NN') <= -1));
                 let mandatoryFields = res.data[0].terms.filter(n => (n.applicability.indexOf('NN') > -1));
+        */        
 
-                
-                let requiredFields = Object.assign({}, ...mandatoryFields.map(o=>({[o.name]: ''})));
-                let nonRequiredFields = Object.assign({}, ...optionalFields.map(o=>({[o.name]: ''})));  
-
-                if(incoming){ // only run if its coming back from results
-                    Object.keys(requiredFields).map(e=>{
-                        requiredFields[e] = incoming[e];
-                    });
-                    console.log(requiredFields);
+        axios.get(`/data/actus-dictionary.json`)
+            .then(res => {
+                if (!res || !res.data) {
+                    return false;
                 }
 
+                // get contract identifier from id (accronym)
+                let identifier = Object.keys(res.data.taxonomy).filter(key => (res.data.taxonomy[key].accronym.indexOf(id) > -1))[0];
                 
+                // get taxonomy, applicability and terms lists for respective contract
+                let applicability = res.data.applicability[identifier]
+                let terms = res.data.terms
+                let taxonomy = res.data.taxonomy[identifier]
+                
+                // get optional and mandatory field identifiers
+                let optionalFieldIdentifiers = Object.keys(applicability).filter(key => (applicability[key] !== 'NN'));
+                let mandatoryFieldIdentifiers = Object.keys(applicability).filter(key => (applicability[key] === 'NN'));
+                optionalFieldIdentifiers.splice(optionalFieldIdentifiers.indexOf('contract'),1) // 'contract' is actually not an official term
+
+                // get optional and mandatory fields
+                let optionalFields = optionalFieldIdentifiers.map((identifier) => terms[identifier])
+                let mandatoryFields = mandatoryFieldIdentifiers.map((identifier) => terms[identifier])
+
+                console.log("fields....")
+                console.log(mandatoryFields)
+
+                if(incoming){ // only run if its coming back from results
+                    Object.keys(mandatoryFieldIdentifiers).map(e=>{
+                        mandatoryFieldIdentifiers[e] = incoming[e];
+                    });
+                    console.log(mandatoryFieldIdentifiers);
+                }
+
+                // group terms according to actus groups
                 let groupToValues = optionalFields.reduce(function (obj, item) { 
                         obj[item.group] = obj[item.group] || [];
                         obj[item.group].push(item);
@@ -235,22 +261,24 @@ export class Form extends PureComponent {
                             visible: false
                         }
                     });
-
+                
+                // fetch demos for this specific contract
                 this.fetchDemos(id);
+
+                // add data to state
                 this.setState({
                     groups: groups,
                     isFetching:false,
                     optionalFields: [...optionalFields],
                     mandatoryFields: [...mandatoryFields],
-                    requiredFields: {...requiredFields},
-                    nonRequiredFields: {...nonRequiredFields},
-                    originalRequiredFields: {...requiredFields},
-                    originalNonRequiredFields: {...nonRequiredFields},
+                    requiredFields: {...mandatoryFieldIdentifiers},
+                    nonRequiredFields: {...optionalFieldIdentifiers},
+                    originalRequiredFields: {...mandatoryFieldIdentifiers},
+                    originalNonRequiredFields: {...optionalFieldIdentifiers},
                     totalFields: Object.keys(fields).length,
-                    groupDescription: responseData.description,
-                    contractType: responseData.contractType,
-                    identifier: responseData.identifier,
-                    version: responseData.version,
+                    groupDescription: taxonomy.description,
+                    contractType: taxonomy.accronym,
+                    identifier: identifier,
                     error: {
                         ...this.state.error
                     }
@@ -287,7 +315,6 @@ export class Form extends PureComponent {
     }
 
     passDemoData(terms, id) {
-        //console.log(terms.ContractID);
         let groups = [...this.state.groups];
         let nonRequired = {...this.state.originalNonRequiredFields};
         let required = {...this.state.originalRequiredFields};
@@ -301,25 +328,27 @@ export class Form extends PureComponent {
         if(!this.state.showForm)
             this.toggleForm();
 
+        // assign the required terms from the demo to the "required" state
         termArray.map(t=>{
             requiredArray.map(r=>{
-                if(t[0] == r[0]){
+                if(t[0] == r[1]){
                     required[t[0]] = t[1];
                 }
             });
         });
 
-        //console.log(terms);
+        // for each terms group assign the optional terms to the "nonRequired" state
         groups.map(g =>{
-            //console.log(g);
             g.Items.map(i => {
                termArray.map(t=>{
-                   if(t[0] == i.name){
+                   if(t[0] == i.identifier){
                         nonRequired[t[0]] = t[1];
                    }
                });
             });
         });
+
+        // update the state
         this.setState({
             requiredFields: {
                 ...this.state.originalRequiredFields,
@@ -340,13 +369,13 @@ export class Form extends PureComponent {
     }
 
     render() {
-        let {groups, groupDescription, contractType, identifier, version, mandatoryFields, redirect, results, demos} = this.state;
+        let {groups, groupDescription, contractType, identifier, mandatoryFields, redirect, results, demos} = this.state;
         let {match} = this.props;
         let demosClassName = (this.state.showDemos)?"unfolded":"folded";
         let formClassName = (this.state.showForm)?"unfolded":"folded";
 
         if( redirect ) {
-            return <Redirect to={{ pathname: '/results', state: { url:`/form/${match.params.id}`, allAnswers: this.state.allAnswers, contractId: this.state.requiredFields.ContractID, data: results }}} />
+            return <Redirect to={{ pathname: '/results', state: { url:`/form/${match.params.id}`, allAnswers: this.state.allAnswers, contractId: this.state.requiredFields.contractID, data: results }}} />
         } else {  
             if(this.state.isFetching){
                 return (
@@ -354,7 +383,7 @@ export class Form extends PureComponent {
                 )
             } else {
                 return (
-                    <div id="form-container" identifier={ identifier } version={ version }>
+                    <div id="form-container" identifier={ identifier } >
                         <Grid fluid>
                             <Row>
                                 <Col sm={12} className={`contract-main-wrapper demo ${demosClassName}`} onClick={()=>this.toggleDemos()}>
@@ -391,20 +420,18 @@ export class Form extends PureComponent {
                                             <Grid fluid>
                                                 <Row>
                                                     {mandatoryFields.map((m, groupId) => {
-                                                            let itemName = m.name;
-                                                            itemName = itemName.replace(/([a-z])([A-Z])/g, '$1 $2');
-                                                            itemName = itemName.replace(/([A-Z])([A-Z])/g, '$1 $2');
-        
+                                                            // for each mandatory term add a field in the form and
+                                                            // preset with value from demo case (if any)
                                                             return (                                                        
                                                                 <Col key={`term_wrapper${groupId}`} sm={6} className="item nopadding">
                                                                     <div className="input-container">
-                                                                        <label className="item-labels" htmlFor={m.name}>{itemName}</label>
+                                                                        <label className="item-labels" htmlFor={m.name}>{m.name}</label>
                                                                         <div className="input-wrapper">
-                                                                            <input id={m.name}
-                                                                            applicability={m.applicability}
+                                                                            <input 
+                                                                            id={m.identifier}
                                                                             title={`Required Field`} 
                                                                             placeholder='...' 
-                                                                            value={this.state.requiredFields[m.name]}
+                                                                            value={this.state.requiredFields[m.identifier]}
                                                                             onChange={e=>this.updateField(e)}
                                                                             className="item-fields" 
                                                                             type="text" />
@@ -424,7 +451,7 @@ export class Form extends PureComponent {
                                     <div className="term-group-header">Below are your Optional choices</div>
                                     {
                                         groups.map((group, index) => {
-                                            //console.log("group.visible",group.visible);
+                                            // go through all term groups and create separate optional field tab
                                             return (
                                                 <div key={`term_wrapper${index}`} className="term-wrapper">
                                                     <div id={group.shortName} className="items-group">
@@ -434,25 +461,21 @@ export class Form extends PureComponent {
                                                                 <Row>
                                                                 {
                                                                     group.Items.map((item, index) => {
-                                                                        let itemName = item.name;
+                                                                        // for a specific term group go through all terms and create
+                                                                        // a form field
                                                                         let group = item.group;
-                                                                        itemName = itemName.replace(/([a-z])([A-Z])/g, '$1 $2');
-                                                                        itemName = itemName.replace(/([A-Z])([A-Z])/g, '$1 $2');
-                                                                        
-                                                                        //console.log(this.state.allAnswers[])
 
                                                                         return(
-                                                                            <Col key={`key${item.name}`} sm={4} className="item nopadding">
+                                                                            <Col key={`key${item.identifier}`} sm={4} className="item nopadding">
                                                                                 <div className="input-container">
-                                                                                    <label className="item-labels" htmlFor={item.name}>{itemName}</label>
+                                                                                    <label className="item-labels" htmlFor={item.name}>{item.name}</label>
                                                                                     <div className="input-wrapper term">
                                                                                         <input 
-                                                                                        id={item.name} 
+                                                                                        id={item.identifier} 
                                                                                         group={group}
-                                                                                        applicability={item.applicability}
                                                                                         title={`Optional Choice`} 
                                                                                         placeholder={`...`}
-                                                                                        value={this.state.nonRequiredFields[item.name]}
+                                                                                        value={this.state.nonRequiredFields[item.identifier]}
                                                                                         onChange={e=>this.updateNonRequiredField(e)}
                                                                                         className="item-fields"
                                                                                         type="text" />

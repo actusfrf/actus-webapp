@@ -5,9 +5,25 @@ library(readr)
 library(readxl)
 
 
-terms_path <- "../data/forms/terms/"
+terms_path <- "../data/forms/json/"
 folder_path <- "../data/demos/csv/"
 save_location <- "../data/demos/json/"
+
+# format column names
+tocamel=function(x,delim=" ") {
+	s <- strsplit(x, split=delim,fixed=TRUE)
+	sapply(s, function(y) {
+		if (any(is.na(y))) {
+		    y
+		}
+		else {
+		    first <- substring(y, 1, 1)
+		    first <- toupper(first)
+		    first[1] <- tolower(first[1])
+		    paste(first, substring(y, 2), sep = "", collapse = "")
+		}
+	    })
+}
 
 # read data csv demo files
 file_names <- list.files(path = folder_path)
@@ -35,7 +51,7 @@ file_names <- c("ANN_TestBed.xls","FXOUT_TestBed.xls","LAM_TestBed.xls",
       file[file == filter_value] <- NA
     }
     
-    keys <- c("Identifier", "Label", "ContractType", "Version", "Description", "Terms")
+    keys <- c("identifier", "label", "contractType", "version", "description", "terms")
     
     # boolean matrix because NA key/values don't need to be included in the demo
     bool_vec<- c()
@@ -46,15 +62,15 @@ file_names <- c("ANN_TestBed.xls","FXOUT_TestBed.xls","LAM_TestBed.xls",
     
     
     for(i in 1:nrow(file)){
-      demo_name <- paste("demo_", tolower(sub_dir_name), file[i, "ContractID"], sep = "")
-      ct <- file[i,"ContractType"] # extract contract type
+      demo_name <- paste("demo_", tolower(sub_dir_name), file[i, "contractID"], sep = "")
+      ct <- file[i,"contractType"] # extract contract type
       
       demo_df <- data.frame(
         demo_name,                                                        # identifier
-        paste("CT ", file[i,"ContractID"], ": ",substring(file[i, "Description"], 1, 50), sep = ""), # label
+        paste("CT ", file[i,"contractID"], ": ",substring(file[i, "description"], 1, 50), sep = ""), # label
         ct,                                                               # contract type
         format(Sys.Date(), format = "%Y%m%d"),                            # version
-        file[i, "Description"],                                           # Description
+        file[i, "description"],                                           # Description
         "REPLACE ME"                                                      # Replacement string
       )
       colnames(demo_df) <- keys
@@ -64,8 +80,8 @@ file_names <- c("ANN_TestBed.xls","FXOUT_TestBed.xls","LAM_TestBed.xls",
       json_string <- substring(json_string, 2, nchar(json_string) - 1)
       
       # get applicable terms for ct
-      terms_obj <- fromJSON(file(paste(terms_path,ct,".json", sep = "")))
-      terms_applicable <- terms_obj$Name
+      terms_obj <- fromJSON(file(paste(terms_path,"form_",ct,".json", sep = "")))$Terms
+      terms_applicable <- tocamel(terms_obj$Name)
       
       # extract applicable terms from terms in file
       terms_keys <- intersect(colnames(file[bool_matrix[i,] == TRUE]),terms_applicable)
