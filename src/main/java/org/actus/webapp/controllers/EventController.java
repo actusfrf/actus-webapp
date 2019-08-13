@@ -1,7 +1,7 @@
-package com.bundiconsulting.actuswebapp.controllers;
+package org.actus.webapp.controllers;
 
-import com.bundiconsulting.actuswebapp.models.Event;
-import com.bundiconsulting.actuswebapp.repositories.EventRepository;
+import org.actus.webapp.models.Event;
+import org.actus.webapp.repositories.EventRepository;
 import org.actus.attributes.ContractModel;
 import org.actus.attributes.ContractModelProvider;
 import org.actus.contracts.ContractType;

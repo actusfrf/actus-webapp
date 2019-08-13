@@ -186,21 +186,7 @@ export class Form extends PureComponent {
         this.setState({
             isFetching: true,
             allAnswers: incoming ? {...incoming}: null,
-        });
-
-        /*
-        axios
-            .get(`${this.state.host}/forms/${id}`)
-            .then(res => {
-                if (!res.data[0].terms || !res || !res.data) {
-                    return false;
-                }
-                let responseData = res.data[0];
-                console.log(responseData);
-
-                let optionalFields = res.data[0].terms.filter(n => (n.applicability.indexOf('NN') <= -1));
-                let mandatoryFields = res.data[0].terms.filter(n => (n.applicability.indexOf('NN') > -1));
-        */        
+        });       
 
         axios.get(`/data/actus-dictionary.json`)
             .then(res => {
@@ -227,7 +213,7 @@ export class Form extends PureComponent {
 
                 console.log("fields....")
                 console.log(mandatoryFields)
-
+                
                 if(incoming){ // only run if its coming back from results
                     Object.keys(mandatoryFieldIdentifiers).map(e=>{
                         mandatoryFieldIdentifiers[e] = incoming[e];
@@ -242,6 +228,7 @@ export class Form extends PureComponent {
                         return obj;
                     }, Object.create(null));
 
+                /*    
                 let fields = {};
 
                 //auto populate fields with values for testing
@@ -249,6 +236,7 @@ export class Form extends PureComponent {
                         fields[term.name] = {};
                         fields[term.name] = '';
                     });
+                */
 
                 let groups = Object
                     .keys(groupToValues)
@@ -275,7 +263,7 @@ export class Form extends PureComponent {
                     nonRequiredFields: {...optionalFieldIdentifiers},
                     originalRequiredFields: {...mandatoryFieldIdentifiers},
                     originalNonRequiredFields: {...optionalFieldIdentifiers},
-                    totalFields: Object.keys(fields).length,
+                    //totalFields: Object.keys(fields).length,
                     groupDescription: taxonomy.description,
                     contractType: taxonomy.accronym,
                     identifier: identifier,

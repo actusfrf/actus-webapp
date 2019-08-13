@@ -1,6 +1,6 @@
-package com.bundiconsulting.actuswebapp.repositories;
+package org.actus.webapp.repositories;
 
-import com.bundiconsulting.actuswebapp.models.Demo;
+import org.actus.webapp.models.Demo;
 import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 /*import org.springframework.data.mongodb.repository.Query;

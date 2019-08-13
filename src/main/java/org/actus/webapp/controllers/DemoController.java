@@ -1,8 +1,8 @@
-package com.bundiconsulting.actuswebapp.controllers;
+package org.actus.webapp.controllers;
 
-import com.bundiconsulting.actuswebapp.models.Demo;
-import com.bundiconsulting.actuswebapp.models.DemoMeta;
-import com.bundiconsulting.actuswebapp.repositories.DemoRepository;
+import org.actus.webapp.models.Demo;
+import org.actus.webapp.models.DemoMeta;
+import org.actus.webapp.repositories.DemoRepository;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;

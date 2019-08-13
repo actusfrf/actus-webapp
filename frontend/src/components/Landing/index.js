@@ -19,13 +19,6 @@ export class Landing extends PureComponent {
             })
 
         });
-        /* axios.get(`${this.state.host}/forms`)
-            .then(res => {
-                console.log(res.data);
-                this.setState({
-                    contracts: res.data
-                })
-        });*/
     }
 
     render() {
@@ -41,11 +34,6 @@ export class Landing extends PureComponent {
                 <Grid className="contract-grid">
                     <Row>
                         {
-                            /*this.state.contracts.map((contract) =>  
-                            <Contract key={contract.contractType} contractType={contract.contractType} 
-                                name={contract.name}
-                                description={contract.description} />
-                            )*/
                             Object.keys(contracts).map( (key) =>                    
                                 <Contract key={key} 
                                 contractType={contracts[key].accronym} 
