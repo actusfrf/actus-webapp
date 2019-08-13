@@ -36,14 +36,9 @@ export class Form extends PureComponent {
         results:{},
         isFetching: false,
         redirect: false,
-        host: "http://localhost:8080", //"http://marbella.myftp.org:8080", //http://190.141.20.26/ // "http://localhost:8080",
+        host: "http://localhost:8080", //"http://marbella.myftp.org:8080"
         backFromResults: false,
         allAnswers: {}
-    }
-
-    assemble(a, b) {
-        a.Group[b.Name] = b.Name;
-        return a;
     }
 
     getTestFields(){
@@ -70,10 +65,15 @@ export class Form extends PureComponent {
         return t;
     }
 
-    handleChange(date) {
-        this.setState({
-            startDate: date
-        });
+    componentDidMount() {
+        console.log('Did Mount');
+        let {match} = this.props;
+        if(this.props.location.state && this.props.location.state.backFromResults){
+            console.log("[Data incoming]", this.props.location.state.backFromResults);
+            this.fetchTerms(match.params.id, this.props.location.state.allAnswers);
+        }else{
+            this.fetchTerms(match.params.id);
+        }
     }
 
     handleReset(e) {
@@ -112,8 +112,7 @@ export class Form extends PureComponent {
         this.setState({
             allAnswers: this.cleanUpData(dataToSend)
         });
-        console.log("hello")
-        console.log(this.cleanUpData(dataToSend))
+
         axios.post(this.state.host+'/events', this.cleanUpData(dataToSend))
             .then(res => {
                 this.setState({
@@ -125,6 +124,10 @@ export class Form extends PureComponent {
             .catch(error => {
                 console.log(this);
                 console.log(error.message);
+                
+                this.setState({
+                    error: error
+                })
             });
     }
 
@@ -160,24 +163,6 @@ export class Form extends PureComponent {
         });
         
         this.validateFields();
-    }
-
-    onGroupUpdate(e){
-        console.log(e.target.id);
-        console.log(e.target.title);
-        console.log(e.target.group);
-    }
-    
-    componentDidMount() {
-        console.log('Did Mount');
-        let {match} = this.props;
-        if(this.props.location.state && this.props.location.state.backFromResults){
-            console.log("[Data incoming]", this.props.location.state.backFromResults);
-            this.fetchTerms(match.params.id, this.props.location.state.allAnswers);
-        }else{
-            this.fetchTerms(match.params.id);
-        }
-
     }
 
     fetchTerms(id, incoming){
@@ -228,16 +213,6 @@ export class Form extends PureComponent {
                         return obj;
                     }, Object.create(null));
 
-                /*    
-                let fields = {};
-
-                //auto populate fields with values for testing
-                optionalFields.map(function (term, index) {
-                        fields[term.name] = {};
-                        fields[term.name] = '';
-                    });
-                */
-
                 let groups = Object
                     .keys(groupToValues)
                     .map(function (key) {
@@ -263,7 +238,6 @@ export class Form extends PureComponent {
                     nonRequiredFields: {...optionalFieldIdentifiers},
                     originalRequiredFields: {...mandatoryFieldIdentifiers},
                     originalNonRequiredFields: {...optionalFieldIdentifiers},
-                    //totalFields: Object.keys(fields).length,
                     groupDescription: taxonomy.description,
                     contractType: taxonomy.accronym,
                     identifier: identifier,
@@ -357,7 +331,7 @@ export class Form extends PureComponent {
     }
 
     render() {
-        let {groups, groupDescription, contractType, identifier, mandatoryFields, redirect, results, demos} = this.state;
+        let {groups, groupDescription, contractType, identifier, mandatoryFields, redirect, results, demos, error} = this.state;
         let {match} = this.props;
         let demosClassName = (this.state.showDemos)?"unfolded":"folded";
         let formClassName = (this.state.showForm)?"unfolded":"folded";

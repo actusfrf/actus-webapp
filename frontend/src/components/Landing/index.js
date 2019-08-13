@@ -6,7 +6,6 @@ import './Landing.css';
 
 export class Landing extends PureComponent {
     state = {
-	    host: "http://localhost:8080", //"http://marbella.myftp.org:8080", //"http://localhost:8080",
         contracts:[]
     }
 
