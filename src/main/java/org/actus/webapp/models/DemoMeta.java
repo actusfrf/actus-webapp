@@ -1,4 +1,4 @@
-package com.bundiconsulting.actuswebapp.models;
+package org.actus.webapp.models;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

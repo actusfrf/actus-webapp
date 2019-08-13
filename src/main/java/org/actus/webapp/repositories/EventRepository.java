@@ -1,6 +1,6 @@
-package com.bundiconsulting.actuswebapp.repositories;
+package org.actus.webapp.repositories;
 
-import com.bundiconsulting.actuswebapp.models.Event;
+import org.actus.webapp.models.Event;
 import org.springframework.data.repository.CrudRepository;
 
 public interface EventRepository   extends CrudRepository<Event, String> {

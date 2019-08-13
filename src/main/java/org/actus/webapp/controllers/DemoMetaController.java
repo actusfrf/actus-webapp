@@ -1,7 +1,7 @@
-package com.bundiconsulting.actuswebapp.controllers;
+package org.actus.webapp.controllers;
 
-import com.bundiconsulting.actuswebapp.models.DemoMeta;
-import com.bundiconsulting.actuswebapp.repositories.DemoMetaRepository;
+import org.actus.webapp.models.DemoMeta;
+import org.actus.webapp.repositories.DemoMetaRepository;
 import java.io.IOException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;

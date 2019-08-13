@@ -1,6 +1,6 @@
-package com.bundiconsulting.actuswebapp.repositories;
+package org.actus.webapp.repositories;
 
-import com.bundiconsulting.actuswebapp.models.DemoMeta;
+import org.actus.webapp.models.DemoMeta;
 import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 

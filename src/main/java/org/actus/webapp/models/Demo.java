@@ -1,4 +1,4 @@
-package com.bundiconsulting.actuswebapp.models;
+package org.actus.webapp.models;
 
 import java.util.Map;
 
