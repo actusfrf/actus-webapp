@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
-import org.apache.commons.lang3.*;
 
 @RestController
 public class EventController {
@@ -48,8 +47,9 @@ public class EventController {
 
             System.out.println(entry.getKey() + ":" + entry.getValue());
 
-            map.put(StringUtils.capitalize(entry.getKey()), entry.getValue().toString());
-
+            //map.put(StringUtils.capitalize(entry.getKey()), entry.getValue().toString());
+            // capitalize input json keys as required in contract model parser
+            map.put(entry.getKey().substring(0, 1).toUpperCase() + entry.getKey().substring(1), entry.getValue().toString());
         }
 
         // parse attributes
