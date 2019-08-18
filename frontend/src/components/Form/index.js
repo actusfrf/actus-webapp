@@ -26,7 +26,7 @@ export class Form extends PureComponent {
         nonRequiredFields:{},
         demos:[],
         showDemos: false,
-        showForm: false,
+        showForm: true,
         showOptionals: false,
         optionHidden:[],
         totalFields: 0,
