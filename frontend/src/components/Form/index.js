@@ -77,7 +77,18 @@ export class Form extends PureComponent {
     }
 
     handleReset(e) {
-        console.log('Reset');
+        let requiredFieldCopy = {...this.state.requiredFields};
+        let nonRequiredFieldsCopy = {...this.state.nonRequiredFields};
+        for(var n in requiredFieldCopy){
+            requiredFieldCopy[n] = ""
+        }
+        for(var n in nonRequiredFieldsCopy){
+            nonRequiredFieldsCopy[n] = ""
+        }
+        this.setState({
+            requiredFields: requiredFieldCopy,
+            nonRequiredFields: nonRequiredFieldsCopy 
+        })
     }
 
     cleanUpData(obj){
