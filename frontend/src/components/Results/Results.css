@@ -29,7 +29,7 @@
 }
 
 .results-main-wrapper .results-title .contract-id {
-    color: #015289;
+    color: #fff;
 }
 
 .results-main-wrapper .results-description {
@@ -44,7 +44,8 @@
 }
 
 .table-header-container {
-    background: linear-gradient(to bottom, #9dd9db, #fff);
+    background: #002d56;
+    color: #fff;
 }
 
 .results-table-wrapper {
