@@ -34,7 +34,7 @@ filter_values <- c("NOCALENDAR", "NULL", "SD", -999999999, "N")
 
 file_names <- c("ANN_TestBed.xls","FXOUT_TestBed.xls","LAM_TestBed.xls",
                 "LAX_TestBed.xls","NAM_TestBed.xls","PAM_TestBed.xls",
-                "STK_TestBed.xls")
+                "STK_TestBed.xls","SWPPV_TestBed.xls")
   
   for ( file_name in file_names ) {
     path <- paste(folder_path, file_name, sep = "")
