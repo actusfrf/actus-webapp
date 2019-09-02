@@ -203,18 +203,23 @@ export class Form extends PureComponent {
                 let mandatoryFieldIdentifiers = Object.keys(applicability).filter(key => (applicability[key] === 'NN'));
                 optionalFieldIdentifiers.splice(optionalFieldIdentifiers.indexOf('contract'),1) // 'contract' is actually not an official term
 
-                // get optional and mandatory fields
+                // get optional and mandatory field details
                 let optionalFields = optionalFieldIdentifiers.map((identifier) => terms[identifier])
                 let mandatoryFields = mandatoryFieldIdentifiers.map((identifier) => terms[identifier])
 
-                console.log("fields....")
-                console.log(mandatoryFields)
+                // define optional and mandatory field values (empty by default)
+                let requiredFields = Object.assign({}, ...mandatoryFields.map(o=>({[o.name]: ''})));
+                let nonRequiredFields = Object.assign({}, ...optionalFields.map(o=>({[o.name]: ''}))); 
                 
-                if(incoming){ // only run if its coming back from results
-                    Object.keys(mandatoryFieldIdentifiers).map(e=>{
-                        mandatoryFieldIdentifiers[e] = incoming[e];
+                // if returning from the results page, populate previous field values
+                if(incoming){
+                    mandatoryFieldIdentifiers.map(e=>{
+                        requiredFields[e] = incoming[e];
                     });
-                    console.log(mandatoryFieldIdentifiers);
+
+                    optionalFieldIdentifiers.map(e=>{
+                        nonRequiredFields[e] = incoming[e];
+                    });
                 }
 
                 // group terms according to actus groups
@@ -245,8 +250,8 @@ export class Form extends PureComponent {
                     isFetching:false,
                     optionalFields: [...optionalFields],
                     mandatoryFields: [...mandatoryFields],
-                    requiredFields: {...mandatoryFieldIdentifiers},
-                    nonRequiredFields: {...optionalFieldIdentifiers},
+                    requiredFields: {...requiredFields},
+                    nonRequiredFields: {...nonRequiredFields},
                     originalRequiredFields: {...mandatoryFieldIdentifiers},
                     originalNonRequiredFields: {...optionalFieldIdentifiers},
                     groupDescription: taxonomy.description,
