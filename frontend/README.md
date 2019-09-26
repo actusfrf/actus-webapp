@@ -1,6 +1,15 @@
 ## ACTUS APP Frontend
 
-In order to build and run the frontend, first, navigate to the frontend root folder
+## Getting started
+These instructions will get you a copy of the demo app frontend up and running on your local machine for testing purposes.
+
+## Requirements
+
+* Node
+* create-react-app
+* react-router-dom
+* npm
+
 
 # /actus-webapp
 cd ./frontend
