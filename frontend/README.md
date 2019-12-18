@@ -7,8 +7,6 @@ These instructions will get you a copy of the demo app frontend up and running o
 ## Requirements
 
 * Node
-* create-react-app
-* react-router-dom
 * npm
 
 ## Build and run
@@ -33,3 +31,4 @@ Finally, build and start the frontend
 npm run build
 npm start
 ```
+If you are not redirected to the browser and url http://localhost:3000 automatically open it manually.
