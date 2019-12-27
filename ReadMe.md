@@ -9,8 +9,6 @@ These instructions will get you a copy of the demo up and running on your local 
 * java: 8(+)
 * mongodb: 5(*)
 * Node
-* create-react-app
-* react-router-dom
 * npm
 * maven: 3(+)
 * gradle: 11(+)
