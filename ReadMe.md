@@ -33,6 +33,8 @@ mvn clean install "-Dmaven.test.failure.ignore=true"
 
 ## Set up local environment
 
+First, clone the actus-webapp repository than continue with the steps for your os.
+
 ### Linux:
 
 Start services and set up the database for running the app locally by running the start script in your terminal (needs sudo privileges)
