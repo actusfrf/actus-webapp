@@ -15,10 +15,14 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && rm -rf ../src/main/resources/static && mv build ../src/main/resources/static",
+    "build": "run-script-os",
+    "build:default": "react-scripts build && rm -rf ../src/main/resources/static && mv build ../src/main/resources/static",
+    "build:windows": "react-scripts build & rmdir /s /q ..\\src\\main\\resources\\static & rename build static & move static ..\\src\\main\\resources",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "install": "find ./node_modules/* -mtime +10950 -exec touch {} \\;"
+    "install": "run-script-os",
+    "install:default": "find ./node_modules/* -mtime +10950 -exec touch {} \\;",
+    "install:windows": "ForFiles /p \".\\node_modules\" /s /d -10950 /c \"cmd /c copy /b @file +,, > nul\""
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -30,6 +34,8 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "bootstrap": "^4.3.1"
+    "jquery": "^1.9.1",
+    "bootstrap": "^4.3.1",
+    "run-script-os": "^1.0.7"
   }
 }
