@@ -25,7 +25,7 @@ On Linux:
 # actus-core/
 mvn clean install -Dmaven.test.failure.ignore=true
 ```
-On Windows (PowerShell):
+On Windows:
 ```sh
 # actus-core/
 mvn clean install "-Dmaven.test.failure.ignore=true"
@@ -45,9 +45,9 @@ sudo sh ./scripts/start.sh
 ### Windows:
 * Install MongoDB as a service.
 * Add the MongoDB bin folder to the PATH environment variable.
-* On installation nodejs will add itself to the PATH environment variable. If npm can't be run in PowerShell add it to the PATH variable.
+* On installation nodejs will add itself to the PATH environment variable. If npm can't be run in PowerShell or CMD add it to the PATH variable.
 
-Start services and set up the database for running the app locally by running the start script in your PowerShell terminal
+Start services and set up the database for running the app locally by running the start script in your terminal
 
 ```sh
 # actus-webapp/

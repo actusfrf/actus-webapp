@@ -22,7 +22,7 @@
     "eject": "react-scripts eject",
     "install": "run-script-os",
     "install:default": "find ./node_modules/* -mtime +10950 -exec touch {} \\;",
-    "install:windows": "ForFiles /p \".\\node_modules\" /s /d -10950 /c \"cmd /c del @file\""
+    "install:windows": "ForFiles /p \".\\node_modules\" /s /d -10950 /c \"cmd /c copy /b @file +,, > nul\""
   },
   "eslintConfig": {
     "extends": "react-app"
