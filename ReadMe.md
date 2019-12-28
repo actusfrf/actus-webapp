@@ -20,12 +20,20 @@ These instructions will get you a copy of the demo up and running on your local 
 * Request an auth-token for access to the actus-core library through [Actusfrf.org](https://www.actusfrf.org/developers).
 * Build actus-core dependency and add to your local maven repository
 
+On Linux:
 ```sh
 # actus-core/
 mvn clean install -Dmaven.test.failure.ignore=true
 ```
+On Windows (PowerShell):
+```sh
+# actus-core/
+mvn clean install "-Dmaven.test.failure.ignore=true"
+```
 
 ## Set up local environment
+
+### Linux:
 
 Start services and set up the database for running the app locally by running the start script in your terminal (needs sudo privileges)
 
@@ -34,15 +42,35 @@ Start services and set up the database for running the app locally by running th
 sudo sh ./scripts/start.sh
 ```
 
+### Windows:
+* Install MongoDB as a service.
+* Add the MongoDB bin folder to the PATH environment variable.
+* On installation nodejs will add itself to the PATH environment variable. If npm can't be run in PowerShell add it to the PATH variable.
+
+Start services and set up the database for running the app locally by running the start script in your PowerShell terminal
+
+```sh
+# actus-webapp/
+.\scripts\start.bat
+```
+
 ## Build and run the app
 
 Build and run the app through the following commands in your terminal
 
+### Linux
 ```sh
 # actus-webapp/
 chmod +x gradlew
 ./gradlew build
 ./gradlew bootRun
+```
+
+### Windows
+```sh
+# actus-webapp/
+.\gradlew.bat build
+.\gradlew.bat bootRun
 ```
 
 Yey, you made it to the first level - the backend to the ACTUS App is now running!
@@ -69,7 +97,7 @@ First, navigate to the frontend root folder
 cd ./frontend
 ```
 
-Then, install the NPM packages required to build and run the frontend
+Then, install the NPM packages required to build and run the frontend. This process can take a while.
 
 ```sh
 # /frontend
