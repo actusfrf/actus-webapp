@@ -20,12 +20,12 @@ These instructions will get you a copy of the demo up and running on your local 
 * Request an auth-token for access to the actus-core library through [Actusfrf.org](https://www.actusfrf.org/developers).
 * Build actus-core dependency and add to your local maven repository
 
-On Linux:
+### Linux:
 ```sh
 # actus-core/
 mvn clean install -Dmaven.test.failure.ignore=true
 ```
-On Windows:
+### Windows:
 ```sh
 # actus-core/
 mvn clean install "-Dmaven.test.failure.ignore=true"
@@ -60,7 +60,7 @@ Start services and set up the database for running the app locally by running th
 
 Build and run the app through the following commands in your terminal
 
-### Linux
+### Linux:
 ```sh
 # actus-webapp/
 chmod +x gradlew
@@ -68,7 +68,7 @@ chmod +x gradlew
 ./gradlew bootRun
 ```
 
-### Windows
+### Windows:
 ```sh
 # actus-webapp/
 .\gradlew.bat build
@@ -80,7 +80,7 @@ Yey, you made it to the first level - the backend to the ACTUS App is now runnin
 
 ## Test REST endpoints
 
-In a fresh terminal execute the following commands
+In a fresh terminal execute the following commands (Linux and Windows)
 
 ```sh
 # Fetch demo data for PAM contract
@@ -90,7 +90,7 @@ curl -i -H "Accept: application/json" localhost:8080/demos/meta/PAM
 
 ### Build and run the frontend
 
-Welcome to level 2! Now you are going to build and run the frontend to the ACTUS App.
+Welcome to level 2! Now you are going to build and run the frontend to the ACTUS App. Note that the instructions in this step work for both Linux and Windows.
 
 First, navigate to the frontend root folder
 
