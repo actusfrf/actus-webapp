@@ -78,4 +78,21 @@ public class EventController {
 
     }
 
+    // param:   Json Array of Json Objects
+    // return:  ArrayList of ArrayList of ContractEvents
+    @RequestMapping(method = RequestMethod.POST, value = "/batchEvents")
+    @CrossOrigin(origins = "*")
+    public List<List<Event>> solveArrayOfContract(@RequestBody List<Map<String, Object>> json) {
+        ArrayList<List<Event>> output = new ArrayList<>();
+        json.forEach(entry -> {
+            //minimal error handling, can be removed as soon as error handling in solveContract is implemented
+            try {
+                output.add(solveContract(entry));
+            }catch(Exception e){
+                System.err.println("Invalid Contract Parameters\nContractID: " + entry.get("ContractID"));
+            }
+        });
+        return output;
+    }
+
 }
