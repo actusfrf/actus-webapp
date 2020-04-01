@@ -80,7 +80,7 @@ public class EventController {
 
     // param:   Json Array of Json Objects
     // return:  ArrayList of ArrayList of ContractEvents
-    @RequestMapping(method = RequestMethod.POST, value = "/batchEvents")
+    @RequestMapping(method = RequestMethod.POST, value = "/events/batch")
     @CrossOrigin(origins = "*")
     public List<List<Event>> solveArrayOfContract(@RequestBody List<Map<String, Object>> json) {
         ArrayList<List<Event>> output = new ArrayList<>();
