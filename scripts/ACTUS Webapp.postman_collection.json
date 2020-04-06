@@ -1,0 +1,125 @@
+{
+	"info": {
+		"_postman_id": "fe518b7d-152d-4417-8755-1cf8cb24431d",
+		"name": "ACTUS Webapp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Fetch demo meta infos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST_LOCAL}}/demos/meta/PAM",
+					"host": [
+						"{{HOST_LOCAL}}"
+					],
+					"path": [
+						"demos",
+						"meta",
+						"PAM"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fetch demo details",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST_LOCAL}}/demos/PAM",
+					"host": [
+						"{{HOST_LOCAL}}"
+					],
+					"path": [
+						"demos",
+						"PAM"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fetch demo details Copy",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST_LOCAL}}/demo/5db350f7d70b8e45852b3057",
+					"host": [
+						"{{HOST_LOCAL}}"
+					],
+					"path": [
+						"demo",
+						"5db350f7d70b8e45852b3057"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Compute events",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"calendar\": \"WEEKDAY\",\n  \"businessDayConvention\": \"SCF\",\n  \"contractType\": \"PAM\",\n  \"statusDate\": \"2015-01-01T00:00:00\",\n  \"contractRole\": \"RPA\",\n  \"contractID\": 108,\n  \"cycleAnchorDateOfInterestPayment\": \"2016-01-02T00:00:00\",\n  \"cycleOfInterestPayment\": \"1Y+\",\n  \"nominalInterestRate\": 0.02,\n  \"dayCountConvention\": \"30E/360\",\n  \"currency\": \"USD\",\n  \"contractDealDate\": \"2015-01-01T00:00:00\",\n  \"initialExchangeDate\": \"2015-01-02T00:00:00\",\n  \"maturityDate\": \"2020-01-02T00:00:00\",\n  \"notionalPrincipal\": 1000,\n  \"rateSpread\": 0,\n  \"premiumDiscountAtIED\": 0\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST_LOCAL}}/events",
+					"host": [
+						"{{HOST_LOCAL}}"
+					],
+					"path": [
+						"events"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Compute batch events",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"contracts\": [\n        {\n            \"calendar\": \"WEEKDAY\",\n            \"businessDayConvention\": \"SCF\",\n            \"contractType\": \"PAM\",\n            \"statusDate\": \"2015-01-01T00:00:00\",\n            \"contractRole\": \"RPA\",\n            \"contractId\": \"Contract-01\",\n            \"cycleAnchorDateOfInterestPayment\": \"2016-01-02T00:00:00\",\n            \"cycleOfInterestPayment\": \"1Y+\",\n            \"nominalInterestRate\": 0.02,\n            \"dayCountConvention\": \"30E/360\",\n            \"currency\": \"USD\",\n            \"contractDealDate\": \"2015-01-01T00:00:00\",\n            \"initialExchangeDate\": \"2015-01-02T00:00:00\",\n            \"maturityDate\": \"2020-01-02T00:00:00\",\n            \"notionalPrincipal\": 1000,\n            \"rateSpread\": 0,\n            \"premiumDiscountAtIED\": 0\n        },\n        {\n            \"contractType\": \"PAM\",\n            \"statusDate\": \"2015-01-01T00:00:00\",\n            \"contractRole\": \"RPA\",\n            \"contractId\": \"Contract-02\",\n            \"nominalInterestRate\": 0.01,\n            \"dayCountConvention\": \"30E/360\",\n            \"currency\": \"USD\",\n            \"contractDealDate\": \"2015-01-01T00:00:00\",\n            \"initialExchangeDate\": \"2015-01-02T00:00:00\",\n            \"maturityDate\": \"2015-04-02T00:00:00\",\n            \"notionalPrincipal\": 1000,\n            \"rateSpread\": 0,\n            \"premiumDiscountAtIED\": 0\n        },\n        {\n            \"calendar\": \"WEEKDAY\",\n            \"businessDayConvention\": \"SCF\",\n            \"contractType\": \"PAM\",\n            \"statusDate\": \"2015-01-01T00:00:00\",\n            \"contractRole\": \"RPA\",\n            \"contractId\": \"Contract-03\",\n            \"cycleAnchorDateOfInterestPayment\": \"2016-01-02T00:00:00\",\n            \"cycleOfInterestPayment\": \"1Y+\",\n            \"nominalInterestRate\": 0.02,\n            \"dayCountConvention\": \"30E/360\",\n            \"currency\": \"USD\",\n            \"contractDealDate\": \"2015-01-01T00:00:00\",\n            \"initialExchangeDate\": \"2015-01-02T00:00:00\",\n            \"maturityDate\": \"2020-01-02T00:00:00\",\n            \"notionalPrincipal\": 1000,\n            \"rateSpread\": 0,\n            \"premiumDiscountAtIED\": 0,\n            \"cycleAnchorDateOfRateReset\": \"2016-01-02T00:00:00\",\n            \"cycleOfRateReset\": \"1Y+\",\n            \"rateSpread\": 0.02,\n            \"rateMultiplier\": 1,\n            \"marketObjectCodeOfRateReset\": \"LIBOR3MUSD\"\n        },\n        {\n            \"calendar\": \"WEEKDAY\",\n            \"businessDayConvention\": \"SCF\",\n            \"contractType\": \"PAM\",\n            \"statusDate\": \"2015-01-01T00:00:00\",\n            \"contractRole\": \"RPA\",\n            \"contractId\": \"Contract-04\",\n            \"cycleAnchorDateOfInterestPayment\": \"2016-01-02T00:00:00\",\n            \"cycleOfInterestPayment\": \"1Y+\",\n            \"nominalInterestRate\": 0.02,\n            \"dayCountConvention\": \"30E/360\",\n            \"currency\": \"USD\",\n            \"contractDealDate\": \"2015-01-01T00:00:00\",\n            \"initialExchangeDate\": \"2015-01-02T00:00:00\",\n            \"maturityDate\": \"2020-01-02T00:00:00\",\n            \"notionalPrincipal\": 1000,\n            \"rateSpread\": 0,\n            \"premiumDiscountAtIED\": 0,\n            \"cycleAnchorDateOfRateReset\": \"2016-01-02T00:00:00\",\n            \"cycleOfRateReset\": \"1Y+\",\n            \"rateSpread\": 0.02,\n            \"rateMultiplier\": 1,\n            \"marketObjectCodeOfRateReset\": \"LIBOR3MUSD\",\n            \"cycleAnchorDateOfScalingIndex\": \"2016-01-02T00:00:00\",\n            \"cycleOfScalingIndex\": \"1Y+\",\n            \"scalingEffect\": \"IN0\",\n            \"scalingIndexAtStatusDate\": 100,\n            \"marketObjectCodeOfScalingIndex\": \"CPIUS\"\n        }\n    ],\n    \"riskFactors\": [\n        {\n            \"marketObjectCode\": \"LIBOR3MUSD\",\n            \"base\": 100,\n            \"data\": [\n            {\n                \"time\": \"2015-01-01T00:00:00\",\n                \"value\": \"0.2531\"\n            },\n            {\n                \"time\": \"2015-02-01T00:00:00\",\n                \"value\": \"0.26185\"\n            },\n            {\n                \"time\": \"2015-03-01T00:00:00\",\n                \"value\": \"0.27075\"\n            },\n            {\n                \"time\": \"2015-04-01T00:00:00\",\n                \"value\": \"0.27875\"\n            },\n            {\n                \"time\": \"2015-05-01T00:00:00\",\n                \"value\": \"0.28375\"\n            },\n            {\n                \"time\": \"2015-06-01T00:00:00\",\n                \"value\": \"0.2832\"\n            },\n            {\n                \"time\": \"2015-07-01T00:00:00\",\n                \"value\": \"0.3086\"\n            },\n            {\n                \"time\": \"2015-08-01T00:00:00\",\n                \"value\": \"0.329\"\n            },\n            {\n                \"time\": \"2015-09-01T00:00:00\",\n                \"value\": \"0.325\"\n            },\n            {\n                \"time\": \"2015-10-01T00:00:00\",\n                \"value\": \"0.3341\"\n            },\n            {\n                \"time\": \"2015-11-01T00:00:00\",\n                \"value\": \"0.4162\"\n            },\n            {\n                \"time\": \"2015-12-01T00:00:00\",\n                \"value\": \"0.6127\"\n            },\n            {\n                \"time\": \"2016-01-01T00:00:00\",\n                \"value\": \"0.6126\"\n            },\n            {\n                \"time\": \"2016-02-01T00:00:00\",\n                \"value\": \"0.6331\"\n            },\n            {\n                \"time\": \"2016-03-01T00:00:00\",\n                \"value\": \"0.6286\"\n            },\n            {\n                \"time\": \"2016-04-01T00:00:00\",\n                \"value\": \"0.6366\"\n            },\n            {\n                \"time\": \"2016-05-01T00:00:00\",\n                \"value\": \"0.6858\"\n            },\n            {\n                \"time\": \"2016-06-01T00:00:00\",\n                \"value\": \"0.6541\"\n            },\n            {\n                \"time\": \"2016-07-01T00:00:00\",\n                \"value\": \"0.7591\"\n            },\n            {\n                \"time\": \"2016-08-01T00:00:00\",\n                \"value\": \"0.83933\"\n            },\n            {\n                \"time\": \"2016-09-01T00:00:00\",\n                \"value\": \"0.85367\"\n            },\n            {\n                \"time\": \"2016-10-01T00:00:00\",\n                \"value\": \"0.88428\"\n            },\n            {\n                \"time\": \"2016-11-01T00:00:00\",\n                \"value\": \"0.93417\"\n            },\n            {\n                \"time\": \"2016-12-01T00:00:00\",\n                \"value\": \"0.99789\"\n            },\n            {\n                \"time\": \"2017-01-01T00:00:00\",\n                \"value\": \"1.03456\"\n            },\n            {\n                \"time\": \"2017-02-01T00:00:00\",\n                \"value\": \"1.064\"\n            },\n            {\n                \"time\": \"2017-03-01T00:00:00\",\n                \"value\": \"1.14956\"\n            },\n            {\n                \"time\": \"2017-04-01T00:00:00\",\n                \"value\": \"1.17233\"\n            },\n            {\n                \"time\": \"2017-05-01T00:00:00\",\n                \"value\": \"1.21\"\n            },\n            {\n                \"time\": \"2017-06-01T00:00:00\",\n                \"value\": \"1.29917\"\n            },\n            {\n                \"time\": \"2017-07-01T00:00:00\",\n                \"value\": \"1.31056\"\n            },\n            {\n                \"time\": \"2017-08-01T00:00:00\",\n                \"value\": \"1.31778\"\n            },\n            {\n                \"time\": \"2017-09-01T00:00:00\",\n                \"value\": \"1.33389\"\n            },\n            {\n                \"time\": \"2017-10-01T00:00:00\",\n                \"value\": \"1.38122\"\n            },\n            {\n                \"time\": \"2017-11-01T00:00:00\",\n                \"value\": \"1.48738\"\n            },\n            {\n                \"time\": \"2017-12-01T00:00:00\",\n                \"value\": \"1.69428\"\n            },\n            {\n                \"time\": \"2018-01-01T00:00:00\",\n                \"value\": \"1.77777\"\n            },\n            {\n                \"time\": \"2018-02-01T00:00:00\",\n                \"value\": \"2.01719\"\n            },\n            {\n                \"time\": \"2018-03-01T00:00:00\",\n                \"value\": \"2.31175\"\n            },\n            {\n                \"time\": \"2018-04-01T00:00:00\",\n                \"value\": \"2.36294\"\n            },\n            {\n                \"time\": \"2018-05-01T00:00:00\",\n                \"value\": \"2.32125\"\n            },\n            {\n                \"time\": \"2018-06-01T00:00:00\",\n                \"value\": \"2.33575\"\n            },\n            {\n                \"time\": \"2018-07-01T00:00:00\",\n                \"value\": \"2.34856\"\n            },\n            {\n                \"time\": \"2018-08-01T00:00:00\",\n                \"value\": \"2.32075\"\n            },\n            {\n                \"time\": \"2018-09-01T00:00:00\",\n                \"value\": \"2.39838\"\n            },\n            {\n                \"time\": \"2018-10-01T00:00:00\",\n                \"value\": \"2.5585\"\n            },\n            {\n                \"time\": \"2018-11-01T00:00:00\",\n                \"value\": \"2.73613\"\n            },\n            {\n                \"time\": \"2018-12-01T00:00:00\",\n                \"value\": \"2.80763\"\n            },\n            {\n                \"time\": \"2019-01-01T00:00:00\",\n                \"value\": \"2.7375\"\n            },\n            {\n                \"time\": \"2019-02-01T00:00:00\",\n                \"value\": \"2.61513\"\n            },\n            {\n                \"time\": \"2019-03-01T00:00:00\",\n                \"value\": \"2.59975\"\n            },\n            {\n                \"time\": \"2019-04-01T00:00:00\",\n                \"value\": \"2.57563\"\n            },\n            {\n                \"time\": \"2019-05-01T00:00:00\",\n                \"value\": \"2.5025\"\n            },\n            {\n                \"time\": \"2019-06-01T00:00:00\",\n                \"value\": \"2.31988\"\n            },\n            {\n                \"time\": \"2019-07-01T00:00:00\",\n                \"value\": \"2.26563\"\n            },\n            {\n                \"time\": \"2019-08-01T00:00:00\",\n                \"value\": \"2.13763\"\n            },\n            {\n                \"time\": \"2019-09-01T00:00:00\",\n                \"value\": \"2.08513\"\n            },\n            {\n                \"time\": \"2019-10-01T00:00:00\",\n                \"value\": \"1.90225\"\n            },\n            {\n                \"time\": \"2019-11-01T00:00:00\",\n                \"value\": \"1.9055\"\n            },\n            {\n                \"time\": \"2019-12-01T00:00:00\",\n                \"value\": \"1.90838\"\n            },\n            {\n                \"time\": \"2020-01-01T00:00:00\",\n                \"value\": \"1.75113\"\n            }\n        ]\n        },\n        {\n            \"marketObjectCode\": \"CPIUS\",\n            \"base\": 234.747,\n            \"data\": [\n                {\n                    \"time\": \"2015-01-01T00:00:00\",\n                    \"value\": 234.747\n                },\n                {\n                    \"time\": \"2015-02-01T00:00:00\",\n                    \"value\": 235.342\n                },\n                {\n                    \"time\": \"2015-03-01T00:00:00\",\n                    \"value\": 235.976\n                },\n                {\n                    \"time\": \"2015-04-01T00:00:00\",\n                    \"value\": 236.222\n                },\n                {\n                    \"time\": \"2015-05-01T00:00:00\",\n                    \"value\": 237.001\n                },\n                {\n                    \"time\": \"2015-06-01T00:00:00\",\n                    \"value\": 237.657\n                },\n                {\n                    \"time\": \"2015-07-01T00:00:00\",\n                    \"value\": 238.034\n                },\n                {\n                    \"time\": \"2015-08-01T00:00:00\",\n                    \"value\": 238.033\n                },\n                {\n                    \"time\": \"2015-09-01T00:00:00\",\n                    \"value\": 237.498\n                },\n                {\n                    \"time\": \"2015-10-01T00:00:00\",\n                    \"value\": 237.733\n                },\n                {\n                    \"time\": \"2015-11-01T00:00:00\",\n                    \"value\": 238.017\n                },\n                {\n                    \"time\": \"2015-12-01T00:00:00\",\n                    \"value\": 237.761\n                },\n                {\n                    \"time\": \"2016-01-01T00:00:00\",\n                    \"value\": 237.827\n                },\n                {\n                    \"time\": \"2016-02-01T00:00:00\",\n                    \"value\": 237.514\n                },\n                {\n                    \"time\": \"2016-03-01T00:00:00\",\n                    \"value\": 237.99\n                },\n                {\n                    \"time\": \"2016-04-01T00:00:00\",\n                    \"value\": 238.835\n                },\n                {\n                    \"time\": \"2016-05-01T00:00:00\",\n                    \"value\": 239.44\n                },\n                {\n                    \"time\": \"2016-06-01T00:00:00\",\n                    \"value\": 240.144\n                },\n                {\n                    \"time\": \"2016-07-01T00:00:00\",\n                    \"value\": 240.111\n                },\n                {\n                    \"time\": \"2016-08-01T00:00:00\",\n                    \"value\": 240.595\n                },\n                {\n                    \"time\": \"2016-09-01T00:00:00\",\n                    \"value\": 241.068\n                },\n                {\n                    \"time\": \"2016-10-01T00:00:00\",\n                    \"value\": 241.641\n                },\n                {\n                    \"time\": \"2016-11-01T00:00:00\",\n                    \"value\": 241.993\n                },\n                {\n                    \"time\": \"2016-12-01T00:00:00\",\n                    \"value\": 242.712\n                },\n                {\n                    \"time\": \"2017-01-01T00:00:00\",\n                    \"value\": 243.717\n                },\n                {\n                    \"time\": \"2017-02-01T00:00:00\",\n                    \"value\": 244.028\n                },\n                {\n                    \"time\": \"2017-03-01T00:00:00\",\n                    \"value\": 243.721\n                },\n                {\n                    \"time\": \"2017-04-01T00:00:00\",\n                    \"value\": 244.058\n                },\n                {\n                    \"time\": \"2017-05-01T00:00:00\",\n                    \"value\": 243.926\n                },\n                {\n                    \"time\": \"2017-06-01T00:00:00\",\n                    \"value\": 244.179\n                },\n                {\n                    \"time\": \"2017-07-01T00:00:00\",\n                    \"value\": 244.328\n                },\n                {\n                    \"time\": \"2017-08-01T00:00:00\",\n                    \"value\": 245.304\n                },\n                {\n                    \"time\": \"2017-09-01T00:00:00\",\n                    \"value\": 246.445\n                },\n                {\n                    \"time\": \"2017-10-01T00:00:00\",\n                    \"value\": 246.57\n                },\n                {\n                    \"time\": \"2017-11-01T00:00:00\",\n                    \"value\": 247.333\n                },\n                {\n                    \"time\": \"2017-12-01T00:00:00\",\n                    \"value\": 247.847\n                },\n                {\n                    \"time\": \"2018-01-01T00:00:00\",\n                    \"value\": 248.816\n                },\n                {\n                    \"time\": \"2018-02-01T00:00:00\",\n                    \"value\": 249.475\n                },\n                {\n                    \"time\": \"2018-03-01T00:00:00\",\n                    \"value\": 249.413\n                },\n                {\n                    \"time\": \"2018-04-01T00:00:00\",\n                    \"value\": 249.957\n                },\n                {\n                    \"time\": \"2018-05-01T00:00:00\",\n                    \"value\": 250.64\n                },\n                {\n                    \"time\": \"2018-06-01T00:00:00\",\n                    \"value\": 251.176\n                },\n                {\n                    \"time\": \"2018-07-01T00:00:00\",\n                    \"value\": 251.482\n                },\n                {\n                    \"time\": \"2018-08-01T00:00:00\",\n                    \"value\": 251.905\n                },\n                {\n                    \"time\": \"2018-09-01T00:00:00\",\n                    \"value\": 252.261\n                },\n                {\n                    \"time\": \"2018-10-01T00:00:00\",\n                    \"value\": 252.777\n                },\n                {\n                    \"time\": \"2018-11-01T00:00:00\",\n                    \"value\": 252.662\n                },\n                {\n                    \"time\": \"2018-12-01T00:00:00\",\n                    \"value\": 252.653\n                },\n                {\n                    \"time\": \"2019-01-01T00:00:00\",\n                    \"value\": 252.55\n                },\n                {\n                    \"time\": \"2019-02-01T00:00:00\",\n                    \"value\": 253.181\n                },\n                {\n                    \"time\": \"2019-03-01T00:00:00\",\n                    \"value\": 254.095\n                },\n                {\n                    \"time\": \"2019-04-01T00:00:00\",\n                    \"value\": 254.943\n                },\n                {\n                    \"time\": \"2019-05-01T00:00:00\",\n                    \"value\": 255.167\n                },\n                {\n                    \"time\": \"2019-06-01T00:00:00\",\n                    \"value\": 255.402\n                },\n                {\n                    \"time\": \"2019-07-01T00:00:00\",\n                    \"value\": 256.087\n                },\n                {\n                    \"time\": \"2019-08-01T00:00:00\",\n                    \"value\": 256.294\n                },\n                {\n                    \"time\": \"2019-09-01T00:00:00\",\n                    \"value\": 256.593\n                },\n                {\n                    \"time\": \"2019-10-01T00:00:00\",\n                    \"value\": 257.229\n                },\n                {\n                    \"time\": \"2019-11-01T00:00:00\",\n                    \"value\": 257.824\n                },\n                {\n                    \"time\": \"2019-12-01T00:00:00\",\n                    \"value\": 258.444\n                },\n                {\n                    \"time\": \"2020-01-01T00:00:00\",\n                    \"value\": 258.82\n                },\n                {\n                    \"time\": \"2020-02-01T00:00:00\",\n                    \"value\": 259.05\n                }\n                ]\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST_LOCAL}}/eventsBatch",
+					"host": [
+						"{{HOST_LOCAL}}"
+					],
+					"path": [
+						"eventsBatch"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"id": "29f21850-a5f3-4948-a867-a8a5f79674d8",
+			"key": "HOST_LOCAL",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
