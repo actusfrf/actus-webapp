@@ -32,7 +32,7 @@ export default class Demo extends PureComponent {
             <Col sm={4} className="demo-col">
                 <div className="demo-item">
                     <div className="demo-item-content">
-                        <h4 onClick={e => this.passDemoData()} className="demo-case-title">Case {index+1}</h4>
+                        <h4 onClick={e => this.passDemoData()} className="demo-case-title">Case {index}</h4>
                         <article className="demo-text">{(description !== null)?description:"No Description"}</article>
                     </div>
                 </div>
