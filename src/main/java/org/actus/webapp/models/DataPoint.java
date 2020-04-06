@@ -1,4 +1,4 @@
-package org.actus.webapp.utils;
+package org.actus.webapp.models;
 
 public class DataPoint {
     private String time;

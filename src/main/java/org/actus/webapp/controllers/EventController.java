@@ -9,8 +9,9 @@ import org.actus.events.ContractEvent;
 import org.actus.externals.RiskFactorModelProvider;
 import org.actus.states.StateSpace;
 import org.actus.webapp.utils.TimeSeries;
-import org.actus.webapp.utils.ActusData;
-import org.actus.webapp.utils.ObservedData;
+import org.actus.webapp.models.ActusData;
+import org.actus.webapp.models.ObservedData;
+import org.actus.webapp.models.EventStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -64,7 +65,7 @@ public class EventController {
     // return:  ArrayList of ArrayList of ContractEvents
     @RequestMapping(method = RequestMethod.POST, value = "/eventsBatch")
     @CrossOrigin(origins = "*")
-    public List<List<Event>> solveArrayOfContract(@RequestBody ActusData json) {
+    public List<EventStream> solveContractBatch(@RequestBody ActusData json) {
         
         // extract body parameters
         List<Map<String, Object>> contractData = json.getContracts();
@@ -73,14 +74,22 @@ public class EventController {
         // create risk factor observer
         RiskFactorModelProvider observer = createObserver(riskFactorData);
 
-        ArrayList<List<Event>> output = new ArrayList<>();
+        ArrayList<EventStream> output = new ArrayList<>();
         contractData.forEach(entry -> {
-            //minimal error handling, can be removed as soon as error handling in solveContract is implemented
+            // extract contract terms
+            ContractModel terms;
+            String contractId = (entry.get("contractId") == null)? "NA":entry.get("contractId").toString();
             try {
-                ContractModel terms = extractTerms(entry);
-                output.add(computeEvents(terms, observer));
+                terms = extractTerms(entry);
+            } catch(Exception e){
+                output.add(new EventStream(contractId, "Failure", e.toString(), new ArrayList<Event>()));
+                return; // skipt this iteration and continue with next
+            }
+            // compute contract events
+            try {
+                output.add(new EventStream(entry.get("contractId").toString(), "Success", "", computeEvents(terms, observer)));
             }catch(Exception e){
-                System.err.println("Invalid Contract Parameters\nContractID: " + entry.get("ContractID"));
+                output.add(new EventStream(entry.get("contractId").toString(), "Failure", e.toString(), new ArrayList<Event>()));
             }
         });
         return output;
@@ -108,7 +117,7 @@ public class EventController {
             String symbol = entry.getMarketObjectCode();
             Double base = entry.getBase();
             LocalDateTime[] times = entry.getData().stream().map(obs -> LocalDateTime.parse(obs.getTime())).toArray(LocalDateTime[]::new);
-            Double[] values = entry.getData().stream().map(obs -> obs.getValue()).toArray(Double[]::new);
+            Double[] values = entry.getData().stream().map(obs -> 1/base*obs.getValue()).toArray(Double[]::new);
             
             TimeSeries<LocalDateTime,Double> series = new TimeSeries<LocalDateTime,Double>();
             series.of(times,values);
@@ -131,7 +140,7 @@ public class EventController {
 
         // apply schedule to contract
         schedule = ContractType.apply(schedule, model, observer);
-
+        
         // transform schedule to event list and return
         return schedule.stream().map(e -> new Event(e)).collect(Collectors.toList());
     }
