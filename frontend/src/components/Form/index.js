@@ -142,6 +142,27 @@ export class Form extends PureComponent {
             });
     }
 
+    handleExport (e) {
+        e.preventDefault();
+        let allAnswers = Object.assign({},this.state.requiredFields, this.state.nonRequiredFields);
+        let data = JSON.stringify({...allAnswers});
+        var file = new Blob([data], {type: 'application/json'});
+        if (window.navigator.msSaveOrOpenBlob) // IE10+
+            window.navigator.msSaveOrOpenBlob(file, 'terms.json');
+        else { // Others
+            let a = document.createElement('a');
+            let url = URL.createObjectURL(file);
+            a.href = url;
+            a.download = 'terms.json';
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(function() {
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            }, 0);
+        }
+    }
+
     validateFields(){
         let fields = this.state.requiredFields;
         let errorCount = 0;
@@ -476,11 +497,12 @@ export class Form extends PureComponent {
                             </Row>
                             }
                             <Row>
-                                <Col sm={6} className="text-right">
-                                    <input type="reset" value="RESET" onClick={(e) => this.handleReset(e)}/>
+                                <Col sm={5} className="text-right">
                                 </Col>
-                                <Col sm={6} className={(this.state.validated)?`text-left`:`text-left`}>
-                                    <input type="submit" value="SEND" onClick={(e) => this.handleSubmit(e)}/>
+                                <Col sm={7} className={(this.state.validated)?`text-left`:`text-left`}>
+                                    <input type="reset" value="RESET" className="mr-2" onClick={(e) => this.handleReset(e)}/>
+                                    <input type="submit" value="SEND" className="mr-2" onClick={(e) => this.handleSubmit(e)}/>
+                                    <input type="submit" value="EXPORT TERMS" onClick={(e) => this.handleExport(e)}/>
                                 </Col>
                             </Row>
                         </Grid>
