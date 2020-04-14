@@ -373,9 +373,9 @@ export class Form extends PureComponent {
                                     <Col sm={12} className="demo-items-wrapper">
                                         <Grid fluid>
                                             <Row className="demo-row">
-                                            {demos.map((d, i)=> {
+                                            {demos.sort((a, b) => a.terms.contractID - b.terms.contractID).map((d, i)=> {
                                                     return (
-                                                        <Demo key={i} passDemoData={this.passDemoData.bind(this)} description={d.description} identifier={d.identifier} index={i} demoId={d.id} label={d.label} terms={d.terms}/>
+                                                        <Demo key={i} passDemoData={this.passDemoData.bind(this)} description={d.description} identifier={d.identifier} index={d.terms.contractID} demoId={d.id} label={d.label} terms={d.terms}/>
                                                     )
                                                 })}
                                             </Row>
