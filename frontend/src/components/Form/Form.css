@@ -49,3 +49,11 @@
     cursor: pointer;
     user-select: none;
 }
+
+.text-left {
+    padding-left: 2.5rem;
+}
+
+.text-left input.mr-2 {
+    margin-right: 2rem;
+}
