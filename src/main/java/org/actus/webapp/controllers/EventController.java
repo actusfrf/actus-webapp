@@ -78,7 +78,7 @@ public class EventController {
         contractData.forEach(entry -> {
             // extract contract terms
             ContractModel terms;
-            String contractId = (entry.get("contractId") == null)? "NA":entry.get("contractId").toString();
+            String contractId = (entry.get("contractID") == null)? "NA":entry.get("contractID").toString();
             try {
                 terms = extractTerms(entry);
             } catch(Exception e){
@@ -87,9 +87,9 @@ public class EventController {
             }
             // compute contract events
             try {
-                output.add(new EventStream(entry.get("contractId").toString(), "Success", "", computeEvents(terms, observer)));
+                output.add(new EventStream(contractId, "Success", "", computeEvents(terms, observer)));
             }catch(Exception e){
-                output.add(new EventStream(entry.get("contractId").toString(), "Failure", e.toString(), new ArrayList<Event>()));
+                output.add(new EventStream(contractId, "Failure", e.toString(), new ArrayList<Event>()));
             }
         });
         return output;
