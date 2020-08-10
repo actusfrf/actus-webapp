@@ -35,7 +35,7 @@ export class Landing extends PureComponent {
                         {
                             Object.keys(contracts).map( (key) =>                    
                                 <Contract key={key} 
-                                contractType={contracts[key].accronym} 
+                                contractType={contracts[key].acronym} 
                                 name={contracts[key].name}
                                 description={contracts[key].description} />
                             )

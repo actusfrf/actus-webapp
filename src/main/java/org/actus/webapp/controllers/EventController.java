@@ -51,7 +51,7 @@ public class EventController {
     public List<Event> solveContract(@RequestBody Map<String, Object> json) {
 
         // extract contract terms from body
-        ContractModel terms = extractTerms(json);
+        ContractModel terms = ContractModel.parse(json);
 
         // define (empty) risk factor observer
         MarketModel observer = new MarketModel();
@@ -80,7 +80,7 @@ public class EventController {
             ContractModel terms;
             String contractId = (entry.get("contractID") == null)? "NA":entry.get("contractID").toString();
             try {
-                terms = extractTerms(entry);
+                terms = ContractModel.parse(entry); 
             } catch(Exception e){
                 output.add(new EventStream(contractId, "Failure", e.toString(), new ArrayList<Event>()));
                 return; // skipt this iteration and continue with next
@@ -93,21 +93,6 @@ public class EventController {
             }
         });
         return output;
-    }
-
-    private ContractModel extractTerms(Map<String,Object> json) {
-        // convert json terms object to a java map (required input for actus model parsing)
-        Map<String, String> map = new HashMap<String, String>();
-        for (Map.Entry<String, Object> entry : json.entrySet()) {
-
-            System.out.println(entry.getKey() + ":" + entry.getValue());
-
-            // capitalize input json keys as required in contract model parser
-            map.put(entry.getKey().substring(0, 1).toUpperCase() + entry.getKey().substring(1), entry.getValue().toString());
-        }
-
-        // parse attributes
-        return ContractModel.parse(map);   
     }
 
     private RiskFactorModelProvider createObserver(List<ObservedData> json) {

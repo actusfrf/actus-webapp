@@ -212,7 +212,7 @@ export class Form extends PureComponent {
                 }
 
                 // get contract identifier from id (accronym)
-                let identifier = Object.keys(res.data.taxonomy).filter(key => (res.data.taxonomy[key].accronym.indexOf(id) > -1))[0];
+                let identifier = Object.keys(res.data.taxonomy).filter(key => (res.data.taxonomy[key].acronym.indexOf(id) > -1))[0];
                 
                 // get taxonomy, applicability and terms lists for respective contract
                 let applicability = res.data.applicability[identifier]
@@ -276,7 +276,7 @@ export class Form extends PureComponent {
                     originalRequiredFields: {...mandatoryFieldIdentifiers},
                     originalNonRequiredFields: {...optionalFieldIdentifiers},
                     groupDescription: taxonomy.description,
-                    contractType: taxonomy.accronym,
+                    contractType: taxonomy.acronym,
                     identifier: identifier,
                     error: {
                         ...this.state.error
