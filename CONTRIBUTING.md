@@ -35,7 +35,7 @@ Follow the rules below in order to make sure your contribution can be accepted a
 - DO NOT introduce proprietary classes new deüendencies
 
 
-# Copyright and Licensing
+## Copyright and Licensing
 By publishing your contributions to an ACTUS GitHub repository you:
 - certify that you have the right to assign copyright from your contributions to the ACTUS Financial Research Foundation.
 - irrevocably assign all copyright from your contributions to the ACTUS Financial Research Foundation, under the same licensing terms as the rest of the code.
