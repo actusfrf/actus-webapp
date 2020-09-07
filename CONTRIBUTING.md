@@ -4,20 +4,18 @@ Let us make one thing very clear: your contributions are very welcome and crucia
 
 Now before you start please make sure you understand our contribution guidelines below.
 
-## Bug reporting
-Please raise all bugs as Github Issues and include the following infos:
 
-A short description of the bug.
-An explanation as to what caused the problem. Please be as detailed as possible.
-Perhaps attach a stack trace.
-Perhaps include sample code that triggers the bug.
-Perhaps attach input data that triggers the bug.
-If you have knowledge of the domain, perhaps suggest reasons why the problem occured.
-The version of Strata on which the bug occurred.
-JDK version and operating system.
+## Bug reporting
+Please raise all bugs as GitHub Issues and include the following infos:
+
+- A short description
+- A detailed explanation as to what caused the problem
+- The version of the code on which the bug occured
+- The dev environment (JDK version, operating system, etc) on which the bug occured
+- Any additional materials (stack trace, sample code that triggers the bug, input data that triggers the bug, etc)
+
 
 ## Submission of a contribution
-
 The process for submitting a bug fixe or a new feature is as follows:
 
 1. Fork the project on Github.
@@ -35,3 +33,9 @@ Follow the rules below in order to make sure your contribution can be accepted a
 - Include javadoc documentation
 - Include appropriae tests for new features 
 - DO NOT introduce proprietary classes new deüendencies
+
+
+# Copyright and Licensing
+By publishing your contributions to an ACTUS GitHub repository you:
+- certify that you have the right to assign copyright from your contributions to the ACTUS Financial Research Foundation.
+- irrevocably assign all copyright from your contributions to the ACTUS Financial Research Foundation, under the same licensing terms as the rest of the code.
