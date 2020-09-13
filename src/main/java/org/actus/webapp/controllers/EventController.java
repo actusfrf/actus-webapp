@@ -39,8 +39,8 @@ public class EventController {
             multiSeries.put(symbol,series);
         }
 
-        public double stateAt(String id, LocalDateTime time, StateSpace contractStates,
-                ContractModelProvider contractAttributes) {
+        public double stateAt(String id, LocalDateTime time, StateSpace states,
+                ContractModelProvider terms) {
             return multiSeries.get(id).getValueFor(time,1);
         }
     }
