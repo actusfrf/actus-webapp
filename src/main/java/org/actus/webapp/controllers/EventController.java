@@ -48,13 +48,14 @@ public class EventController {
     // String -> ArrayList<ContractEvent>
     @RequestMapping(method = RequestMethod.POST, value = "/events")
     @CrossOrigin(origins = "*")
-    public List<Event> solveContract(@RequestBody Map<String, Object> json) {
+    public List<Event> solveContract(@RequestBody ActusData json) {
 
         // extract contract terms from body
-        ContractModel terms = ContractModel.parse(json);
+        ContractModel terms = ContractModel.parse(json.getContracts().get(0));
+        List<ObservedData> riskFactorData = json.getRiskFactors();
 
-        // define (empty) risk factor observer
-        MarketModel observer = new MarketModel();
+        // create risk factor observer
+        RiskFactorModelProvider observer = createObserver(riskFactorData);
 
         // compute and return events
         return computeEvents(terms, observer);
