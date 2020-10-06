@@ -1,1 +1,27 @@
-{"identifier":"demo_pam113","label":"CT 113: Same as case 113 but with variable rates being fix","contractType":"PAM","version":"20190902","description":"Same as case 113 but with variable rates being fixed within Coupon periods.","terms":{"contractType":"PAM","statusDate":"2015-01-01T00:00:00","contractRole":"RPA","contractID":113,"cycleAnchorDateOfInterestPayment":"2016-01-02T00:00:00","cycleOfInterestPayment":"1Y+","nominalInterestRate":0.02,"dayCountConvention":"30E/360","currency":"USD","contractDealDate":"2015-01-01T00:00:00","initialExchangeDate":"2015-01-02T00:00:00","maturityDate":"2025-01-02T00:00:00","notionalPrincipal":1000,"cycleOfRateReset":"2Y+","rateSpread":0.02,"marketObjectCodeRateReset":"YC.USA.TREASURY","premiumDiscountAtIED":0}}
+{
+  "identifier":   "demo_pam113",
+  "label":        "CT 113: Same as case 113 but with variable rates being fix",
+  "contractType": "PAM",
+  "version":      "20201006",
+  "description":  "Same as case 113 but with variable rates being fixed within Coupon periods.",
+  "terms":        {
+    "calendar":                         "NC",
+    "contractType":                     "PAM",
+    "statusDate":                       "2015-01-01T00:00:00",
+    "contractRole":                     "RPA",
+    "contractID":                       113,
+    "cycleAnchorDateOfInterestPayment": "2016-01-02T00:00:00",
+    "cycleOfInterestPayment":           "P1YL0",
+    "nominalInterestRate":              0.02,
+    "dayCountConvention":               "30E360",
+    "currency":                         "USD",
+    "contractDealDate":                 "2015-01-01T00:00:00",
+    "initialExchangeDate":              "2015-01-02T00:00:00",
+    "maturityDate":                     "2025-01-02T00:00:00",
+    "notionalPrincipal":                1000,
+    "cycleOfRateReset":                 "P2YL0",
+    "rateSpread":                       0.02,
+    "marketObjectCodeRateReset":        "YC.USA.TREASURY",
+    "premiumDiscountAtIED":             0
+  }
+}

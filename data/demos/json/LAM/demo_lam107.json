@@ -1,1 +1,29 @@
-{"identifier":"demo_lam107","label":"CT 107: Same as case 104 but based on variable interest ra","contractType":"LAM","version":"20190902","description":"Same as case 104 but based on variable interest rate calculated as the forward rate from a reference yield curve and spread of 1%.","terms":{"contractType":"LAM","statusDate":"2015-01-01T00:00:00","contractRole":"RPA","contractID":107,"cycleAnchorDateOfInterestPayment":"2016-01-02T00:00:00","cycleOfInterestPayment":"1Y+","nominalInterestRate":0.05,"dayCountConvention":"30E/360","interestCalculationBase":"NT","currency":"USD","contractDealDate":"2015-01-01T00:00:00","initialExchangeDate":"2015-01-02T00:00:00","notionalPrincipal":1000,"cycleAnchorDateOfPrincipalRedemption":"2016-01-02T00:00:00","cycleOfPrincipalRedemption":"1Y+","nextPrincipalRedemptionPayment":100,"cycleOfRateReset":"1Y+","rateSpread":0.01,"marketObjectCodeRateReset":"YC.USA.TREASURY"}}
+{
+  "identifier":   "demo_lam107",
+  "label":        "CT 107: Same as case 104 but based on variable interest ra",
+  "contractType": "LAM",
+  "version":      "20201006",
+  "description":  "Same as case 104 but based on variable interest rate calculated as the forward rate from a reference yield curve and spread of 1%.",
+  "terms":        {
+    "calendar":                             "NC",
+    "contractType":                         "LAM",
+    "statusDate":                           "2015-01-01T00:00:00",
+    "contractRole":                         "RPA",
+    "contractID":                           107,
+    "cycleAnchorDateOfInterestPayment":     "2016-01-02T00:00:00",
+    "cycleOfInterestPayment":               "P1YL0",
+    "nominalInterestRate":                  0.05,
+    "dayCountConvention":                   "30E360",
+    "interestCalculationBase":              "NT",
+    "currency":                             "USD",
+    "contractDealDate":                     "2015-01-01T00:00:00",
+    "initialExchangeDate":                  "2015-01-02T00:00:00",
+    "notionalPrincipal":                    1000,
+    "cycleAnchorDateOfPrincipalRedemption": "2016-01-02T00:00:00",
+    "cycleOfPrincipalRedemption":           "P1YL0",
+    "nextPrincipalRedemptionPayment":       100,
+    "cycleOfRateReset":                     "P1YL0",
+    "rateSpread":                           0.01,
+    "marketObjectCodeRateReset":            "YC.USA.TREASURY"
+  }
+}
