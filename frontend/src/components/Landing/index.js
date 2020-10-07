@@ -6,22 +6,28 @@ import './Landing.css';
 
 export class Landing extends PureComponent {
     state = {
-        contracts:[]
+        contractDetails:[],
+        contractIdentifiers:[]
     }
 
     componentDidMount(){
         axios.get(`/data/actus-dictionary.json`)
         .then(res => {
-            console.log(res.data);
             this.setState({
-                contracts: res.data.taxonomy
+                contractDetails: res.data.taxonomy
             })
-
+        });
+        axios.get(`/data/covered-contracts.json`)
+        .then(res => {
+            this.setState({
+                contractIdentifiers: res.data.contracts
+            })
         });
     }
 
     render() {
-        let contracts = this.state.contracts
+        let contractDetails = this.state.contractDetails
+        let contractIdentifiers = this.state.contractIdentifiers
         return (
 		<div>
 		
@@ -29,15 +35,19 @@ export class Landing extends PureComponent {
 	    <div className="section-intro">Choose a Contract Type from the list below in order to define and evaluate specific financial contracts:</div>
             
         {/* contract grid */}
-        {console.log("hello")}
                 <Grid className="contract-grid">
                     <Row>
                         {
-                            Object.keys(contracts).map( (key) =>                    
-                                <Contract key={key} 
-                                contractType={contracts[key].acronym} 
-                                name={contracts[key].name}
-                                description={contracts[key].description} />
+                            Object.keys(contractDetails).map( (key) => 
+                                {
+                                    if(contractIdentifiers.indexOf(key) != -1) {
+                                        return(                
+                                            <Contract key={key} 
+                                            contractType={contractDetails[key].acronym} 
+                                            name={contractDetails[key].name}
+                                            description={contractDetails[key].description} />
+                                        )}
+                                }
                             )
                         }
                     </Row>

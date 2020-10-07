@@ -6,8 +6,6 @@ import Demo from '../Demo';
 
 import ToolTip from '../ToolTip';
 import '../Term/Term.css';
-/* eslint-disable */
-import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 import './Form.css';
@@ -24,6 +22,7 @@ export class Form extends PureComponent {
         originalNonRequiredFields:{},
         requiredFields:{},
         nonRequiredFields:{},
+        riskFactorData: [],
         demos:[],
         showDemos: false,
         showForm: true,
@@ -36,7 +35,7 @@ export class Form extends PureComponent {
         results:{},
         isFetching: false,
         redirect: false,
-        host: "http://localhost:8080", //"http://marbella.myftp.org:8080"
+        host: "http://localhost:8080",
         backFromResults: false,
         allAnswers: {}
     }
@@ -87,11 +86,12 @@ export class Form extends PureComponent {
         }
         this.setState({
             requiredFields: requiredFieldCopy,
-            nonRequiredFields: nonRequiredFieldsCopy 
+            nonRequiredFields: nonRequiredFieldsCopy,
+            riskFactorData: []
         })
     }
 
-    cleanUpData(obj){
+    cleanUpTerms(obj){
 
         let newObj={};
 
@@ -108,23 +108,17 @@ export class Form extends PureComponent {
     handleSubmit(e) {
         e.preventDefault();
         let allAnswers = Object.assign({},this.state.requiredFields, this.state.nonRequiredFields);
-        
-        let requiredFields = allAnswers;
-        let config = {
-            'mode': 'cors',
-            'headers': {
-                'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'application/json',
-            },
-            'withCredentials': true,
-            'credentials': 'omit'
-        }
-        let dataToSend = {...allAnswers};
+        let termsToSend = this.cleanUpTerms({...allAnswers});
         this.setState({
-            allAnswers: this.cleanUpData(dataToSend)
+            allAnswers: termsToSend
         });
 
-        axios.post(this.state.host+'/events', this.cleanUpData(dataToSend))
+        let dataToSend = { 
+            contract: termsToSend,
+            riskFactors: this.state.riskFactorData
+        };
+
+        axios.post(this.state.host+'/events', dataToSend)
             .then(res => {
                 this.setState({
                     results: res.data,
@@ -313,7 +307,7 @@ export class Form extends PureComponent {
         })
     }
 
-    passDemoData(terms, id) {
+    passDemoData(terms, riskFactorData) {
         let groups = [...this.state.groups];
         let nonRequired = {...this.state.originalNonRequiredFields};
         let required = {...this.state.originalRequiredFields};
@@ -354,7 +348,8 @@ export class Form extends PureComponent {
                 ...required},
             nonRequiredFields: {
                 ...this.state.originalNonRequiredFields,
-                ...nonRequired}
+                ...nonRequired},
+            riskFactorData: riskFactorData
         });
 
     }
@@ -394,9 +389,9 @@ export class Form extends PureComponent {
                                     <Col sm={12} className="demo-items-wrapper">
                                         <Grid fluid>
                                             <Row className="demo-row">
-                                            {demos.sort((a, b) => a.terms.contractID - b.terms.contractID).map((d, i)=> {
+                                            {demos.sort((a, b) => a.contract.contractID - b.contract.contractID).map((d, i)=> {
                                                     return (
-                                                        <Demo key={i} passDemoData={this.passDemoData.bind(this)} description={d.description} identifier={d.identifier} index={d.terms.contractID} demoId={d.id} label={d.label} terms={d.terms}/>
+                                                            <Demo key={i} passDemoData={this.passDemoData.bind(this)} description={d.description} identifier={d.identifier} index={d.contract.contractID} demoId={d.id} label={d.label} terms={d.contract} riskFactorData={d.riskFactors}/>
                                                     )
                                                 })}
                                             </Row>

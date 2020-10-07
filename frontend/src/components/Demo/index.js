@@ -9,11 +9,12 @@ export default class Demo extends PureComponent {
         identifier:'',
         terms:{},
         demoId: '',
+        riskFactorData: [],
         passDemoData: null
     }
 
     passDemoData(){        
-        this.state.passDemoData(this.state.terms, this.state.demoId)
+        this.state.passDemoData(this.state.terms, this.state.riskFactorData, this.state.demoId)
     }
 
     componentDidMount() {
@@ -22,6 +23,7 @@ export default class Demo extends PureComponent {
             identifier: this.props.identifier,
             demoId: this.props.demoId,
             label: this.props.label,
+            riskFactorData: this.props.riskFactorData,
             passDemoData: this.props.passDemoData
         })
     }
