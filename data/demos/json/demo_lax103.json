@@ -18,7 +18,7 @@
     "contractDealDate":                          "2015-01-01T00:00:00",
     "initialExchangeDate":                       "2015-01-02T00:00:00",
     "notionalPrincipal":                         1000,
-    "arrayCycleAnchorDateOfPrincipalRedemption": "2016-01-01T00,2020-01-01T00,2024-01-01T00:00:00",
+    "arrayCycleAnchorDateOfPrincipalRedemption": "2016-01-01T00:00:00,2020-01-01T00:00:00,2024-01-01T00:00:00",
     "arrayCycleOfPrincipalRedemption":           "P2YL0,P1YL0,P6ML0",
     "arrayNextPrincipalRedemptionPayment":       "100,100,100",
     "arrayIncreaseDecrease":                     "DEC,DEC,DEC",
