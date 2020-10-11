@@ -67,7 +67,7 @@
         "header": [],
         "body":   {
           "mode":    "raw",
-          "raw":     "{\n  \"contracts\":   [\n    {\n      \"contractType\":       \"FXOUT\",\n      \"contractID\":         101,\n      \"contractRole\":       \"RFL\",\n      \"currency\":           \"USD\",\n      \"currency2\":          \"EUR\",\n      \"notionalPrincipal\":  1000,\n      \"notionalPrincipal2\": 900,\n      \"statusDate\":         \"2014-12-30T00:00:00\",\n      \"contractDealDate\":   \"2014-12-31T00:00:00\",\n      \"maturityDate\":       \"2015-12-31T00:00:00\"\n    }\n  ],\n  \"riskFactors\": []\n}",
+          "raw":     "{\n  \"contract\":    {\n      \"contractType\":       \"FXOUT\",\n      \"contractID\":         101,\n      \"contractRole\":       \"RFL\",\n      \"currency\":           \"USD\",\n      \"currency2\":          \"EUR\",\n      \"notionalPrincipal\":  1000,\n      \"notionalPrincipal2\": 900,\n      \"statusDate\":         \"2014-12-30T00:00:00\",\n      \"contractDealDate\":   \"2014-12-31T00:00:00\",\n      \"maturityDate\":       \"2015-12-31T00:00:00\"\n    },\n  \"riskFactors\": []\n}",
           "options": {
             "raw": {
               "language": "json"

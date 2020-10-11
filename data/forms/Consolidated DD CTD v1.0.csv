@@ -227,7 +227,7 @@ The following equation can be taken if RRMLT is not set: IPNR after rate reset =
 Rate Reset,ArrayRate,ARRATE,"[Real,Real,…]",,,,Y,"For array-type rate reset schedules, this attribute represents either an interest rate (corresponding to IPNR) or a spread (corresponding to RRSP). Which case applies depends on the attribute ARFIXVAR: if ARFIXVAR=”FIX” then it represents the new IPNR and if ARFIXVAR=”VAR” then the applicable RRSP.",,,,,,"NN(9,1,) ",,,,,,,,,,,,
 Rate Reset,ArrayFixedVariable,ARFIXVAR,"[ Enum, Enum, ...]","F = Fixed rate
 V = Variable rate",,,Y,"For array-type rate reset schedules, this attributes defines the meaning of ARRATE.",,,,,,"NN(9,1,) ",,,,,,,,,,,,
-Rate Reset,MarketObjectCodeRateReset,RRMO,Varchar,,"[Primary object of CUR] (Every CUR has a primary object, this will be taken)",,Y,"Is pointing to the interest rate driver (MarketObject) used for rate reset uniquely.
+Rate Reset,MarketObjectCodeOfRateReset,RRMO,Varchar,,"[Primary object of CUR] (Every CUR has a primary object, this will be taken)",,Y,"Is pointing to the interest rate driver (MarketObject) used for rate reset uniquely.
 Unique codes for market objects must be used.",,"NN(9,1,) ","NN(9,1,) ","NN(9,1,) ","NN(9,1,) ","NN(9,1,) ","NN(9,1,) ",NN,,,,,NN,,,,,
 Rate Reset,LifeCap,RRLC,Real,,[NULL] (no life cap applies),,Y,"For variable rate basic CTs this represents a cap on the interest rate that applies during the entire lifetime of the contract.
 For CAPFL CTs this represents the cap strike rate.",,,,"x(9,1,) ","x(9,1,) ","x(9,1,) ","x(9,1,) ","x(9,1,) ",,,,,,,,,,"x(7,2,) "
