@@ -67,7 +67,7 @@
         "header": [],
         "body":   {
           "mode":    "raw",
-          "raw":     "{\n  \"contracts\":   [\n    {\n      \"contractType\":        \"STK\",\n      \"statusDate\":          \"2015-01-01T00:00:00\",\n      \"contractRole\":        \"RPA\",\n      \"contractID\":          101,\n      \"currency\":            \"USD\",\n      \"contractDealDate\":    \"2015-01-01T00:00:00\",\n      \"purchaseDate\":        \"2015-01-02T00:00:00\",\n      \"priceAtPurchaseDate\": 90,\n      \"marketValueObserved\": 100\n    }\n  ],\n  \"riskFactors\": []\n}",
+          "raw":     "{\n  \"contract\":   {\n      \"contractType\":        \"STK\",\n      \"statusDate\":          \"2015-01-01T00:00:00\",\n      \"contractRole\":        \"RPA\",\n      \"contractID\":          101,\n      \"currency\":            \"USD\",\n      \"contractDealDate\":    \"2015-01-01T00:00:00\",\n      \"purchaseDate\":        \"2015-01-02T00:00:00\",\n      \"priceAtPurchaseDate\": 90,\n      \"marketValueObserved\": 100\n    },\n  \"riskFactors\": []\n}",
           "options": {
             "raw": {
               "language": "json"
