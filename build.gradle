@@ -16,7 +16,7 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
 group = 'org.actus'
-version = '1.0-alpha-1'
+version = '1.0-alpha-4'
 sourceCompatibility = 1.8
 
 repositories {

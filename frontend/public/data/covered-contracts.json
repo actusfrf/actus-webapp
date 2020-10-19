@@ -12,6 +12,7 @@
                 	"annuity",
                 	"foreignExchangeOutright",
                 	"plainVanillaSwap",
-			"swap"
+			"swap",
+			"capFloor"
             	]
 }
