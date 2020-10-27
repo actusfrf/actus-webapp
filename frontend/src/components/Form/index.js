@@ -37,7 +37,7 @@ export class Form extends PureComponent {
         redirect: false,
         host: "http://localhost:8080",
         backFromResults: false,
-        allAnswers: {},
+        formTerms: {},
         // handling underlyings (capfl, ...)
         underlyingType: "",
         hasUnderlying: false,
@@ -53,6 +53,7 @@ export class Form extends PureComponent {
         underlyingOriginalRequiredFields: {},
         underlyingOriginalNonRequiredFields: {},
         // handling leg1 (swap)
+        leg1Type: "",
         leg1Groups: [],
         leg1OptionalFields: [],
         leg1MandatoryFields: [],
@@ -61,6 +62,7 @@ export class Form extends PureComponent {
         leg1OriginalRequiredFields: {},
         leg1OriginalNonRequiredFields: {},
         // handling leg2 (swap)
+        leg2Type: "",
         leg2Groups: [],
         leg2OptionalFields: [],
         leg2MandatoryFields: [],
@@ -99,7 +101,7 @@ export class Form extends PureComponent {
         let {match} = this.props;
         if(this.props.location.state && this.props.location.state.backFromResults){
             console.log("[Data incoming]", this.props.location.state.backFromResults);
-            this.fetchTerms(match.params.id, this.props.location.state.allAnswers);
+            this.fetchTerms(match.params.id, this.props.location.state.formTerms);
         }else{
             this.fetchTerms(match.params.id);
         }
@@ -129,6 +131,15 @@ export class Form extends PureComponent {
             if(obj[prop] === ''){
                 delete obj[prop];
             }
+            if(Array.isArray(obj[prop])) {
+                if(obj[prop].length == 0) {
+                    delete obj[prop];
+                } else {
+                    //obj[prop] = obj[prop].join();
+                }
+            }
+
+            //console.log(obj[prop] + " --- " + Array.isArray(obj[prop]))
         }
 
         newObj = obj;
@@ -137,16 +148,64 @@ export class Form extends PureComponent {
 
     handleSubmit(e) {
         e.preventDefault();
-        let allAnswers = Object.assign({},this.state.requiredFields, this.state.nonRequiredFields);
-        let termsToSend = this.cleanUpTerms({...allAnswers});
+
+        // fetch contract terms
+        let formTerms = Object.assign({},this.state.requiredFields, this.state.nonRequiredFields);
+        let termsToSend = this.cleanUpTerms({...formTerms});
+
+
+        console.log(termsToSend)
+
+        // handle underlying contracts
+        let contractStructure = []
+        let underlyingReference = {}, leg1Reference = {}, leg2Reference = {}
+        let underlyingFormTerms, leg1FormTerms, leg2FormTerms
+        switch(this.state.contractType) {
+            case 'SWAPS': // has two underlyings
+                // create leg 1 contract-reference
+                // -----
+                leg1FormTerms = Object.assign({},this.state.leg1RequiredFields, this.state.leg1NonRequiredFields);
+                leg1FormTerms = this.cleanUpTerms({...leg1FormTerms});
+                Object.assign(leg1Reference, { object: leg1FormTerms }, { referenceType: "CNT" }, { referenceRole: "FIL" } )
+                contractStructure.push(leg1Reference)
+
+                // create leg 2 contract-reference
+                // -----
+                leg2FormTerms = Object.assign({},this.state.leg2RequiredFields, this.state.leg2NonRequiredFields);
+                leg2FormTerms = this.cleanUpTerms({...leg2FormTerms});
+                Object.assign(leg2Reference, { object: leg2FormTerms }, { referenceType: "CNT" }, { referenceRole: "SEL" } )
+                contractStructure.push(leg2Reference)
+
+                // add contractStructure to terms
+                Object.assign(termsToSend, { contractStructure: contractStructure })
+                break;
+
+            case 'CAPFL': // has only one underlying
+                // create underlying contract-reference
+                // -----
+                underlyingFormTerms = Object.assign({},this.state.underlyingRequiredFields, this.state.underlyingNonRequiredFields);
+                underlyingFormTerms = this.cleanUpTerms({...underlyingFormTerms});
+                Object.assign(underlyingReference, { object: underlyingFormTerms }, { referenceType: "CNT" }, { referenceRole: "UDL" } )
+                contractStructure.push(underlyingReference)
+
+                // add contractStructure to terms
+                Object.assign(termsToSend, { contractStructure: contractStructure })
+                break;
+
+            default: // no underlying
+
+        }
+
         this.setState({
-            allAnswers: termsToSend
+            formTerms: termsToSend
         });
 
         let dataToSend = { 
             contract: termsToSend,
             riskFactors: this.state.riskFactorData
         };
+
+        console.log(dataToSend)
 
         axios.post(this.state.host+'/events', dataToSend)
             .then(res => {
@@ -168,8 +227,8 @@ export class Form extends PureComponent {
 
     handleExport (e) {
         e.preventDefault();
-        let allAnswers = Object.assign({},this.state.requiredFields, this.state.nonRequiredFields);
-        let data = JSON.stringify({...allAnswers});
+        let formTerms = Object.assign({},this.state.requiredFields, this.state.nonRequiredFields);
+        let data = JSON.stringify({...formTerms});
         var file = new Blob([data], {type: 'application/json'});
         if (window.navigator.msSaveOrOpenBlob) // IE10+
             window.navigator.msSaveOrOpenBlob(file, 'terms.json');
@@ -372,7 +431,7 @@ export class Form extends PureComponent {
         // indicate state that fetching data
         this.setState({
             isFetching: true,
-            allAnswers: incoming ? {...incoming}: null,
+            formTerms: incoming ? {...incoming}: null,
         });       
         // fetch dictionary
         axios.get(`/data/actus-dictionary.json`)
@@ -402,19 +461,18 @@ export class Form extends PureComponent {
                     }
                 });
                 // handle underlying contracts
-                let type = "" // underlying default type
                 switch(terms.type) {
                     case 'SWAPS':
-                        type = "PAM" // default type
                         // leg 1
                         // -----
-                        // extract underlying terms
-                        terms = this.collectTerms(res.data,type,incoming);
                         // update state
+                        let leg1Type = incoming ? incoming.contractStructure[0].object.contractType : "PAM";
+                        terms = this.collectTerms(res.data,leg1Type,incoming);
+                        console.log(leg1Type)
                         this.setState({ 
                             hasUnderlying: true,
                             underlyingTypes: ["PAM","NAM","ANN","LAM","LAX"],
-                            leg1Type: type,
+                            leg1Type: leg1Type,
                             leg1Groups: terms.groups,
                             leg1OptionalFields: [...terms.optionalFields],
                             leg1MandatoryFields: [...terms.mandatoryFields],
@@ -429,8 +487,10 @@ export class Form extends PureComponent {
                         // leg 2
                         // -----
                         // update state
+                        let leg2Type = incoming ? incoming.contractStructure[1].object.contractType : "PAM";
+                        terms = this.collectTerms(res.data,leg2Type,incoming);
                         this.setState({
-                            leg2Type: type,
+                            leg2Type: leg2Type,
                             leg2Groups: terms.groups,
                             leg2OptionalFields: [...terms.optionalFields],
                             leg2MandatoryFields: [...terms.mandatoryFields],
@@ -444,13 +504,13 @@ export class Form extends PureComponent {
                         });
                         break;
                     case 'CAPFL': // has only one underlying
-                        type = "PAM" // default type
                         // extract underlying terms
-                        terms = this.collectTerms(res.data,type,incoming);
+                        let underlyingType = incoming ? incoming.contractStructure[0].object.contractType : "PAM";
+                        terms = this.collectTerms(res.data,underlyingType,incoming);
                         // update state
                         this.setState({ 
                             hasUnderlying: true,
-                            underlyingType: type,
+                            underlyingType: underlyingType,
                             underlyingTypes: ["PAM","NAM","ANN","LAM","LAX"],
                             underlyingGroups: terms.groups,
                             underlyingOptionalFields: [...terms.optionalFields],
@@ -570,7 +630,7 @@ export class Form extends PureComponent {
             this.toggleForm();
 
         if(!this.state.showUnderlying)
-        this.toggleUnderlying();
+            this.toggleUnderlying();
 
         // assign the required terms from the demo to the "required" state
         termArray.map(t=>{
@@ -603,6 +663,239 @@ export class Form extends PureComponent {
             riskFactorData: riskFactorData
         });
 
+        // handle underlying
+        switch(terms.contractType) {
+            case 'SWAPS': // two underlyings
+                // leg 1
+                this.passLeg1DemoData(terms.contractStructure[0].object)
+                // leg 2
+                this.passLeg2DemoData(terms.contractStructure[1].object)
+                break;
+
+            case 'CAPFL': // single underlying
+                this.passUnderlyingDemoData(terms.contractStructure[0].object)
+                break;
+
+            default: // no underlying
+
+        }
+    }
+
+    passUnderlyingDemoData(terms) {
+        let groups = [...this.state.underlyingGroups];
+        let nonRequired = {...this.state.underlyingOriginalNonRequiredFields};
+        let required = {...this.state.underlyingOriginalRequiredFields};
+
+        let termArray = Object.entries(terms);
+        let requiredArray = Object.entries(required);
+
+        // assign the required terms from the demo to the "required" state
+        termArray.map(t=>{
+            requiredArray.map(r=>{
+                if(t[0] == r[1]){
+                    required[t[0]] = t[1];
+                }
+            });
+        });
+
+        // for each terms group assign the optional terms to the "nonRequired" state
+        groups.map(g =>{
+            g.Items.map(i => {
+               termArray.map(t=>{
+                   if(t[0] == i.identifier){
+                        nonRequired[t[0]] = t[1];
+                   }
+               });
+            });
+        });
+
+        // update the state
+        this.setState({
+            underlyingRequiredFields: {
+                ...this.state.underlyingOriginalRequiredFields,
+                ...required},
+            underlyingNonRequiredFields: {
+                ...this.state.underlyingOriginalNonRequiredFields,
+                ...nonRequired}
+        });
+    }
+
+    passLeg1DemoData(terms) {
+        
+        let type = terms.contractType;
+
+        // fetch dictionary
+        axios.get(`/data/actus-dictionary.json`)
+        .then(res => {
+            if (!res || !res.data) {
+                return false;
+            }
+            // extract required terms from dictionary
+            let dictTerms = this.collectTerms(res.data,type,false);
+            let requiredFields = dictTerms.mandatoryFieldIdentifiers;
+            let nonRequiredFields = dictTerms.optionalFieldIdentifiers;
+            let groups = dictTerms.groups;
+            
+            let termArray = Object.entries(terms);
+            let requiredArray = Object.entries(requiredFields);
+                
+            // assign the required terms from the demo to the "required" state
+            termArray.map(t=>{
+                requiredArray.map(r=>{
+                    if(t[0] == r[1]){
+                        requiredFields[t[0]] = t[1];
+                    }
+                });
+            });
+
+            // for each terms group assign the optional terms to the "nonRequired" state
+            groups.map(g =>{
+                g.Items.map(i => {
+                termArray.map(t=>{
+                    if(t[0] == i.identifier){
+                            nonRequiredFields[t[0]] = t[1];
+                    }
+                });
+                });
+            });
+
+            // update the state
+            this.setState({
+                leg1Groups: groups,
+                leg1RequiredFields: requiredFields,
+                leg1NonRequiredFields: nonRequiredFields
+            });
+
+            console.log(nonRequiredFields)
+        })
+    }
+
+    passLeg2DemoData(terms) {
+        
+        let type = terms.contractType;
+
+        // fetch dictionary
+        axios.get(`/data/actus-dictionary.json`)
+        .then(res => {
+            if (!res || !res.data) {
+                return false;
+            }
+            // extract required terms from dictionary
+            let dictTerms = this.collectTerms(res.data,type,false);
+            let requiredFields = dictTerms.mandatoryFieldIdentifiers;
+            let nonRequiredFields = dictTerms.optionalFieldIdentifiers;
+            let groups = dictTerms.groups;
+            
+            let termArray = Object.entries(terms);
+            let requiredArray = Object.entries(requiredFields);
+                
+            // assign the required terms from the demo to the "required" state
+            termArray.map(t=>{
+                requiredArray.map(r=>{
+                    if(t[0] == r[1]){
+                        requiredFields[t[0]] = t[1];
+                    }
+                });
+            });
+
+            // for each terms group assign the optional terms to the "nonRequired" state
+            groups.map(g =>{
+                g.Items.map(i => {
+                termArray.map(t=>{
+                    if(t[0] == i.identifier){
+                            nonRequiredFields[t[0]] = t[1];
+                    }
+                });
+                });
+            });
+
+            // update the state
+            this.setState({
+                leg2Groups: groups,
+                leg2RequiredFields: requiredFields,
+                leg2NonRequiredFields: nonRequiredFields
+            });
+        })
+    }
+
+
+    passLeg1DemoData_cp(terms) {
+        let groups = [...this.state.leg1Groups];
+        let nonRequired = {...this.state.leg1OriginalNonRequiredFields};
+        let required = {...this.state.leg1OriginalRequiredFields};
+
+        let termArray = Object.entries(terms);
+        let requiredArray = Object.entries(required);
+
+        // assign the required terms from the demo to the "required" state
+        termArray.map(t=>{
+            requiredArray.map(r=>{
+                if(t[0] == r[1]){
+                    required[t[0]] = t[1];
+                }
+            });
+        });
+
+        // for each terms group assign the optional terms to the "nonRequired" state
+        groups.map(g =>{
+            g.Items.map(i => {
+               termArray.map(t=>{
+                   if(t[0] == i.identifier){
+                        nonRequired[t[0]] = t[1];
+                   }
+               });
+            });
+        });
+
+        // update the state
+        this.setState({
+            leg1RequiredFields: {
+                ...this.state.leg1OriginalRequiredFields,
+                ...required},
+            leg1NonRequiredFields: {
+                ...this.state.leg1OriginalNonRequiredFields,
+                ...nonRequired}
+        });
+    }
+
+    passLeg2DemoData_cp(terms) {
+        let groups = [...this.state.leg2Groups];
+        let nonRequired = {...this.state.leg2OriginalNonRequiredFields};
+        let required = {...this.state.leg2OriginalRequiredFields};
+
+        let termArray = Object.entries(terms);
+        let requiredArray = Object.entries(required);
+        console.log(terms)
+        console.log(required)
+        // assign the required terms from the demo to the "required" state
+        termArray.map(t=>{
+            requiredArray.map(r=>{
+                if(t[0] == r[1]){
+                    required[t[0]] = t[1];
+                }
+            });
+        });
+
+        // for each terms group assign the optional terms to the "nonRequired" state
+        groups.map(g =>{
+            g.Items.map(i => {
+               termArray.map(t=>{
+                   if(t[0] == i.identifier){
+                        nonRequired[t[0]] = t[1];
+                   }
+               });
+            });
+        });
+
+        // update the state
+        this.setState({
+            leg2RequiredFields: {
+                ...this.state.leg2OriginalRequiredFields,
+                ...required},
+            leg2NonRequiredFields: {
+                ...this.state.leg2OriginalNonRequiredFields,
+                ...nonRequired}
+        });
     }
 
     render() {
@@ -613,7 +906,7 @@ export class Form extends PureComponent {
         let formClassName = (this.state.showForm)?"unfolded":"folded";
 
         if( redirect ) {
-            return <Redirect to={{ pathname: '/results', state: { url:`/form/${match.params.id}`, allAnswers: this.state.allAnswers, contractId: this.state.requiredFields.contractID, data: results }}} />
+            return <Redirect to={{ pathname: '/results', state: { url:`/form/${match.params.id}`, formTerms: this.state.formTerms, contractId: this.state.requiredFields.contractID, data: results }}} />
         } else {  
             if(this.state.isFetching){
                 return (
@@ -762,7 +1055,7 @@ export class Form extends PureComponent {
                                                                                 <select 
                                                                                     id={m.identifier}
                                                                                     title={`Required Field`} 
-                                                                                    value={this.state.underlyingType} 
+                                                                                    value={this.state.leg1RequiredFields.contractType} 
                                                                                     onChange={e=>this.handleChangeLeg1Type(e)} 
                                                                                     className="item-fields" >
                                                                                     {this.state.underlyingTypes.map(type => (
@@ -879,7 +1172,7 @@ export class Form extends PureComponent {
                                                                                     <select 
                                                                                         id={m.identifier}
                                                                                         title={`Required Field`} 
-                                                                                        value={this.state.underlyingType} 
+                                                                                        value={this.state.leg2RequiredFields.contractType} 
                                                                                         onChange={this.handleChangeLeg2Type} 
                                                                                         className="item-fields" >
                                                                                         {this.state.underlyingTypes.map(type => (

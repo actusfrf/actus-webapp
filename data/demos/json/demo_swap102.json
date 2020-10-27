@@ -1,0 +1,68 @@
+{
+  "identifier":   "demo_swap102",
+  "label":        "CT 102: 1-year Plain-Vanilla Receiver Interest Rate Swap",
+  "contractType": "SWAPS",
+  "version":      "20201020",
+  "description":  "Same as case 101 but a Receiver Swap.",
+  "contract":     {
+    "contractType": "SWAPS",
+    "contractID": "102",
+    "contractRole": "RFL",
+    "contractStructure": [
+      {
+        "object": {
+          "contractType": "PAM",
+          "statusDate": "2015-01-01T00:00:00",
+          "contractID": "demo_swaps102-leg1",
+          "nominalInterestRate": 0.03,
+          "dayCountConvention": "30E360",
+          "currency": "USD",
+          "contractDealDate": "2015-01-01T00:00:00",
+          "initialExchangeDate": "2015-01-02T00:00:00",
+          "maturityDate": "2016-01-01T00:00:00",
+          "notionalPrincipal": 1000,
+	  "cycleAnchorDateOfInterestPayment": "2016-01-01T00:00:00"
+        },
+        "referenceType": "CNT",
+        "referenceRole": "FIL"
+      },
+      {
+        "object": {
+          "contractType": "PAM",
+          "statusDate": "2015-01-01T00:00:00",
+          "contractID": "demo_swaps102-leg2",
+          "nominalInterestRate": 0.01,
+          "dayCountConvention": "30E360",
+          "currency": "USD",
+          "contractDealDate": "2015-01-01T00:00:00",
+          "initialExchangeDate": "2015-01-02T00:00:00",
+          "maturityDate": "2016-01-01T00:00:00",
+          "notionalPrincipal": 1000,
+          "cycleAnchorDateOfRateReset": "2015-01-02T00:00:00",
+          "rateSpread": 0.02,
+          "marketObjectCodeOfRateReset": "Reference_Rate_A",
+          "rateMultiplier": 1,
+	  "cycleAnchorDateOfInterestPayment": "2016-01-01T00:00:00"
+        },
+        "referenceType": "CNT",
+        "referenceRole": "SEL"
+      }
+    ],
+    "currency": "USD",
+    "contractDealDate": "2015-01-01T00:00:00",
+    "statusDate": "2015-01-01T00:00:00",
+    "deliverySettlement": "D"
+  },
+  "riskFactors":  [
+{
+      "marketObjectCode": "Reference_Rate_A",
+      "base": 1,
+      "data": [
+        {
+          "time":  "2015-01-02T00:00:00",
+          "value": 0.015
+        }
+      ]
+    }
+]
+}
