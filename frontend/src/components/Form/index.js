@@ -108,6 +108,7 @@ export class Form extends PureComponent {
     }
 
     handleReset(e) {
+        // reset main contract fields
         let requiredFieldCopy = {...this.state.requiredFields};
         let nonRequiredFieldsCopy = {...this.state.nonRequiredFields};
         for(var n in requiredFieldCopy){
@@ -121,6 +122,45 @@ export class Form extends PureComponent {
             nonRequiredFields: nonRequiredFieldsCopy,
             riskFactorData: []
         })
+        // reset underlying contract fields (if any)
+        if(this.state.hasUnderlying) {
+            // single underlying
+            let underlyingRequiredFieldsCopy = {...this.state.underlyingRequiredFields};
+            let underlyingNonRequiredFieldsCopy = {...this.state.underlyingNonRequiredFields};
+            for(var n in underlyingRequiredFieldsCopy){
+                underlyingRequiredFieldsCopy[n] = ""
+            }
+            for(var n in underlyingNonRequiredFieldsCopy){
+                underlyingNonRequiredFieldsCopy[n] = ""
+            }
+            // leg 1
+            let leg1RequiredFieldsCopy = {...this.state.leg1RequiredFields};
+            let leg1NonRequiredFieldsCopy = {...this.state.leg1NonRequiredFields};
+            for(var n in leg1RequiredFieldsCopy){
+                leg1RequiredFieldsCopy[n] = ""
+            }
+            for(var n in leg1NonRequiredFieldsCopy){
+                leg1NonRequiredFieldsCopy[n] = ""
+            }
+            // leg 2
+            let leg2RequiredFieldsCopy = {...this.state.leg2RequiredFields};
+            let leg2NonRequiredFieldsCopy = {...this.state.leg2NonRequiredFields};
+            for(var n in leg2RequiredFieldsCopy){
+                leg2RequiredFieldsCopy[n] = ""
+            }
+            for(var n in leg2NonRequiredFieldsCopy){
+                leg2NonRequiredFieldsCopy[n] = ""
+            }
+            // update state
+            this.setState({
+                underlyingRequiredFields: underlyingRequiredFieldsCopy,
+                underlyingNonRequiredFields: underlyingNonRequiredFieldsCopy,
+                leg1RequiredFields: leg1RequiredFieldsCopy,
+                leg1NonRequiredFields: leg1NonRequiredFieldsCopy,
+                leg2RequiredFields: leg2RequiredFieldsCopy,
+                leg2NonRequiredFields: leg2NonRequiredFieldsCopy
+            })
+        }
     }
 
     cleanUpTerms(obj){
@@ -132,7 +172,7 @@ export class Form extends PureComponent {
                 delete obj[prop];
             }
             if(Array.isArray(obj[prop])) {
-                if(obj[prop].length == 0) {
+                if(obj[prop].length === 0) {
                     delete obj[prop];
                 } else {
                     //obj[prop] = obj[prop].join();
@@ -152,9 +192,6 @@ export class Form extends PureComponent {
         // fetch contract terms
         let formTerms = Object.assign({},this.state.requiredFields, this.state.nonRequiredFields);
         let termsToSend = this.cleanUpTerms({...formTerms});
-
-
-        console.log(termsToSend)
 
         // handle underlying contracts
         let contractStructure = []
@@ -204,8 +241,6 @@ export class Form extends PureComponent {
             contract: termsToSend,
             riskFactors: this.state.riskFactorData
         };
-
-        console.log(dataToSend)
 
         axios.post(this.state.host+'/events', dataToSend)
             .then(res => {
@@ -430,8 +465,8 @@ export class Form extends PureComponent {
         console.log("fetch data", id," is incoming ", incoming );
         // indicate state that fetching data
         this.setState({
-            isFetching: true,
-            formTerms: incoming ? {...incoming}: null,
+            isFetching: true
+            //formTerms: incoming ? {...incoming}: null,
         });       
         // fetch dictionary
         axios.get(`/data/actus-dictionary.json`)
@@ -467,8 +502,8 @@ export class Form extends PureComponent {
                         // -----
                         // update state
                         let leg1Type = incoming ? incoming.contractStructure[0].object.contractType : "PAM";
-                        terms = this.collectTerms(res.data,leg1Type,incoming);
-                        console.log(leg1Type)
+                        let leg1Terms = incoming ? incoming.contractStructure[0].object : null;
+                        terms = this.collectTerms(res.data,leg1Type,leg1Terms);
                         this.setState({ 
                             hasUnderlying: true,
                             underlyingTypes: ["PAM","NAM","ANN","LAM","LAX"],
@@ -488,7 +523,8 @@ export class Form extends PureComponent {
                         // -----
                         // update state
                         let leg2Type = incoming ? incoming.contractStructure[1].object.contractType : "PAM";
-                        terms = this.collectTerms(res.data,leg2Type,incoming);
+                        let leg2Terms = incoming ? incoming.contractStructure[1].object : null;
+                        terms = this.collectTerms(res.data,leg2Type,leg2Terms);
                         this.setState({
                             leg2Type: leg2Type,
                             leg2Groups: terms.groups,
@@ -506,7 +542,8 @@ export class Form extends PureComponent {
                     case 'CAPFL': // has only one underlying
                         // extract underlying terms
                         let underlyingType = incoming ? incoming.contractStructure[0].object.contractType : "PAM";
-                        terms = this.collectTerms(res.data,underlyingType,incoming);
+                        let underlyingTerms = incoming ? incoming.contractStructure[0].object : null;
+                        terms = this.collectTerms(res.data,underlyingType,underlyingTerms);
                         // update state
                         this.setState({ 
                             hasUnderlying: true,
@@ -635,7 +672,7 @@ export class Form extends PureComponent {
         // assign the required terms from the demo to the "required" state
         termArray.map(t=>{
             requiredArray.map(r=>{
-                if(t[0] == r[1]){
+                if(t[0] === r[1]){
                     required[t[0]] = t[1];
                 }
             });
@@ -645,7 +682,7 @@ export class Form extends PureComponent {
         groups.map(g =>{
             g.Items.map(i => {
                termArray.map(t=>{
-                   if(t[0] == i.identifier){
+                   if(t[0] === i.identifier){
                         nonRequired[t[0]] = t[1];
                    }
                });
@@ -692,7 +729,7 @@ export class Form extends PureComponent {
         // assign the required terms from the demo to the "required" state
         termArray.map(t=>{
             requiredArray.map(r=>{
-                if(t[0] == r[1]){
+                if(t[0] === r[1]){
                     required[t[0]] = t[1];
                 }
             });
@@ -702,7 +739,7 @@ export class Form extends PureComponent {
         groups.map(g =>{
             g.Items.map(i => {
                termArray.map(t=>{
-                   if(t[0] == i.identifier){
+                   if(t[0] === i.identifier){
                         nonRequired[t[0]] = t[1];
                    }
                });
@@ -742,7 +779,7 @@ export class Form extends PureComponent {
             // assign the required terms from the demo to the "required" state
             termArray.map(t=>{
                 requiredArray.map(r=>{
-                    if(t[0] == r[1]){
+                    if(t[0] === r[1]){
                         requiredFields[t[0]] = t[1];
                     }
                 });
@@ -752,7 +789,7 @@ export class Form extends PureComponent {
             groups.map(g =>{
                 g.Items.map(i => {
                 termArray.map(t=>{
-                    if(t[0] == i.identifier){
+                    if(t[0] === i.identifier){
                             nonRequiredFields[t[0]] = t[1];
                     }
                 });
@@ -792,7 +829,7 @@ export class Form extends PureComponent {
             // assign the required terms from the demo to the "required" state
             termArray.map(t=>{
                 requiredArray.map(r=>{
-                    if(t[0] == r[1]){
+                    if(t[0] === r[1]){
                         requiredFields[t[0]] = t[1];
                     }
                 });
@@ -802,7 +839,7 @@ export class Form extends PureComponent {
             groups.map(g =>{
                 g.Items.map(i => {
                 termArray.map(t=>{
-                    if(t[0] == i.identifier){
+                    if(t[0] === i.identifier){
                             nonRequiredFields[t[0]] = t[1];
                     }
                 });
@@ -818,88 +855,8 @@ export class Form extends PureComponent {
         })
     }
 
-
-    passLeg1DemoData_cp(terms) {
-        let groups = [...this.state.leg1Groups];
-        let nonRequired = {...this.state.leg1OriginalNonRequiredFields};
-        let required = {...this.state.leg1OriginalRequiredFields};
-
-        let termArray = Object.entries(terms);
-        let requiredArray = Object.entries(required);
-
-        // assign the required terms from the demo to the "required" state
-        termArray.map(t=>{
-            requiredArray.map(r=>{
-                if(t[0] == r[1]){
-                    required[t[0]] = t[1];
-                }
-            });
-        });
-
-        // for each terms group assign the optional terms to the "nonRequired" state
-        groups.map(g =>{
-            g.Items.map(i => {
-               termArray.map(t=>{
-                   if(t[0] == i.identifier){
-                        nonRequired[t[0]] = t[1];
-                   }
-               });
-            });
-        });
-
-        // update the state
-        this.setState({
-            leg1RequiredFields: {
-                ...this.state.leg1OriginalRequiredFields,
-                ...required},
-            leg1NonRequiredFields: {
-                ...this.state.leg1OriginalNonRequiredFields,
-                ...nonRequired}
-        });
-    }
-
-    passLeg2DemoData_cp(terms) {
-        let groups = [...this.state.leg2Groups];
-        let nonRequired = {...this.state.leg2OriginalNonRequiredFields};
-        let required = {...this.state.leg2OriginalRequiredFields};
-
-        let termArray = Object.entries(terms);
-        let requiredArray = Object.entries(required);
-        console.log(terms)
-        console.log(required)
-        // assign the required terms from the demo to the "required" state
-        termArray.map(t=>{
-            requiredArray.map(r=>{
-                if(t[0] == r[1]){
-                    required[t[0]] = t[1];
-                }
-            });
-        });
-
-        // for each terms group assign the optional terms to the "nonRequired" state
-        groups.map(g =>{
-            g.Items.map(i => {
-               termArray.map(t=>{
-                   if(t[0] == i.identifier){
-                        nonRequired[t[0]] = t[1];
-                   }
-               });
-            });
-        });
-
-        // update the state
-        this.setState({
-            leg2RequiredFields: {
-                ...this.state.leg2OriginalRequiredFields,
-                ...required},
-            leg2NonRequiredFields: {
-                ...this.state.leg2OriginalNonRequiredFields,
-                ...nonRequired}
-        });
-    }
-
     render() {
-        let {groups, groupDescription, contractType, identifier, mandatoryFields, redirect, results, demos, error} = this.state;
+        let {groups, groupDescription, contractType, identifier, mandatoryFields, redirect, results, demos } = this.state;
         let {underlyingGroups, underlyingMandatoryFields, leg1Groups, leg1MandatoryFields, leg2Groups, leg2MandatoryFields} = this.state;
         let {match} = this.props;
         let demosClassName = (this.state.showDemos)?"unfolded":"folded";
@@ -1028,7 +985,7 @@ export class Form extends PureComponent {
                                 </Col>
                             </Row>
                             }
-                            {this.state.hasUnderlying && this.state.contractType=="SWAPS" &&
+                            {this.state.hasUnderlying && this.state.contractType==="SWAPS" &&
                             <>
                             <Row>
                                 <Col sm={12} className={`contract-main-wrapper ${formClassName}`} onClick={()=>this.toggleLeg1()}>
@@ -1045,7 +1002,7 @@ export class Form extends PureComponent {
                                                 <Grid fluid>
                                                     <Row>
                                                         {leg1MandatoryFields.map((m, groupId) => {
-                                                            if(m.identifier=="contractType") {
+                                                            if(m.identifier==="contractType") {
                                                                 // add dropdown for selecting the contractType
                                                                 return(
                                                                     <Col key={`term_wrapper${groupId}`} sm={6} className="item nopadding">
@@ -1077,7 +1034,7 @@ export class Form extends PureComponent {
                                                                             <label className="item-labels" htmlFor={m.name}>{m.name}</label>
                                                                             <div className="input-wrapper">
                                                                                 <input 
-                                                                                id={m.identifier}
+                                                                                id={"leg1-" + m.identifier}
                                                                                 title={`Required Field`} 
                                                                                 placeholder='...' 
                                                                                 value={this.state.leg1RequiredFields[m.identifier]}
@@ -1121,7 +1078,7 @@ export class Form extends PureComponent {
                                                                                         <label className="item-labels" htmlFor={item.name}>{item.name}</label>
                                                                                         <div className="input-wrapper term">
                                                                                             <input 
-                                                                                            id={item.identifier} 
+                                                                                            id={"leg1-" + item.identifier} 
                                                                                             group={group}
                                                                                             title={`Optional Choice`} 
                                                                                             placeholder={`...`}
@@ -1162,7 +1119,7 @@ export class Form extends PureComponent {
                                                 <Grid fluid>
                                                     <Row>
                                                         {leg2MandatoryFields.map((m, groupId) => {
-                                                                if(m.identifier=="contractType") {
+                                                                if(m.identifier==="contractType") {
                                                                     // add dropdown for selecting the contractType
                                                                     return(
                                                                         <Col key={`term_wrapper${groupId}`} sm={6} className="item nopadding">
@@ -1170,7 +1127,7 @@ export class Form extends PureComponent {
                                                                                 <label className="item-labels" htmlFor={m.name}>{m.name}</label>
                                                                                 <div className="input-wrapper">
                                                                                     <select 
-                                                                                        id={m.identifier}
+                                                                                        id={"leg2-" + m.identifier}
                                                                                         title={`Required Field`} 
                                                                                         value={this.state.leg2RequiredFields.contractType} 
                                                                                         onChange={this.handleChangeLeg2Type} 
@@ -1194,7 +1151,7 @@ export class Form extends PureComponent {
                                                                                 <label className="item-labels" htmlFor={m.name}>{m.name}</label>
                                                                                 <div className="input-wrapper">
                                                                                     <input 
-                                                                                    id={m.identifier}
+                                                                                    id={"leg2-" + m.identifier}
                                                                                     title={`Required Field`} 
                                                                                     placeholder='...' 
                                                                                     value={this.state.leg2RequiredFields[m.identifier]}
@@ -1238,7 +1195,7 @@ export class Form extends PureComponent {
                                                                                         <label className="item-labels" htmlFor={item.name}>{item.name}</label>
                                                                                         <div className="input-wrapper term">
                                                                                             <input 
-                                                                                            id={item.identifier} 
+                                                                                            id={"leg2-" + item.identifier} 
                                                                                             group={group}
                                                                                             title={`Optional Choice`} 
                                                                                             placeholder={`...`}
@@ -1266,7 +1223,7 @@ export class Form extends PureComponent {
                             }
                             </>
                             }
-                            {this.state.hasUnderlying && this.state.contractType!="SWAPS" &&
+                            {this.state.hasUnderlying && this.state.contractType!=="SWAPS" &&
                             <>
                             <Row>
                                 <Col sm={12} className={`contract-main-wrapper ${formClassName}`} onClick={()=>this.toggleUnderlying()}>
@@ -1283,7 +1240,7 @@ export class Form extends PureComponent {
                                                 <Grid fluid>
                                                     <Row>
                                                         {underlyingMandatoryFields.map((m, groupId) => {
-                                                            if(m.identifier=="contractType") {
+                                                            if(m.identifier==="contractType") {
                                                                 // add dropdown for selecting the contractType
                                                                 return(
                                                                     <Col key={`term_wrapper${groupId}`} sm={6} className="item nopadding">
@@ -1291,7 +1248,7 @@ export class Form extends PureComponent {
                                                                             <label className="item-labels" htmlFor={m.name}>{m.name}</label>
                                                                             <div className="input-wrapper">
                                                                                 <select 
-                                                                                    id={m.identifier}
+                                                                                    id={"underlying-" + m.identifier}
                                                                                     title={`Required Field`} 
                                                                                     value={this.state.underlyingType} 
                                                                                     onChange={this.handleChangeUnderlyingType} 
@@ -1315,7 +1272,7 @@ export class Form extends PureComponent {
                                                                             <label className="item-labels" htmlFor={m.name}>{m.name}</label>
                                                                             <div className="input-wrapper">
                                                                                 <input 
-                                                                                id={m.identifier}
+                                                                                id={"underlying-" + m.identifier}
                                                                                 title={`Required Field`} 
                                                                                 placeholder='...' 
                                                                                 value={this.state.underlyingRequiredFields[m.identifier]}
@@ -1359,7 +1316,7 @@ export class Form extends PureComponent {
                                                                                         <label className="item-labels" htmlFor={item.name}>{item.name}</label>
                                                                                         <div className="input-wrapper term">
                                                                                             <input 
-                                                                                            id={item.identifier} 
+                                                                                            id={"underlying-" + item.identifier} 
                                                                                             group={group}
                                                                                             title={`Optional Choice`} 
                                                                                             placeholder={`...`}
