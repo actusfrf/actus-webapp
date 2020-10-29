@@ -23,12 +23,12 @@ These instructions will get you a copy of the demo up and running on your local 
 ### Linux:
 ```sh
 # actus-core/
-mvn clean install -Dmaven.test.failure.ignore=true
+mvn clean install
 ```
 ### Windows:
 ```sh
 # actus-core/
-mvn clean install "-Dmaven.test.failure.ignore=true"
+mvn clean install
 ```
 
 ## Set up local environment
