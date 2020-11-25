@@ -1,0 +1,40 @@
+{
+  "identifier":   "demo_ann104",
+  "label":        "CT 104: Same as case 104 but based on a variable interest ",
+  "contractType": "ANN",
+  "version":      "20201006",
+  "description":  "Same as case 104 but based on a variable interest rate bi-annually updated as forward rate from the observed reference yield curve adding a spread of 5%.",
+  "contract":     {
+    "contractType":                         "ANN",
+    "statusDate":                           "2015-01-01T00:00:00",
+    "contractRole":                         "RPL",
+    "contractID":                           104,
+    "nominalInterestRate":                  0.05,
+    "dayCountConvention":                   "30E360",
+    "currency":                             "USD",
+    "contractDealDate":                     "2015-01-01T00:00:00",
+    "initialExchangeDate":                  "2015-01-02T00:00:00",
+    "maturityDate":                         "2025-01-02T00:00:00",
+    "notionalPrincipal":                    1000,
+    "cycleAnchorDateOfPrincipalRedemption": "2016-01-02T00:00:00",
+    "cycleOfPrincipalRedemption":           "P1YL0",
+    "cycleAnchorDateOfRateReset":           "2016-01-01T00:00:00",
+    "cycleOfRateReset":                     "P2YL0",
+    "rateSpread":                           0.05,
+    "marketObjectCodeOfRateReset":          "YC.USA.TREASURY",
+    "cycleAnchorDateOfInterestPayment":     "2016-01-02T00:00:00",
+    "cycleOfInterestPayment":               "P1YL0"
+  },
+  "riskFactors":  [
+    {
+      "marketObjectCode": "YC.USA.TREASURY",
+      "base":             1,
+      "data":             [
+        {
+          "time":  "2015-01-01T00:00:00",
+          "value": 0.05
+        }
+      ]
+    }
+  ]
+}

@@ -1,16 +1,13 @@
 package org.actus.webapp.controllers;
 
 import org.actus.webapp.models.Demo;
-import org.actus.webapp.models.DemoMeta;
 import org.actus.webapp.repositories.DemoRepository;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,7 +25,7 @@ public class DemoController {
         Optional<Demo> optdemo = demoRepository.findById(id);
         Demo d = optdemo.get();
 
-        return d.getTerms();
+        return d.getContract();
     }
 
     @RequestMapping(method=RequestMethod.GET, value="/demos/{id}")

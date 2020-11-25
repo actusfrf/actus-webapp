@@ -1,0 +1,41 @@
+{
+  "identifier":   "demo_lam108",
+  "label":        "CT 108: Same as case 107 but based on a spread of 12%. The",
+  "contractType": "LAM",
+  "version":      "20201006",
+  "description":  "Same as case 107 but based on a spread of 12%. The Interest payments being decoupled from Principal Redemption payments, this has no effect on the Redemption of Notional (compare to the Negative Amortizer).",
+  "contract":     {
+    "calendar":                             "NC",
+    "contractType":                         "LAM",
+    "statusDate":                           "2015-01-01T00:00:00",
+    "contractRole":                         "RPA",
+    "contractID":                           108,
+    "cycleAnchorDateOfInterestPayment":     "2016-01-02T00:00:00",
+    "cycleOfInterestPayment":               "P1YL0",
+    "nominalInterestRate":                  0.05,
+    "dayCountConvention":                   "30E360",
+    "interestCalculationBase":              "NT",
+    "currency":                             "USD",
+    "contractDealDate":                     "2015-01-01T00:00:00",
+    "initialExchangeDate":                  "2015-01-02T00:00:00",
+    "notionalPrincipal":                    1000,
+    "cycleAnchorDateOfPrincipalRedemption": "2016-01-02T00:00:00",
+    "cycleOfPrincipalRedemption":           "P1YL0",
+    "nextPrincipalRedemptionPayment":       100,
+    "cycleOfRateReset":                     "P1YL0",
+    "rateSpread":                           0.12,
+    "marketObjectCodeOfRateReset":          "YC.USA.TREASURY"
+  },
+  "riskFactors":  [
+    {
+      "marketObjectCode": "YC.USA.TREASURY",
+      "base":             1,
+      "data":             [
+        {
+          "time":  "2015-01-01T00:00:00",
+          "value": 0.05
+        }
+      ]
+    }
+  ]
+}

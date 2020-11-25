@@ -1,0 +1,31 @@
+{
+  "identifier":   "demo_lax109",
+  "label":        "CT 109: Same as case 105 but based on a Nominal Rate of 1%",
+  "contractType": "LAX",
+  "version":      "20201006",
+  "description":  "Same as case 105 but based on a Nominal Rate of 1% (as per Initial Exchange Date) and a set of variable interest rates fixed at ContractDealDate. Specifically, the rate is reset bi-annually with following rates (in this order) [2%, 4%, 8%].",
+  "contract":     {
+    "contractType":                              "LAX",
+    "statusDate":                                "2015-01-01T00:00:00",
+    "contractRole":                              "RPA",
+    "contractID":                                109,
+    "arrayCycleAnchorDateOfInterestPayment":     "2016-01-01T00:00:00",
+    "arrayCycleOfInterestPayment":               "P1YL0",
+    "nominalInterestRate":                       0.01,
+    "dayCountConvention":                        "30E360",
+    "interestCalculationBase":                   "NT",
+    "currency":                                  "USD",
+    "contractDealDate":                          "2015-01-01T00:00:00",
+    "initialExchangeDate":                       "2015-01-02T00:00:00",
+    "notionalPrincipal":                         500,
+    "arrayCycleAnchorDateOfPrincipalRedemption": "2016-01-01T00:00:00,2018-01-01T00:00:00",
+    "arrayCycleOfPrincipalRedemption":           "P1YL0,P1YL0",
+    "arrayNextPrincipalRedemptionPayment":       "500,300",
+    "arrayIncreaseDecrease":                     "INC,DEC",
+    "arrayCycleAnchorDateOfRateReset":           "2017-01-01T00:00:00,2019-01-01T00:00:00,2021-01-01T00:00:00",
+    "arrayCycleOfRateReset":                     "NULL,NULL,P2YL0",
+    "arrayRate":                                 "0.02,0.04,0.08",
+    "arrayFixedVariable":                        "F,F,V"
+  },
+  "riskFactors":  []
+}

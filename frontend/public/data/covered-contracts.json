@@ -3,7 +3,7 @@
 			"cash", 
                 	"callMoney",
                 	"undefinedMaturityProfile",
-                	"commodities",
+                	"commodity",
                 	"stock",
                 	"principalAtMaturity",
                 	"linearAmortizer",
@@ -11,6 +11,8 @@
                 	"negativeAmortizer",
                 	"annuity",
                 	"foreignExchangeOutright",
-                	"plainVanillaSwap"
+                	"plainVanillaSwap",
+			"swap",
+			"capFloor"
             	]
 }

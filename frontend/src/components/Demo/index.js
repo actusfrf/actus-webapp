@@ -9,11 +9,12 @@ export default class Demo extends PureComponent {
         identifier:'',
         terms:{},
         demoId: '',
+        riskFactorData: [],
         passDemoData: null
     }
 
     passDemoData(){        
-        this.state.passDemoData(this.state.terms, this.state.demoId)
+        this.state.passDemoData(this.state.terms, this.state.riskFactorData, this.state.demoId)
     }
 
     componentDidMount() {
@@ -22,6 +23,7 @@ export default class Demo extends PureComponent {
             identifier: this.props.identifier,
             demoId: this.props.demoId,
             label: this.props.label,
+            riskFactorData: this.props.riskFactorData,
             passDemoData: this.props.passDemoData
         })
     }
@@ -32,7 +34,7 @@ export default class Demo extends PureComponent {
             <Col sm={4} className="demo-col">
                 <div className="demo-item">
                     <div className="demo-item-content">
-                        <h4 onClick={e => this.passDemoData()} className="demo-case-title">Case {index+1}</h4>
+                        <h4 onClick={e => this.passDemoData()} className="demo-case-title">Case {index}</h4>
                         <article className="demo-text">{(description !== null)?description:"No Description"}</article>
                     </div>
                 </div>

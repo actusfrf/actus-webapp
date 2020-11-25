@@ -1,0 +1,42 @@
+{
+  "identifier":   "demo_lam111",
+  "label":        "CT 111: Same as case 109 but with only Principal Redemptio",
+  "contractType": "LAM",
+  "version":      "20201006",
+  "description":  "Same as case 109 but with only Principal Redemption payments linked to a Reference Index.",
+  "contract":     {
+    "calendar":                             "NC",
+    "contractType":                         "LAM",
+    "statusDate":                           "2015-01-01T00:00:00",
+    "contractRole":                         "RPA",
+    "contractID":                           111,
+    "cycleAnchorDateOfInterestPayment":     "2016-01-02T00:00:00",
+    "cycleOfInterestPayment":               "P1YL0",
+    "nominalInterestRate":                  0.05,
+    "dayCountConvention":                   "30E360",
+    "interestCalculationBase":              "NT",
+    "currency":                             "USD",
+    "contractDealDate":                     "2015-01-01T00:00:00",
+    "initialExchangeDate":                  "2015-01-02T00:00:00",
+    "notionalPrincipal":                    1000,
+    "cycleAnchorDateOfPrincipalRedemption": "2016-01-02T00:00:00",
+    "cycleOfPrincipalRedemption":           "P1YL0",
+    "nextPrincipalRedemptionPayment":       100,
+    "marketObjectCodeOfScalingIndex":       "CPI.USD",
+    "cycleOfScalingIndex":                  "P1YL0",
+    "scalingEffect":                        "ONO",
+    "scalingIndexAtContractDealDate":       100
+  },
+  "riskFactors":  [
+    {
+      "marketObjectCode": "CPI.USD",
+      "base":             1,
+      "data":             [
+        {
+          "time":  "2015-01-01T00:00:00",
+          "value": 100
+        }
+      ]
+    }
+  ]
+}

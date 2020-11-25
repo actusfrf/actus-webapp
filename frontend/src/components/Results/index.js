@@ -16,12 +16,12 @@ export class Results extends PureComponent {
 
     componentDidMount() { 
         let response = [...this.props.location.state.data];
-
         this.setState({
             results: response,
             contractId: this.props.location.state.contractId,
             url: this.props.location.state.url,
             allAnswers: this.props.location.state.allAnswers,
+            formTerms: this.props.location.state.formTerms
         });      
     }
 
@@ -35,7 +35,7 @@ export class Results extends PureComponent {
         let { results, currentTab, contractId, redirect, url} = this.state;
 
         if(redirect)
-            return <Redirect to={{ pathname: url, state: { backFromResults: true, allAnswers: this.state.allAnswers }}} />
+            return <Redirect to={{ pathname: url, state: { backFromResults: true, allAnswers: this.state.allAnswers, formTerms: this.state.formTerms }}} />
 
         return (
             <div id="results-container" identifier="" version="">

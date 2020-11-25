@@ -1,0 +1,28 @@
+{
+  "identifier":   "demo_lam101",
+  "label":        "CT 101: Long position in a Linear Amortizer at Notional of",
+  "contractType": "LAM",
+  "version":      "20201006",
+  "description":  "Long position in a Linear Amortizer at Notional of USD 1000.0, with annual amortizing payments amounting to USD 200.0 and interest payments based on a fixed Nominal Rate of 5%.",
+  "contract":     {
+    "calendar":                             "NC",
+    "contractType":                         "LAM",
+    "statusDate":                           "2015-01-01T00:00:00",
+    "contractRole":                         "RPA",
+    "contractID":                           101,
+    "cycleAnchorDateOfInterestPayment":     "2016-01-02T00:00:00",
+    "cycleOfInterestPayment":               "P1YL0",
+    "nominalInterestRate":                  0.05,
+    "dayCountConvention":                   "30E360",
+    "interestCalculationBase":              "NT",
+    "currency":                             "USD",
+    "contractDealDate":                     "2015-01-01T00:00:00",
+    "initialExchangeDate":                  "2015-01-02T00:00:00",
+    "notionalPrincipal":                    1000,
+    "cycleAnchorDateOfPrincipalRedemption": "2016-01-02T00:00:00",
+    "cycleOfPrincipalRedemption":           "P1YL0",
+    "nextPrincipalRedemptionPayment":       200,
+    "rateSpread":                           0
+  },
+  "riskFactors":  []
+}

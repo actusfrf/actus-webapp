@@ -1,0 +1,26 @@
+{
+  "identifier":   "demo_pam106",
+  "label":        "CT 106: Same as case 104 but with semi-annually Coupon pay",
+  "contractType": "PAM",
+  "version":      "20201006",
+  "description":  "Same as case 104 but with semi-annually Coupon payments.",
+  "contract":     {
+    "calendar":                         "NC",
+    "contractType":                     "PAM",
+    "statusDate":                       "2015-01-01T00:00:00",
+    "contractRole":                     "RPA",
+    "contractID":                       106,
+    "cycleAnchorDateOfInterestPayment": "2015-07-02T00:00:00",
+    "cycleOfInterestPayment":           "P6ML0",
+    "nominalInterestRate":              0.02,
+    "dayCountConvention":               "30E360",
+    "currency":                         "USD",
+    "contractDealDate":                 "2015-01-01T00:00:00",
+    "initialExchangeDate":              "2015-01-02T00:00:00",
+    "maturityDate":                     "2020-01-02T00:00:00",
+    "notionalPrincipal":                1000,
+    "rateSpread":                       0,
+    "premiumDiscountAtIED":             0
+  },
+  "riskFactors":  []
+}

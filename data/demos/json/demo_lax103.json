@@ -1,0 +1,28 @@
+{
+  "identifier":   "demo_lax103",
+  "label":        "CT 103: Same as case 101 but with amortizing payments of U",
+  "contractType": "LAX",
+  "version":      "20201006",
+  "description":  "Same as case 101 but with amortizing payments of USD 100.0 for the first 4 years bi-annually, USD 100.0 for the subsequent 4 years annually, and USD 100.0 for the remaining 2 years semi-annually.",
+  "contract":     {
+    "contractType":                              "LAX",
+    "statusDate":                                "2015-01-01T00:00:00",
+    "contractRole":                              "RPA",
+    "contractID":                                103,
+    "arrayCycleAnchorDateOfInterestPayment":     "2016-01-01T00:00:00",
+    "arrayCycleOfInterestPayment":               "P1YL0",
+    "nominalInterestRate":                       0.05,
+    "dayCountConvention":                        "30E360",
+    "interestCalculationBase":                   "NT",
+    "currency":                                  "USD",
+    "contractDealDate":                          "2015-01-01T00:00:00",
+    "initialExchangeDate":                       "2015-01-02T00:00:00",
+    "notionalPrincipal":                         1000,
+    "arrayCycleAnchorDateOfPrincipalRedemption": "2016-01-01T00:00:00,2020-01-01T00:00:00,2024-01-01T00:00:00",
+    "arrayCycleOfPrincipalRedemption":           "P2YL0,P1YL0,P6ML0",
+    "arrayNextPrincipalRedemptionPayment":       "100,100,100",
+    "arrayIncreaseDecrease":                     "DEC,DEC,DEC",
+    "arrayRate":                                 "0"
+  },
+  "riskFactors":  []
+}

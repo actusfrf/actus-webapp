@@ -1,0 +1,125 @@
+{
+  "info":                    {
+    "_postman_id": "fe518b7d-152d-4417-8755-1cf8cb24431d",
+    "name":        "ACTUS Webapp",
+    "schema":      "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item":                    [
+    {
+      "name":     "Fetch demo meta infos",
+      "request":  {
+        "method": "GET",
+        "header": [],
+        "url":    {
+          "raw":  "{{HOST_LOCAL}}/demos/meta/FXOUT",
+          "host": [
+            "{{HOST_LOCAL}}"
+          ],
+          "path": [
+            "demos",
+            "meta",
+            "FXOUT"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name":     "Fetch demo details",
+      "request":  {
+        "method": "GET",
+        "header": [],
+        "url":    {
+          "raw":  "{{HOST_LOCAL}}/demos/FXOUT",
+          "host": [
+            "{{HOST_LOCAL}}"
+          ],
+          "path": [
+            "demos",
+            "FXOUT"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name":     "Fetch demo details Copy",
+      "request":  {
+        "method": "GET",
+        "header": [],
+        "url":    {
+          "raw":  "{{HOST_LOCAL}}/demo/5db350f7d70b8e45852b3057",
+          "host": [
+            "{{HOST_LOCAL}}"
+          ],
+          "path": [
+            "demo",
+            "5db350f7d70b8e45852b3057"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name":     "Compute events demo_fxout101",
+      "request":  {
+        "method": "POST",
+        "header": [],
+        "body":   {
+          "mode":    "raw",
+          "raw":     "{\n  \"contract\":    {\n      \"contractType\":       \"FXOUT\",\n      \"contractID\":         101,\n      \"contractRole\":       \"RFL\",\n      \"currency\":           \"USD\",\n      \"currency2\":          \"EUR\",\n      \"notionalPrincipal\":  1000,\n      \"notionalPrincipal2\": 900,\n      \"statusDate\":         \"2014-12-30T00:00:00\",\n      \"contractDealDate\":   \"2014-12-31T00:00:00\",\n      \"maturityDate\":       \"2015-12-31T00:00:00\"\n    },\n  \"riskFactors\": []\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url":    {
+          "raw":  "{{HOST_LOCAL}}/events",
+          "host": [
+            "{{HOST_LOCAL}}"
+          ],
+          "path": [
+            "events"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name":     "Compute batch events",
+      "request":  {
+        "method": "POST",
+        "header": [],
+        "body":   {
+          "mode":    "raw",
+          "raw":     "{\n  \"contracts\":   [\n    {\n      \"contractType\":       \"FXOUT\",\n      \"contractID\":         102,\n      \"contractRole\":       \"PFL\",\n      \"currency\":           \"USD\",\n      \"currency2\":          \"EUR\",\n      \"notionalPrincipal\":  1000,\n      \"notionalPrincipal2\": 900,\n      \"statusDate\":         \"2014-12-30T00:00:00\",\n      \"contractDealDate\":   \"2014-12-31T00:00:00\",\n      \"maturityDate\":       \"2015-12-31T00:00:00\"\n    },\n    {\n      \"contractType\":       \"FXOUT\",\n      \"contractID\":         103,\n      \"contractRole\":       \"RFL\",\n      \"currency\":           \"USD\",\n      \"currency2\":          \"CHF\",\n      \"notionalPrincipal\":  1000,\n      \"notionalPrincipal2\": 950,\n      \"statusDate\":         \"2014-12-30T00:00:00\",\n      \"contractDealDate\":   \"2014-12-31T00:00:00\",\n      \"maturityDate\":       \"2015-12-31T00:00:00\"\n    },\n    {\n      \"contractType\":       \"FXOUT\",\n      \"contractID\":         104,\n      \"contractRole\":       \"RFL\",\n      \"currency\":           \"USD\",\n      \"currency2\":          \"EUR\",\n      \"notionalPrincipal\":  1000,\n      \"notionalPrincipal2\": 900,\n      \"statusDate\":         \"2014-12-30T00:00:00\",\n      \"contractDealDate\":   \"2014-12-31T00:00:00\",\n      \"maturityDate\":       \"2015-12-31T00:00:00\",\n      \"settlementDate\":     \"2015-12-31T00:00:00\"\n    },\n    {\n      \"contractType\":        \"FXOUT\",\n      \"contractID\":          105,\n      \"contractRole\":        \"RFL\",\n      \"currency\":            \"USD\",\n      \"currency2\":           \"EUR\",\n      \"notionalPrincipal\":   1000,\n      \"notionalPrincipal2\":  900,\n      \"statusDate\":          \"2014-12-30T00:00:00\",\n      \"contractDealDate\":    \"2014-12-31T00:00:00\",\n      \"maturityDate\":        \"2015-12-31T00:00:00\",\n      \"purchaseDate\":        \"2015-03-11T00:00:00\",\n      \"priceAtPurchaseDate\": 55\n    }\n  ],\n  \"riskFactors\": []\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url":    {
+          "raw":  "{{HOST_LOCAL}}/eventsBatch",
+          "host": [
+            "{{HOST_LOCAL}}"
+          ],
+          "path": [
+            "eventsBatch"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable":                [
+    {
+      "id":    "29f21850-a5f3-4948-a867-a8a5f79674d8",
+      "key":   "HOST_LOCAL",
+      "value": "http://localhost:8080",
+      "type":  "string"
+    }
+  ],
+  "protocolProfileBehavior": {}
+}

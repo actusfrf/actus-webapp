@@ -1,0 +1,173 @@
+{
+  "identifier":   "demo_swap108",
+  "label":        "CT 108: 1-year Step-up Interest Rate Swap",
+  "contractType": "SWAPS",
+  "version":      "20201020",
+  "description":  "Step-up Interest Rate Swap of USD 1000.0 Notional, starting at 01/02/15 with Maturity after 1 year. Interest is paid monthly. The contract offers a linearly increasing rate starting at 1% and increasing by 1% every repricing period and pays Reference_Rate_A + 2%.",
+  "contract":     {
+    "contractType": "SWAPS",
+    "contractID": "108",
+    "contractRole": "PFL",
+    "contractStructure": [
+      {
+        "object": {
+          "contractType": "LAX",
+          "statusDate": "2015-01-01T00:00:00",
+          "contractID": "demo_swaps108-leg1",
+          "nominalInterestRate": 0.03,
+          "dayCountConvention": "30E360",
+          "currency": "USD",
+          "contractDealDate": "2015-01-01T00:00:00",
+          "initialExchangeDate": "2015-01-02T00:00:00",
+          "maturityDate": "2016-01-01T00:00:00",
+          "notionalPrincipal": 1000,
+          "arrayCycleAnchorDateOfInterestPayment": [
+            "2015-02-01T00:00:00"
+          ],
+          "arrayCycleOfInterestPayment": [
+            "P1ML1"
+          ],
+          "arrayCycleAnchorDateOfPrincipalRedemption": [
+
+          ],
+          "arrayCycleOfPrincipalRedemption": [
+
+          ],
+          "arrayNextPrincipalRedemptionPayment": [
+
+          ],
+          "arrayIncreaseDecrease": [
+            
+          ],
+          "arrayCycleAnchorDateOfRateReset": [
+            "2015-02-02T00:00:00",
+            "2015-03-02T00:00:00",
+            "2015-04-02T00:00:00",
+            "2015-05-02T00:00:00",
+            "2015-06-02T00:00:00",
+            "2015-07-02T00:00:00",
+            "2015-08-02T00:00:00",
+            "2015-09-02T00:00:00",
+            "2015-10-02T00:00:00",
+            "2015-11-02T00:00:00",
+            "2015-12-02T00:00:00"
+          ],
+          "arrayCycleOfRateReset": [
+
+          ],
+          "arrayRate": [
+            "0.02",
+            "0.03",
+            "0.04",
+            "0.05",
+            "0.06",
+            "0.07",
+            "0.08",
+            "0.09",
+            "0.10",
+            "0.11",
+            "0.12"
+          ],
+          "arrayFixedVariable": [
+            "FIX",
+            "FIX",
+            "FIX",
+            "FIX",
+            "FIX",
+            "FIX",
+            "FIX",
+            "FIX",
+            "FIX",
+            "FIX",
+            "FIX"
+          ]
+        },
+        "referenceType": "CNT",
+        "referenceRole": "FIL"
+      },
+      {
+        "object": {
+          "contractType": "PAM",
+          "statusDate": "2015-01-01T00:00:00",
+          "contractID": "demo_swaps108-leg2",
+          "nominalInterestRate": 0.03,
+          "dayCountConvention": "30E360",
+          "currency": "USD",
+          "contractDealDate": "2015-01-01T00:00:00",
+          "initialExchangeDate": "2015-01-02T00:00:00",
+          "maturityDate": "2016-01-01T00:00:00",
+          "notionalPrincipal": 1000,
+          "cycleAnchorDateOfRateReset": "2015-01-02T00:00:00",
+          "cycleOfRateReset": "P1ML1",
+          "rateSpread": 0.02,
+          "marketObjectCodeOfRateReset": "Reference_Rate_A",
+          "rateMultiplier": 1,
+          "cycleAnchorDateOfInterestPayment": "2015-02-01T00:00:00",
+          "cycleOfInterestPayment": "P1ML1"
+        },
+        "referenceType": "CNT",
+        "referenceRole": "SEL"
+      }
+    ],
+    "currency": "USD",
+    "contractDealDate": "2015-01-01T00:00:00",
+    "statusDate": "2015-01-01T00:00:00",
+    "deliverySettlement": "D"
+  },
+  "riskFactors":  [
+{
+      "marketObjectCode": "Reference_Rate_A",
+      "base": 1,
+      "data": [
+        {
+          "time":  "2015-01-02T00:00:00",
+          "value": 0.005
+        },
+        {
+          "time":  "2015-02-02T00:00:00",
+          "value": 0.006
+        },
+        {
+          "time":  "2015-03-02T00:00:00",
+          "value": 0.007
+        },
+        {
+          "time":  "2015-04-02T00:00:00",
+          "value": 0.008
+        },
+        {
+          "time":  "2015-05-02T00:00:00",
+          "value": 0.01
+        },
+        {
+          "time":  "2015-06-02T00:00:00",
+          "value": 0.005
+        },
+        {
+          "time":  "2015-07-02T00:00:00",
+          "value": 0.003
+        },
+        {
+          "time":  "2015-08-02T00:00:00",
+          "value": 0.01
+        },
+        {
+          "time":  "2015-09-02T00:00:00",
+          "value": 0.015
+        },
+        {
+          "time":  "2015-10-02T00:00:00",
+          "value": 0.02
+        },
+        {
+          "time":  "2015-11-02T00:00:00",
+          "value": 0.01
+        },
+        {
+          "time":  "2015-12-02T00:00:00",
+          "value": 0.005
+        }
+      ]
+    }
+]
+}

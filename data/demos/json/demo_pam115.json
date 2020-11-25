@@ -1,0 +1,42 @@
+{
+  "identifier":   "demo_pam115",
+  "label":        "CT 115: Same as case 115 but also Notional amount is linke",
+  "contractType": "PAM",
+  "version":      "20201006",
+  "description":  "Same as case 115 but also Notional amount is linked to the Reference Index.",
+  "contract":     {
+    "calendar":                         "NC",
+    "contractType":                     "PAM",
+    "statusDate":                       "2015-01-01T00:00:00",
+    "contractRole":                     "RPA",
+    "contractID":                       115,
+    "cycleAnchorDateOfInterestPayment": "2016-01-02T00:00:00",
+    "cycleOfInterestPayment":           "P1YL0",
+    "nominalInterestRate":              0.05,
+    "dayCountConvention":               "30E360",
+    "currency":                         "USD",
+    "contractDealDate":                 "2015-01-01T00:00:00",
+    "initialExchangeDate":              "2015-01-02T00:00:00",
+    "maturityDate":                     "2025-01-02T00:00:00",
+    "notionalPrincipal":                1000,
+    "marketObjectCodeOfScalingIndex":   "CPI.USD",
+    "cycleAnchorDateOfScalingIndex":    "2016-01-02T00:00:00",
+    "cycleOfScalingIndex":              "P1YL0",
+    "scalingEffect":                    "INO",
+    "rateSpread":                       0,
+    "premiumDiscountAtIED":             0,
+    "scalingIndexAtContractDealDate":   100
+  },
+  "riskFactors":  [
+    {
+      "marketObjectCode": "CPI.USD",
+      "base":             1,
+      "data":             [
+        {
+          "time":  "2015-01-01T00:00:00",
+          "value": 100
+        }
+      ]
+    }
+  ]
+}

@@ -1,15 +1,5 @@
 package org.actus.webapp.models;
-
-import java.time.LocalDateTime;
-import java.util.Map;
-
 import org.actus.events.ContractEvent;
-//import org.json.JSONObject;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import com.fasterxml.jackson.databind.JsonNode;
-
 import org.springframework.data.mongodb.core.mapping.Field;
 
 
@@ -29,13 +19,13 @@ public class Event {
     }
 
     public Event(ContractEvent event) {
-    	this.type = event.type();
-    	this.time = event.time().toString();
+    	this.type = event.eventType().toString();
+    	this.time = event.eventTime().toString();
     	this.payoff = event.payoff();
     	this.currency = event.currency();
-    	this.nominalValue = event.states()[1];
-    	this.nominalRate = event.states()[3];
-    	this.nominalAccrued = event.states()[2];
+    	this.nominalValue = event.states().notionalPrincipal;
+    	this.nominalRate = event.states().nominalInterestRate;
+    	this.nominalAccrued = event.states().accruedInterest;
     }
 
 	public String getType() {

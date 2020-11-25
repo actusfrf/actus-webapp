@@ -11,7 +11,7 @@ export class Graph extends React.Component {
 			data:[props.results],
 			width:'100%',
 			height:600,
-			margin: 25,
+			margin: {left: 45, right: 25, top: 25, bottom: 25},
 			aspect: 600/900,
 			header:'HEADER',
 			parentWidth: 0,
@@ -59,17 +59,21 @@ export class Graph extends React.Component {
 		let xScale = d3
 		.scaleTime()
 		.domain(d3.extent(data, d=>d.time))
-		.range([0, width - 2*margin]);
+		.range([0, width - margin.left - margin.right]);
+
+		// scientific notation if values are too big to display
+		let yMax = d3.max(data, d => Math.abs(d.nominalValue));
+		let yFormat = yMax > 9999 ? d3.format(".1e") : null;
 
 		let yScale = d3
 		.scaleLinear()
-		.domain([0, d3.max(data, d => Math.abs(d.nominalValue))])
-		.range([height - 2 *margin, 0])
+		.domain([0, yMax])
+		.range([height - margin.top - margin.bottom, 0])
 		.nice();
 
 		// create axis objects
 		var xAxis = d3.axisBottom(xScale).tickFormat(d3.timeFormat("%Y/%m/%d"));
-		var yAxis = d3.axisLeft(yScale);
+		var yAxis = d3.axisLeft(yScale).tickFormat(yFormat);
 
 		// create grid
 		// extract tick values	
@@ -113,6 +117,8 @@ export class Graph extends React.Component {
 					return("red");
 				case "PR":
 					return("red");
+				case "MD":
+					return("red");
 				case "IP":
 					return("green");
 				case "IPCI":
@@ -132,6 +138,8 @@ export class Graph extends React.Component {
 				case "IED":
 					return(2);
 				case "PR":
+					return(2);
+				case "MD":
 					return(2);
 				case "IP":
 					return(5);
@@ -175,7 +183,7 @@ export class Graph extends React.Component {
 		});
 		
 		// create accrued state lines
-		let lastTime = 0;
+		let lastTime = data[0].time;
 		let lastAccrued = 0;
 		const accruedLines = data.map(function(d, index){
 			let raw;
@@ -231,7 +239,7 @@ export class Graph extends React.Component {
 						</marker>
 					</defs>
 					{/* draw axes*/}
-					<g className="xAxis" ref={node => d3Select(node).call(xAxis)} style={{ transform: `translate(0, ${height- 2*margin}px)`, }} />
+					<g className="xAxis" ref={node => d3Select(node).call(xAxis)} style={{ transform: `translate(0, ${height - margin.top - margin.bottom}px)`, }} />
 					<g className="yAxis" ref={node => d3Select(node).call(yAxis)} />
 					
 					{/* draw grid lines */}

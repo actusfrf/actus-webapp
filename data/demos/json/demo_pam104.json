@@ -1,0 +1,26 @@
+{
+  "identifier":   "demo_pam104",
+  "label":        "CT 104: Long position of a 5-year Coupon Bearing Bond star",
+  "contractType": "PAM",
+  "version":      "20201006",
+  "description":  "Long position of a 5-year Coupon Bearing Bond starting at 01/02/2015 with Notional of 1000. Coupon payments are made annually at fixed Nominal Rate of 2% using Day Count Convention 30/360.",
+  "contract":     {
+    "calendar":                         "NC",
+    "contractType":                     "PAM",
+    "statusDate":                       "2015-01-01T00:00:00",
+    "contractRole":                     "RPA",
+    "contractID":                       104,
+    "cycleAnchorDateOfInterestPayment": "2016-01-02T00:00:00",
+    "cycleOfInterestPayment":           "P1YL0",
+    "nominalInterestRate":              0.02,
+    "dayCountConvention":               "30E360",
+    "currency":                         "USD",
+    "contractDealDate":                 "2015-01-01T00:00:00",
+    "initialExchangeDate":              "2015-01-02T00:00:00",
+    "maturityDate":                     "2020-01-02T00:00:00",
+    "notionalPrincipal":                1000,
+    "rateSpread":                       0,
+    "premiumDiscountAtIED":             0
+  },
+  "riskFactors":  []
+}

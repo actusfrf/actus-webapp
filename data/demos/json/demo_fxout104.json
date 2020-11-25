@@ -1,0 +1,21 @@
+{
+  "identifier":   "demo_fxout104",
+  "label":        "CT 104: Same as case 101 but now the cash flows are not be",
+  "contractType": "FXOUT",
+  "version":      "20201006",
+  "description":  "Same as case 101 but now the cash flows are not being paid in their respective currencies but settled in “first leg” currency, i.e. SettlementDate where before Maturity happened.",
+  "contract":     {
+    "contractType":       "FXOUT",
+    "contractID":         104,
+    "contractRole":       "RFL",
+    "currency":           "USD",
+    "currency2":          "EUR",
+    "notionalPrincipal":  1000,
+    "notionalPrincipal2": 900,
+    "statusDate":         "2014-12-30T00:00:00",
+    "contractDealDate":   "2014-12-31T00:00:00",
+    "maturityDate":       "2015-12-31T00:00:00",
+    "settlementDate":     "2015-12-31T00:00:00"
+  },
+  "riskFactors":  []
+}

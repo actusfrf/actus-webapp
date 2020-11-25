@@ -1,0 +1,21 @@
+{
+  "identifier":   "demo_stk102",
+  "label":        "CT 102: Long position of a Stock instrument purchased at 0",
+  "contractType": "STK",
+  "version":      "20201006",
+  "description":  "Long position of a Stock instrument purchased at 01/02/2015 at a price of USD 90.0 and sold again 2 weeks later at a price of USD 110.0.",
+  "contract":     {
+    "contractType":           "STK",
+    "statusDate":             "2015-01-01T00:00:00",
+    "contractRole":           "RPA",
+    "contractID":             102,
+    "currency":               "USD",
+    "contractDealDate":       "2015-01-01T00:00:00",
+    "purchaseDate":           "2015-01-02T00:00:00",
+    "priceAtPurchaseDate":    90,
+    "terminationDate":        "2015-01-16T00:00:00",
+    "priceAtTerminationDate": 110,
+    "marketValueObserved":    100
+  },
+  "riskFactors":  []
+}
