@@ -1,0 +1,24 @@
+{
+  "identifier":   "demo_pam103",
+  "label":        "CT 103: Same as case 101 but with single coupon payment at",
+  "contractType": "PAM",
+  "version":      "20201006",
+  "description":  "Same as case 101 but with single coupon payment at fixed Nominal Rate of 1% instead of Discount at Purchase.",
+  "contract":     {
+    "calendar":             "NC",
+    "contractType":         "PAM",
+    "statusDate":           "2015-01-01T00:00:00",
+    "contractRole":         "RPA",
+    "contractID":           103,
+    "nominalInterestRate":  0.01,
+    "dayCountConvention":   "30E360",
+    "currency":             "USD",
+    "contractDealDate":     "2015-01-01T00:00:00",
+    "initialExchangeDate":  "2015-01-02T00:00:00",
+    "maturityDate":         "2015-04-02T00:00:00",
+    "notionalPrincipal":    1000,
+    "rateSpread":           0,
+    "premiumDiscountAtIED": 0
+  },
+  "riskFactors":  []
+}

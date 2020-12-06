@@ -117,6 +117,8 @@ export class Graph extends React.Component {
 					return("red");
 				case "PR":
 					return("red");
+				case "MD":
+					return("red");
 				case "IP":
 					return("green");
 				case "IPCI":
@@ -136,6 +138,8 @@ export class Graph extends React.Component {
 				case "IED":
 					return(2);
 				case "PR":
+					return(2);
+				case "MD":
 					return(2);
 				case "IP":
 					return(5);

@@ -1,0 +1,125 @@
+{
+  "info":                    {
+    "_postman_id": "fe518b7d-152d-4417-8755-1cf8cb24431d",
+    "name":        "ACTUS Webapp",
+    "schema":      "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item":                    [
+    {
+      "name":     "Fetch demo meta infos",
+      "request":  {
+        "method": "GET",
+        "header": [],
+        "url":    {
+          "raw":  "{{HOST_LOCAL}}/demos/meta/STK",
+          "host": [
+            "{{HOST_LOCAL}}"
+          ],
+          "path": [
+            "demos",
+            "meta",
+            "STK"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name":     "Fetch demo details",
+      "request":  {
+        "method": "GET",
+        "header": [],
+        "url":    {
+          "raw":  "{{HOST_LOCAL}}/demos/STK",
+          "host": [
+            "{{HOST_LOCAL}}"
+          ],
+          "path": [
+            "demos",
+            "STK"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name":     "Fetch demo details Copy",
+      "request":  {
+        "method": "GET",
+        "header": [],
+        "url":    {
+          "raw":  "{{HOST_LOCAL}}/demo/5db350f7d70b8e45852b3057",
+          "host": [
+            "{{HOST_LOCAL}}"
+          ],
+          "path": [
+            "demo",
+            "5db350f7d70b8e45852b3057"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name":     "Compute events demo_stk101",
+      "request":  {
+        "method": "POST",
+        "header": [],
+        "body":   {
+          "mode":    "raw",
+          "raw":     "{\n  \"contract\":   {\n      \"contractType\":        \"STK\",\n      \"statusDate\":          \"2015-01-01T00:00:00\",\n      \"contractRole\":        \"RPA\",\n      \"contractID\":          101,\n      \"currency\":            \"USD\",\n      \"contractDealDate\":    \"2015-01-01T00:00:00\",\n      \"purchaseDate\":        \"2015-01-02T00:00:00\",\n      \"priceAtPurchaseDate\": 90,\n      \"marketValueObserved\": 100\n    },\n  \"riskFactors\": []\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url":    {
+          "raw":  "{{HOST_LOCAL}}/events",
+          "host": [
+            "{{HOST_LOCAL}}"
+          ],
+          "path": [
+            "events"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name":     "Compute batch events",
+      "request":  {
+        "method": "POST",
+        "header": [],
+        "body":   {
+          "mode":    "raw",
+          "raw":     "{\n  \"contracts\":   [\n    {\n      \"contractType\":           \"STK\",\n      \"statusDate\":             \"2015-01-01T00:00:00\",\n      \"contractRole\":           \"RPA\",\n      \"contractID\":             102,\n      \"currency\":               \"USD\",\n      \"contractDealDate\":       \"2015-01-01T00:00:00\",\n      \"purchaseDate\":           \"2015-01-02T00:00:00\",\n      \"priceAtPurchaseDate\":    90,\n      \"terminationDate\":        \"2015-01-16T00:00:00\",\n      \"priceAtTerminationDate\": 110,\n      \"marketValueObserved\":    100\n    },\n    {\n      \"contractType\":           \"STK\",\n      \"statusDate\":             \"2015-01-01T00:00:00\",\n      \"contractRole\":           \"RPL\",\n      \"contractID\":             103,\n      \"currency\":               \"USD\",\n      \"contractDealDate\":       \"2015-01-01T00:00:00\",\n      \"purchaseDate\":           \"2015-01-02T00:00:00\",\n      \"priceAtPurchaseDate\":    90,\n      \"terminationDate\":        \"2015-01-16T00:00:00\",\n      \"priceAtTerminationDate\": 110,\n      \"marketValueObserved\":    100\n    },\n    {\n      \"contractType\":        \"STK\",\n      \"statusDate\":          \"2015-01-01T00:00:00\",\n      \"contractRole\":        \"RPA\",\n      \"contractID\":          104,\n      \"cycleOfDividend\":     \"P1YL0\",\n      \"currency\":            \"USD\",\n      \"contractDealDate\":    \"2015-01-01T00:00:00\",\n      \"purchaseDate\":        \"2015-01-02T00:00:00\",\n      \"priceAtPurchaseDate\": 90,\n      \"marketValueObserved\": 100\n    },\n    {\n      \"contractType\":        \"STK\",\n      \"statusDate\":          \"2015-01-01T00:00:00\",\n      \"contractRole\":        \"RPA\",\n      \"contractID\":          105,\n      \"cycleOfDividend\":     \"P1YL0\",\n      \"currency\":            \"USD\",\n      \"contractDealDate\":    \"2014-12-01T00:00:00\",\n      \"purchaseDate\":        \"2014-12-02T00:00:00\",\n      \"priceAtPurchaseDate\": 90,\n      \"marketValueObserved\": 100\n    }\n  ],\n  \"riskFactors\": []\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url":    {
+          "raw":  "{{HOST_LOCAL}}/eventsBatch",
+          "host": [
+            "{{HOST_LOCAL}}"
+          ],
+          "path": [
+            "eventsBatch"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable":                [
+    {
+      "id":    "29f21850-a5f3-4948-a867-a8a5f79674d8",
+      "key":   "HOST_LOCAL",
+      "value": "http://localhost:8080",
+      "type":  "string"
+    }
+  ],
+  "protocolProfileBehavior": {}
+}

@@ -1,8 +1,10 @@
 package org.actus.webapp.models;
 
 import java.util.Map;
-
 import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -24,8 +26,10 @@ public class Demo {
     @Field (value="description")
     private String description;
  //   private String terms;
-    @Field (value="terms")
-    private Map<String, Object> terms = new HashMap<String, Object>();
+    @Field (value="contract")
+    private Map<String, Object> contract = new HashMap<String, Object>();
+    @Field (value="riskFactors")
+    private List<ObservedData> riskFactors = new ArrayList<ObservedData>();
 
     /**
      * No args constructor for use in serialization
@@ -59,8 +63,6 @@ public class Demo {
     public void setId(String id) {
         this._id = id;
     }
-
-
 
     public String getIdentifier() {
         return identifier;
@@ -102,20 +104,20 @@ public class Demo {
         this.description = description;
     }
 
-   // public String getTerms() {
-   //     return terms;
-  //  }
-
-  //  public void setTerms(String terms) {
-   //     this.terms = terms;
-   // }
-
-    public Map<String, Object> getTerms() {
-        return this.terms;
+    public Map<String, Object> getContract() {
+        return this.contract;
     }
 
-    public void setTerms(String name, Object value) {
-        this.terms.put(name, value);
+    public void setContract(String name, Object value) {
+        this.contract.put(name, value);
+    }
+
+    public List<ObservedData> getRiskFactors() {
+        return this.riskFactors;
+    }
+
+    public void setRiskFactors(ObservedData data) {
+        this.riskFactors.add(data);
     }
 
 }

@@ -1,0 +1,20 @@
+{
+  "identifier":   "demo_fxout101",
+  "label":        "CT 101: A simple FX-out agreement on the exchange of USD 1",
+  "contractType": "FXOUT",
+  "version":      "20201006",
+  "description":  "A simple FX-out agreement on the exchange of USD 1000 (receive) agains EUR 900 (pay) in 1 year's time, i.e. on 2015-12-31T00.",
+  "contract":     {
+    "contractType":       "FXOUT",
+    "contractID":         101,
+    "contractRole":       "RFL",
+    "currency":           "USD",
+    "currency2":          "EUR",
+    "notionalPrincipal":  1000,
+    "notionalPrincipal2": 900,
+    "statusDate":         "2014-12-30T00:00:00",
+    "contractDealDate":   "2014-12-31T00:00:00",
+    "maturityDate":       "2015-12-31T00:00:00"
+  },
+  "riskFactors":  []
+}

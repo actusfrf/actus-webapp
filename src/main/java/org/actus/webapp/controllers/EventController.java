@@ -9,7 +9,8 @@ import org.actus.events.ContractEvent;
 import org.actus.externals.RiskFactorModelProvider;
 import org.actus.states.StateSpace;
 import org.actus.webapp.utils.TimeSeries;
-import org.actus.webapp.models.ActusData;
+import org.actus.webapp.models.InputData;
+import org.actus.webapp.models.BatchInputData;
 import org.actus.webapp.models.ObservedData;
 import org.actus.webapp.models.EventStream;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,13 +49,14 @@ public class EventController {
     // String -> ArrayList<ContractEvent>
     @RequestMapping(method = RequestMethod.POST, value = "/events")
     @CrossOrigin(origins = "*")
-    public List<Event> solveContract(@RequestBody Map<String, Object> json) {
+    public List<Event> solveContract(@RequestBody InputData json) {
 
         // extract contract terms from body
-        ContractModel terms = ContractModel.parse(json);
+        ContractModel terms = ContractModel.parse(json.getContract());
+        List<ObservedData> riskFactorData = json.getRiskFactors();
 
-        // define (empty) risk factor observer
-        MarketModel observer = new MarketModel();
+        // create risk factor observer
+        RiskFactorModelProvider observer = createObserver(riskFactorData);
 
         // compute and return events
         return computeEvents(terms, observer);
@@ -65,7 +67,7 @@ public class EventController {
     // return:  ArrayList of ArrayList of ContractEvents
     @RequestMapping(method = RequestMethod.POST, value = "/eventsBatch")
     @CrossOrigin(origins = "*")
-    public List<EventStream> solveContractBatch(@RequestBody ActusData json) {
+    public List<EventStream> solveContractBatch(@RequestBody BatchInputData json) {
         
         // extract body parameters
         List<Map<String, Object>> contractData = json.getContracts();

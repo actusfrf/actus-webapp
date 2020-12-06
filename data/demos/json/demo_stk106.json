@@ -1,0 +1,20 @@
+{
+  "identifier":   "demo_stk106",
+  "label":        "CT 106: Same as 104 but Dividend payments linked to a (sto",
+  "contractType": "STK",
+  "version":      "20201006",
+  "description":  "Same as 104 but Dividend payments linked to a (stochastic) reference risk factor.",
+  "contract":     {
+    "contractType":        "STK",
+    "statusDate":          "2015-01-01T00:00:00",
+    "contractRole":        "RPA",
+    "contractID":          106,
+    "cycleOfDividend":     "P1YL0",
+    "currency":            "USD",
+    "contractDealDate":    "2015-01-01T00:00:00",
+    "purchaseDate":        "2015-01-02T00:00:00",
+    "priceAtPurchaseDate": 90,
+    "marketValueObserved": 100
+  },
+  "riskFactors":  []
+}

@@ -1,0 +1,41 @@
+{
+  "identifier":   "demo_swppv103",
+  "label":        "CT 103: A 5-year fixed-rate payer swap.",
+  "contractType": "SWPPV",
+  "version":      "20201006",
+  "description":  "A 5-year fixed-rate payer swap.",
+  "contract":     {
+    "calendar":                         "NC",
+    "contractType":                     "SWPPV",
+    "statusDate":                       "2015-01-01T00:00:00",
+    "contractRole":                     "PF",
+    "contractID":                       103,
+    "cycleAnchorDateOfInterestPayment": "2015-03-01T00:00:00",
+    "cycleOfInterestPayment":           "P3ML1",
+    "nominalInterestRate":              0.05,
+    "nominalInterestRate2":             0.08,
+    "dayCountConvention":               "30E360",
+    "currency":                         "USD",
+    "contractDealDate":                 "2015-01-01T00:00:00",
+    "initialExchangeDate":              "2015-01-02T00:00:00",
+    "maturityDate":                     "2020-01-02T00:00:00",
+    "notionalPrincipal":                1000,
+    "cycleAnchorDateOfRateReset":       "2015-03-01T00:00:00",
+    "cycleOfRateReset":                 "P3ML1",
+    "rateSpread":                       0.01,
+    "deliverySettlement":               "D",
+    "marketObjectCodeOfRateReset":      "USD_Treasury"
+  },
+  "riskFactors":  [
+    {
+      "marketObjectCode": "USD_Treasury",
+      "base":             1,
+      "data":             [
+        {
+          "time":  "2015-01-01T00:00:00",
+          "value": 0.05
+        }
+      ]
+    }
+  ]
+}

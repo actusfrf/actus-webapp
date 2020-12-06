@@ -1,0 +1,125 @@
+{
+  "info":                    {
+    "_postman_id": "fe518b7d-152d-4417-8755-1cf8cb24431d",
+    "name":        "ACTUS Webapp",
+    "schema":      "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item":                    [
+    {
+      "name":     "Fetch demo meta infos",
+      "request":  {
+        "method": "GET",
+        "header": [],
+        "url":    {
+          "raw":  "{{HOST_LOCAL}}/demos/meta/LAX",
+          "host": [
+            "{{HOST_LOCAL}}"
+          ],
+          "path": [
+            "demos",
+            "meta",
+            "LAX"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name":     "Fetch demo details",
+      "request":  {
+        "method": "GET",
+        "header": [],
+        "url":    {
+          "raw":  "{{HOST_LOCAL}}/demos/LAX",
+          "host": [
+            "{{HOST_LOCAL}}"
+          ],
+          "path": [
+            "demos",
+            "LAX"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name":     "Fetch demo details Copy",
+      "request":  {
+        "method": "GET",
+        "header": [],
+        "url":    {
+          "raw":  "{{HOST_LOCAL}}/demo/5db350f7d70b8e45852b3057",
+          "host": [
+            "{{HOST_LOCAL}}"
+          ],
+          "path": [
+            "demo",
+            "5db350f7d70b8e45852b3057"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name":     "Compute events demo_lax101",
+      "request":  {
+        "method": "POST",
+        "header": [],
+        "body":   {
+          "mode":    "raw",
+          "raw":     "{\n  \"contract\":    {\n      \"contractType\":                              \"LAX\",\n      \"statusDate\":                                \"2015-01-01T00:00:00\",\n      \"contractRole\":                              \"RPA\",\n      \"contractID\":                                101,\n      \"arrayCycleAnchorDateOfInterestPayment\":     \"2016-01-01T00:00:00\",\n      \"arrayCycleOfInterestPayment\":               \"P1YL0\",\n      \"nominalInterestRate\":                       0.05,\n      \"dayCountConvention\":                        \"30E360\",\n      \"interestCalculationBase\":                   \"NT\",\n      \"currency\":                                  \"USD\",\n      \"contractDealDate\":                          \"2015-01-01T00:00:00\",\n      \"initialExchangeDate\":                       \"2015-01-02T00:00:00\",\n      \"notionalPrincipal\":                         1000,\n      \"arrayCycleAnchorDateOfPrincipalRedemption\": \"2016-01-01T00:00:00\",\n      \"arrayCycleOfPrincipalRedemption\":           \"P1YL0\",\n      \"arrayNextPrincipalRedemptionPayment\":       \"200\",\n      \"arrayIncreaseDecrease\":                     \"DEC\",\n      \"arrayRate\":                                 \"0\"\n    },\n  \"riskFactors\": []\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url":    {
+          "raw":  "{{HOST_LOCAL}}/events",
+          "host": [
+            "{{HOST_LOCAL}}"
+          ],
+          "path": [
+            "events"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name":     "Compute batch events",
+      "request":  {
+        "method": "POST",
+        "header": [],
+        "body":   {
+          "mode":    "raw",
+          "raw":     "{\n  \"contracts\":   [\n    {\n      \"contractType\":                              \"LAX\",\n      \"statusDate\":                                \"2015-01-01T00:00:00\",\n      \"contractRole\":                              \"RPA\",\n      \"contractID\":                                102,\n      \"arrayCycleAnchorDateOfInterestPayment\":     \"2016-01-01T00:00:00\",\n      \"arrayCycleOfInterestPayment\":               \"P1YL0\",\n      \"nominalInterestRate\":                       0.05,\n      \"dayCountConvention\":                        \"30E360\",\n      \"interestCalculationBase\":                   \"NT\",\n      \"currency\":                                  \"USD\",\n      \"contractDealDate\":                          \"2015-01-01T00:00:00\",\n      \"initialExchangeDate\":                       \"2015-01-02T00:00:00\",\n      \"notionalPrincipal\":                         1000,\n      \"arrayCycleAnchorDateOfPrincipalRedemption\": \"2016-01-01T00:00:00,2019-01-01T00:00:00,2021-01-01T00:00:00\",\n      \"arrayCycleOfPrincipalRedemption\":           \"P1YL0,P1YL0,P1YL0\",\n      \"arrayNextPrincipalRedemptionPayment\":       \"100,200,300\",\n      \"arrayIncreaseDecrease\":                     \"DEC,DEC,DEC\",\n      \"arrayRate\":                                 \"0\"\n    },\n    {\n      \"contractType\":                              \"LAX\",\n      \"statusDate\":                                \"2015-01-01T00:00:00\",\n      \"contractRole\":                              \"RPA\",\n      \"contractID\":                                103,\n      \"arrayCycleAnchorDateOfInterestPayment\":     \"2016-01-01T00:00:00\",\n      \"arrayCycleOfInterestPayment\":               \"P1YL0\",\n      \"nominalInterestRate\":                       0.05,\n      \"dayCountConvention\":                        \"30E360\",\n      \"interestCalculationBase\":                   \"NT\",\n      \"currency\":                                  \"USD\",\n      \"contractDealDate\":                          \"2015-01-01T00:00:00\",\n      \"initialExchangeDate\":                       \"2015-01-02T00:00:00\",\n      \"notionalPrincipal\":                         1000,\n      \"arrayCycleAnchorDateOfPrincipalRedemption\": \"2016-01-01T00:00:00,2020-01-01T00:00:00,2024-01-01T00:00:00\",\n      \"arrayCycleOfPrincipalRedemption\":           \"P2YL0,P1YL0,P6ML0\",\n      \"arrayNextPrincipalRedemptionPayment\":       \"100,100,100\",\n      \"arrayIncreaseDecrease\":                     \"DEC,DEC,DEC\",\n      \"arrayRate\":                                 \"0\"\n    },\n    {\n      \"contractType\":                              \"LAX\",\n      \"statusDate\":                                \"2015-01-01T00:00:00\",\n      \"contractRole\":                              \"RPA\",\n      \"contractID\":                                110,\n      \"arrayCycleAnchorDateOfInterestPayment\":     \"2016-01-01T00:00:00\",\n      \"arrayCycleOfInterestPayment\":               \"P1YL0\",\n      \"nominalInterestRate\":                       0.05,\n      \"dayCountConvention\":                        \"30E360\",\n      \"interestCalculationBase\":                   \"NT\",\n      \"currency\":                                  \"USD\",\n      \"contractDealDate\":                          \"2015-01-01T00:00:00\",\n      \"initialExchangeDate\":                       \"2015-01-02T00:00:00\",\n      \"notionalPrincipal\":                         500,\n      \"arrayCycleAnchorDateOfPrincipalRedemption\": \"2016-01-01T00:00:00,2018-01-01T00:00:00\",\n      \"arrayCycleOfPrincipalRedemption\":           \"P1YL0,P1YL0\",\n      \"arrayNextPrincipalRedemptionPayment\":       \"500,300\",\n      \"arrayIncreaseDecrease\":                     \"INC,DEC\",\n      \"scalingIndexAtStatusDate\":                  100,\n      \"cycleAnchorDateOfScalingIndex\":             \"2016-01-01T00:00:00\",\n      \"cycleOfScalingIndex\":                       \"P1YL0\",\n      \"scalingEffect\":                             \"INO\",\n      \"arrayRate\":                                 \"0\"\n    },\n    {\n      \"contractType\":                              \"LAX\",\n      \"statusDate\":                                \"2015-01-01T00:00:00\",\n      \"contractRole\":                              \"RPA\",\n      \"contractID\":                                111,\n      \"arrayCycleAnchorDateOfInterestPayment\":     \"2016-01-01T00:00:00\",\n      \"arrayCycleOfInterestPayment\":               \"P1YL0\",\n      \"nominalInterestRate\":                       0.05,\n      \"dayCountConvention\":                        \"30E360\",\n      \"interestCalculationBase\":                   \"NT\",\n      \"currency\":                                  \"USD\",\n      \"contractDealDate\":                          \"2015-01-01T00:00:00\",\n      \"initialExchangeDate\":                       \"2015-01-02T00:00:00\",\n      \"notionalPrincipal\":                         500,\n      \"arrayCycleAnchorDateOfPrincipalRedemption\": \"2016-01-01T00:00:00,2018-01-01T00:00:00\",\n      \"arrayCycleOfPrincipalRedemption\":           \"P1YL0,P1YL0\",\n      \"arrayNextPrincipalRedemptionPayment\":       \"500,300\",\n      \"arrayIncreaseDecrease\":                     \"INC,DEC\",\n      \"scalingIndexAtStatusDate\":                  100,\n      \"cycleAnchorDateOfScalingIndex\":             \"2016-01-01T00:00:00\",\n      \"cycleOfScalingIndex\":                       \"P1YL0\",\n      \"scalingEffect\":                             \"IOO\",\n      \"arrayRate\":                                 \"0\"\n    }\n  ],\n  \"riskFactors\": []\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url":    {
+          "raw":  "{{HOST_LOCAL}}/eventsBatch",
+          "host": [
+            "{{HOST_LOCAL}}"
+          ],
+          "path": [
+            "eventsBatch"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable":                [
+    {
+      "id":    "29f21850-a5f3-4948-a867-a8a5f79674d8",
+      "key":   "HOST_LOCAL",
+      "value": "http://localhost:8080",
+      "type":  "string"
+    }
+  ],
+  "protocolProfileBehavior": {}
+}

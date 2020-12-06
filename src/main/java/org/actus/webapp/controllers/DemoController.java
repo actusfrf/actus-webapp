@@ -25,7 +25,7 @@ public class DemoController {
         Optional<Demo> optdemo = demoRepository.findById(id);
         Demo d = optdemo.get();
 
-        return d.getTerms();
+        return d.getContract();
     }
 
     @RequestMapping(method=RequestMethod.GET, value="/demos/{id}")

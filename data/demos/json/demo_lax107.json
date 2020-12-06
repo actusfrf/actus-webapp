@@ -1,0 +1,29 @@
+{
+  "identifier":   "demo_lax107",
+  "label":        "CT 107: Same as case 105 but with Interest Payments being ",
+  "contractType": "LAX",
+  "version":      "20201006",
+  "description":  "Same as case 105 but with Interest Payments being calculated on the basis of a fixed amount (USD 1000.0 in this case).",
+  "contract":     {
+    "contractType":                              "LAX",
+    "statusDate":                                "2015-01-01T00:00:00",
+    "contractRole":                              "RPA",
+    "contractID":                                107,
+    "arrayCycleAnchorDateOfInterestPayment":     "2016-01-01T00:00:00",
+    "arrayCycleOfInterestPayment":               "P1YL0",
+    "nominalInterestRate":                       0.05,
+    "dayCountConvention":                        "30E360",
+    "interestCalculationBase":                   "NTIED",
+    "interestCalculationBaseAmount":             1000,
+    "currency":                                  "USD",
+    "contractDealDate":                          "2015-01-01T00:00:00",
+    "initialExchangeDate":                       "2015-01-02T00:00:00",
+    "notionalPrincipal":                         500,
+    "arrayCycleAnchorDateOfPrincipalRedemption": "2016-01-01T00:00:00,2018-01-01T00:00:00",
+    "arrayCycleOfPrincipalRedemption":           "P1YL0,P1YL0",
+    "arrayNextPrincipalRedemptionPayment":       "500,300",
+    "arrayIncreaseDecrease":                     "INC,DEC",
+    "arrayRate":                                 "0"
+  },
+  "riskFactors":  []
+}

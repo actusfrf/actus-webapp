@@ -1,0 +1,28 @@
+{
+  "identifier":   "demo_lax105",
+  "label":        "CT 105: Same as case 101 but with a notional step-up patte",
+  "contractType": "LAX",
+  "version":      "20201006",
+  "description":  "Same as case 101 but with a notional step-up pattern of USD 500.0 annually for the first 3 years, and a step-down pattern of USD 300.0 for the subsequent 5 years.",
+  "contract":     {
+    "contractType":                              "LAX",
+    "statusDate":                                "2015-01-01T00:00:00",
+    "contractRole":                              "RPA",
+    "contractID":                                105,
+    "arrayCycleAnchorDateOfInterestPayment":     "2016-01-01T00:00:00",
+    "arrayCycleOfInterestPayment":               "P1YL0",
+    "nominalInterestRate":                       0.05,
+    "dayCountConvention":                        "30E360",
+    "interestCalculationBase":                   "NT",
+    "currency":                                  "USD",
+    "contractDealDate":                          "2015-01-01T00:00:00",
+    "initialExchangeDate":                       "2015-01-02T00:00:00",
+    "notionalPrincipal":                         500,
+    "arrayCycleAnchorDateOfPrincipalRedemption": "2016-01-01T00:00:00,2018-01-01T00:00:00",
+    "arrayCycleOfPrincipalRedemption":           "P1YL0,P1YL0",
+    "arrayNextPrincipalRedemptionPayment":       "500,300",
+    "arrayIncreaseDecrease":                     "INC,DEC",
+    "arrayRate":                                 "0"
+  },
+  "riskFactors":  []
+}

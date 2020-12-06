@@ -1,0 +1,26 @@
+{
+  "identifier":   "demo_pam109",
+  "label":        "CT 109: Same as case 104 but uneven last coupon period is ",
+  "contractType": "PAM",
+  "version":      "20201006",
+  "description":  "Same as case 104 but uneven last coupon period is handled differently (short stub).",
+  "contract":     {
+    "calendar":                         "NC",
+    "contractType":                     "PAM",
+    "statusDate":                       "2015-01-01T00:00:00",
+    "contractRole":                     "RPA",
+    "contractID":                       109,
+    "cycleAnchorDateOfInterestPayment": "2016-01-02T00:00:00",
+    "cycleOfInterestPayment":           "P1YL1",
+    "nominalInterestRate":              0.02,
+    "dayCountConvention":               "30E360",
+    "currency":                         "USD",
+    "contractDealDate":                 "2015-01-01T00:00:00",
+    "initialExchangeDate":              "2015-01-02T00:00:00",
+    "maturityDate":                     "2020-01-02T00:00:00",
+    "notionalPrincipal":                1000,
+    "rateSpread":                       0,
+    "premiumDiscountAtIED":             0
+  },
+  "riskFactors":  []
+}

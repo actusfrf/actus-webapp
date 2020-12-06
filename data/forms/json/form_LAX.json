@@ -517,7 +517,7 @@
   },
   {
     "Group": "Rate Reset",
-    "Name": "MarketObjectCodeRateReset",
+    "Name": "MarketObjectCodeOfRateReset",
     "Type": "Varchar",
     "List": "[NA]",
     "Description": "Is pointing to the interest rate driver (MarketObject) used for rate reset uniquely.nUnique codes for market objects must be used.",

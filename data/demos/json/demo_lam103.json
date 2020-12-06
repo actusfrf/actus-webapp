@@ -1,0 +1,29 @@
+{
+  "identifier":   "demo_lam103",
+  "label":        "CT 103: Same as case 101 but with Maturity forced after 4 ",
+  "contractType": "LAM",
+  "version":      "20201006",
+  "description":  "Same as case 101 but with Maturity forced after 4 years.",
+  "contract":     {
+    "calendar":                             "NC",
+    "contractType":                         "LAM",
+    "statusDate":                           "2015-01-01T00:00:00",
+    "contractRole":                         "RPA",
+    "contractID":                           103,
+    "cycleAnchorDateOfInterestPayment":     "2016-01-02T00:00:00",
+    "cycleOfInterestPayment":               "P1YL0",
+    "nominalInterestRate":                  0.05,
+    "dayCountConvention":                   "30E360",
+    "interestCalculationBase":              "NT",
+    "currency":                             "USD",
+    "contractDealDate":                     "2015-01-01T00:00:00",
+    "initialExchangeDate":                  "2015-01-02T00:00:00",
+    "maturityDate":                         "2018-12-31T00:00:00",
+    "notionalPrincipal":                    1000,
+    "cycleAnchorDateOfPrincipalRedemption": "2016-01-02T00:00:00",
+    "cycleOfPrincipalRedemption":           "P1YL0",
+    "nextPrincipalRedemptionPayment":       200,
+    "rateSpread":                           0
+  },
+  "riskFactors":  []
+}

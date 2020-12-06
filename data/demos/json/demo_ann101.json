@@ -1,0 +1,26 @@
+{
+  "identifier":   "demo_ann101",
+  "label":        "CT 101: Long position in a 5-year Annuity with annual Annu",
+  "contractType": "ANN",
+  "version":      "20201006",
+  "description":  "Long position in a 5-year Annuity with annual Annuity payments based on a fixed Nominal Rate of 5%.",
+  "contract":     {
+    "contractType":                         "ANN",
+    "statusDate":                           "2015-01-01T00:00:00",
+    "contractRole":                         "RPA",
+    "contractID":                           101,
+    "nominalInterestRate":                  0.05,
+    "dayCountConvention":                   "30E360",
+    "currency":                             "USD",
+    "contractDealDate":                     "2015-01-01T00:00:00",
+    "initialExchangeDate":                  "2015-01-02T00:00:00",
+    "maturityDate":                         "2020-01-02T00:00:00",
+    "notionalPrincipal":                    1000,
+    "cycleAnchorDateOfPrincipalRedemption": "2016-01-02T00:00:00",
+    "cycleOfPrincipalRedemption":           "P1YL0",
+    "rateSpread":                           0,
+    "cycleAnchorDateOfInterestPayment":     "2016-01-02T00:00:00",
+    "cycleOfInterestPayment":               "P1YL0"
+  },
+  "riskFactors":  []
+}

@@ -1,0 +1,125 @@
+{
+  "info":                    {
+    "_postman_id": "fe518b7d-152d-4417-8755-1cf8cb24431d",
+    "name":        "ACTUS Webapp",
+    "schema":      "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item":                    [
+    {
+      "name":     "Fetch demo meta infos",
+      "request":  {
+        "method": "GET",
+        "header": [],
+        "url":    {
+          "raw":  "{{HOST_LOCAL}}/demos/meta/SWPPV",
+          "host": [
+            "{{HOST_LOCAL}}"
+          ],
+          "path": [
+            "demos",
+            "meta",
+            "SWPPV"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name":     "Fetch demo details",
+      "request":  {
+        "method": "GET",
+        "header": [],
+        "url":    {
+          "raw":  "{{HOST_LOCAL}}/demos/SWPPV",
+          "host": [
+            "{{HOST_LOCAL}}"
+          ],
+          "path": [
+            "demos",
+            "SWPPV"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name":     "Fetch demo details Copy",
+      "request":  {
+        "method": "GET",
+        "header": [],
+        "url":    {
+          "raw":  "{{HOST_LOCAL}}/demo/5db350f7d70b8e45852b3057",
+          "host": [
+            "{{HOST_LOCAL}}"
+          ],
+          "path": [
+            "demo",
+            "5db350f7d70b8e45852b3057"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name":     "Compute events demo_swppv101",
+      "request":  {
+        "method": "POST",
+        "header": [],
+        "body":   {
+          "mode":    "raw",
+          "raw":     "{\n  \"contract\":   {\n    \"calendar\":                         \"NC\",\n    \"contractType\":                     \"SWPPV\",\n    \"statusDate\":                       \"2015-01-01T00:00:00\",\n    \"contractRole\":                     \"PF\",\n    \"contractID\":                       101,\n    \"cycleAnchorDateOfInterestPayment\": \"2015-02-01T00:00:00\",\n    \"cycleOfInterestPayment\":           \"P1ML1\",\n    \"nominalInterestRate\":              0.05,\n    \"nominalInterestRate2\":             0.08,\n    \"dayCountConvention\":               \"30E360\",\n    \"currency\":                         \"USD\",\n    \"contractDealDate\":                 \"2015-01-01T00:00:00\",\n    \"initialExchangeDate\":              \"2015-01-02T00:00:00\",\n    \"maturityDate\":                     \"2015-04-02T00:00:00\",\n    \"notionalPrincipal\":                1000,\n    \"cycleAnchorDateOfRateReset\":       \"2015-01-01T00:00:00\",\n    \"cycleOfRateReset\":                 \"P1ML1\",\n    \"rateSpread\":                       0,\n    \"marketObjectCodeOfRateReset\":        \"USD_Treasury\",\n    \"deliverySettlement\":               \"D\"\n  },\n  \"riskFactors\": [\n    {\n      \"marketObjectCode\": \"USD_TREASURY\",\n      \"base\":             0.05,\n      \"data\":             [\n        {\n          \"time\":  \"2015-01-01T00:00:00\",\n          \"value\": 0.05\n        },\n        {\n          \"time\":  \"2015-02-01T00:00:00\",\n          \"value\": 0.05\n        },\n        {\n          \"time\":  \"2015-03-01T00:00:00\",\n          \"value\": 0.05\n        },\n        {\n          \"time\":  \"2015-04-01T00:00:00\",\n          \"value\": 0.05\n        },\n        {\n          \"time\":  \"2015-05-01T00:00:00\",\n          \"value\": 0.05\n        }\n      ]\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url":    {
+          "raw":  "{{HOST_LOCAL}}/events",
+          "host": [
+            "{{HOST_LOCAL}}"
+          ],
+          "path": [
+            "events"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name":     "Compute batch events",
+      "request":  {
+        "method": "POST",
+        "header": [],
+        "body":   {
+          "mode":    "raw",
+          "raw":     "{\n  \"contracts\":   [\n    {\n      \"calendar\":                         \"NC\",\n      \"contractType\":                     \"SWPPV\",\n      \"statusDate\":                       \"2015-01-01T00:00:00\",\n      \"contractRole\":                     \"RF\",\n      \"contractID\":                       102,\n      \"cycleAnchorDateOfInterestPayment\": \"2015-03-01T00:00:00\",\n      \"cycleOfInterestPayment\":           \"P3ML1\",\n      \"nominalInterestRate\":              0.05,\n      \"nominalInterestRate2\":             0.05,\n      \"dayCountConvention\":               \"30E360\",\n      \"currency\":                         \"USD\",\n      \"contractDealDate\":                 \"2015-01-01T00:00:00\",\n      \"initialExchangeDate\":              \"2015-01-02T00:00:00\",\n      \"maturityDate\":                     \"2015-04-02T00:00:00\",\n      \"notionalPrincipal\":                1000,\n      \"cycleAnchorDateOfRateReset\":       \"2015-03-01T00:00:00\",\n      \"cycleOfRateReset\":                 \"P3ML1\",\n      \"rateSpread\":                       0,\n      \"marketObjectCodeOfRateReset\":        \"USD_Treasury\",\n      \"deliverySettlement\":               \"D\"\n    },\n    {\n      \"calendar\":                         \"NC\",\n      \"contractType\":                     \"SWPPV\",\n      \"statusDate\":                       \"2015-01-01T00:00:00\",\n      \"contractRole\":                     \"PF\",\n      \"contractID\":                       103,\n      \"cycleAnchorDateOfInterestPayment\": \"2015-03-01T00:00:00\",\n      \"cycleOfInterestPayment\":           \"P3ML1\",\n      \"nominalInterestRate\":              0.05,\n      \"nominalInterestRate2\":             0.08,\n      \"dayCountConvention\":               \"30E360\",\n      \"currency\":                         \"USD\",\n      \"contractDealDate\":                 \"2015-01-01T00:00:00\",\n      \"initialExchangeDate\":              \"2015-01-02T00:00:00\",\n      \"maturityDate\":                     \"2020-01-02T00:00:00\",\n      \"notionalPrincipal\":                1000,\n      \"cycleAnchorDateOfRateReset\":       \"2015-03-01T00:00:00\",\n      \"cycleOfRateReset\":                 \"P3ML1\",\n      \"rateSpread\":                       0.01,\n      \"marketObjectCodeOfRateReset\":        \"USD_Treasury\",\n      \"deliverySettlement\":               \"D\"\n    },\n    {\n      \"calendar\":                         \"NC\",\n      \"contractType\":                     \"SWPPV\",\n      \"statusDate\":                       \"2015-01-01T00:00:00\",\n      \"contractRole\":                     \"RF\",\n      \"contractID\":                       107,\n      \"cycleAnchorDateOfInterestPayment\": \"2015-07-01T00:00:00\",\n      \"cycleOfInterestPayment\":           \"P6ML1\",\n      \"nominalInterestRate\":              0.05,\n      \"nominalInterestRate2\":             0.08,\n      \"dayCountConvention\":               \"30E360\",\n      \"currency\":                         \"USD\",\n      \"contractDealDate\":                 \"2015-01-01T00:00:00\",\n      \"initialExchangeDate\":              \"2015-01-02T00:00:00\",\n      \"maturityDate\":                     \"2025-01-02T00:00:00\",\n      \"notionalPrincipal\":                1000,\n      \"cycleAnchorDateOfRateReset\":       \"2015-07-01T00:00:00\",\n      \"cycleOfRateReset\":                 \"P6ML1\",\n      \"rateSpread\":                       0,\n      \"marketObjectCodeOfRateReset\":        \"USD_Treasury\",\n      \"deliverySettlement\":               \"D\"\n    },\n    {\n      \"calendar\":                         \"NC\",\n      \"contractType\":                     \"SWPPV\",\n      \"statusDate\":                       \"2015-01-01T00:00:00\",\n      \"contractRole\":                     \"PF\",\n      \"contractID\":                       108,\n      \"cycleAnchorDateOfInterestPayment\": \"2015-01-01T00:00:00\",\n      \"cycleOfInterestPayment\":           \"P1ML1\",\n      \"nominalInterestRate\":              0.05,\n      \"nominalInterestRate2\":             0.08,\n      \"dayCountConvention\":               \"30E360\",\n      \"currency\":                         \"USD\",\n      \"contractDealDate\":                 \"2015-01-01T00:00:00\",\n      \"initialExchangeDate\":              \"2015-01-02T00:00:00\",\n      \"maturityDate\":                     \"2025-01-02T00:00:00\",\n      \"notionalPrincipal\":                1000,\n      \"cycleAnchorDateOfRateReset\":       \"2015-01-01T00:00:00\",\n      \"cycleOfRateReset\":                 \"P1ML1\",\n      \"rateSpread\":                       0.02,\n      \"marketObjectCodeOfRateReset\":        \"USD_Treasury\",\n      \"deliverySettlement\":               \"D\"\n    }\n  ],\n  \"riskFactors\": [\n    {\n      \"marketObjectCode\": \"USD_TREASURY\",\n      \"base\":             0.05,\n      \"data\":             [\n        {\n          \"time\":  \"2015-01-01T00:00:00\",\n          \"value\": 0.05\n        },\n        {\n          \"time\":  \"2015-02-01T00:00:00\",\n          \"value\": 0.05\n        },\n        {\n          \"time\":  \"2015-03-01T00:00:00\",\n          \"value\": 0.05\n        },\n        {\n          \"time\":  \"2015-04-01T00:00:00\",\n          \"value\": 0.05\n        },\n        {\n          \"time\":  \"2015-05-01T00:00:00\",\n          \"value\": 0.05\n        }\n      ]\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url":    {
+          "raw":  "{{HOST_LOCAL}}/eventsBatch",
+          "host": [
+            "{{HOST_LOCAL}}"
+          ],
+          "path": [
+            "eventsBatch"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable":                [
+    {
+      "id":    "29f21850-a5f3-4948-a867-a8a5f79674d8",
+      "key":   "HOST_LOCAL",
+      "value": "http://localhost:8080",
+      "type":  "string"
+    }
+  ],
+  "protocolProfileBehavior": {}
+}

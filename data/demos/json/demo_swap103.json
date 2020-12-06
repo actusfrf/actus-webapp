@@ -1,0 +1,83 @@
+{
+  "identifier":   "demo_swap103",
+  "label":        "CT 103: 2-year Plain-Vanilla Payer Interest Rate Swap",
+  "contractType": "SWAPS",
+  "version":      "20201020",
+  "description":  "Plain-Vanilla Payer Interest Rate Swap of USD 1000.0 Notional, starting at 01/02/15 with Maturity after 2 years. Interest is paid semi-annually. The fixed leg pays 3%, the variable leg Reference_Rate_A plus 2%.",
+  "contract":     {
+    "contractType": "SWAPS",
+    "contractID": "103",
+    "contractRole": "PFL",
+    "contractStructure": [
+      {
+        "object": {
+          "contractType": "PAM",
+          "statusDate": "2015-01-01T00:00:00",
+          "contractID": "demo_swaps103-leg1",
+          "nominalInterestRate": 0.03,
+          "dayCountConvention": "30E360",
+          "currency": "USD",
+          "contractDealDate": "2015-01-01T00:00:00",
+          "initialExchangeDate": "2015-01-02T00:00:00",
+          "maturityDate": "2017-01-01T00:00:00",
+          "notionalPrincipal": 1000,
+          "cycleAnchorDateOfInterestPayment": "2015-07-01T00:00:00",
+          "cycleOfInterestPayment": "P6ML1"
+        },
+        "referenceType": "CNT",
+        "referenceRole": "FIL"
+      },
+      {
+        "object": {
+          "contractType": "PAM",
+          "statusDate": "2015-01-01T00:00:00",
+          "contractID": "demo_swaps103-leg2",
+          "nominalInterestRate": 0.01,
+          "dayCountConvention": "30E360",
+          "currency": "USD",
+          "contractDealDate": "2015-01-01T00:00:00",
+          "initialExchangeDate": "2015-01-02T00:00:00",
+          "maturityDate": "2017-01-01T00:00:00",
+          "notionalPrincipal": 1000,
+          "cycleAnchorDateOfRateReset": "2015-01-02T00:00:00",
+          "cycleOfRateReset": "P6ML1",
+          "rateSpread": 0.02,
+          "marketObjectCodeOfRateReset": "Reference_Rate_A",
+          "rateMultiplier": 1,
+          "cycleAnchorDateOfInterestPayment": "2015-07-01T00:00:00",
+          "cycleOfInterestPayment": "P6ML1"
+        },
+        "referenceType": "CNT",
+        "referenceRole": "SEL"
+      }
+    ],
+    "currency": "USD",
+    "contractDealDate": "2015-01-01T00:00:00",
+    "statusDate": "2015-01-01T00:00:00",
+    "deliverySettlement": "D"
+  },
+  "riskFactors":  [
+{
+      "marketObjectCode": "Reference_Rate_A",
+      "base": 1,
+      "data": [
+        {
+          "time":  "2015-01-02T00:00:00",
+          "value": 0.015
+        },
+        {
+          "time":  "2015-07-02T00:00:00",
+          "value": 0.025
+        },
+        {
+          "time":  "2016-01-02T00:00:00",
+          "value": 0.01
+        },
+        {
+          "time":  "2016-07-02T00:00:00",
+          "value": 0.005
+        }
+      ]
+    }
+]
+}

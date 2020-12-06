@@ -1,0 +1,254 @@
+{
+  "identifier":   "demo_swap107",
+  "label":        "CT 107: 1-year USD-EUR Cross-Currency Swap",
+  "contractType": "SWAPS",
+  "version":      "20201020",
+  "description":  "USD-EUR Cross-Currency Swap starting at 01/02/2015 with Maturity after 1 year. Interest is paid monthly. The contract offers Reference_Rate_A based on Nominal USD 1000.0 and pays Reference_Rate_B + 2% based on Nominal EUR 815.0.",
+  "contract":     {
+    "contractType": "SWAPS",
+    "contractID": "107",
+    "contractRole": "PFL",
+    "contractStructure": [
+      {
+        "object": {
+          "contractType": "PAM",
+          "statusDate": "2015-01-01T00:00:00",
+          "contractID": "demo_swaps107-leg1",
+          "nominalInterestRate": 0.03,
+          "dayCountConvention": "30E360",
+          "currency": "USD",
+          "contractDealDate": "2015-01-01T00:00:00",
+          "initialExchangeDate": "2015-01-02T00:00:00",
+          "maturityDate": "2016-01-01T00:00:00",
+          "notionalPrincipal": 1000,
+          "cycleAnchorDateOfRateReset": "2015-01-02T00:00:00",
+          "cycleOfRateReset": "P1ML1",
+          "rateSpread": 0.0,
+          "marketObjectCodeOfRateReset": "Reference_Rate_A",
+          "rateMultiplier": 1,
+          "cycleAnchorDateOfInterestPayment": "2015-02-01T00:00:00",
+          "cycleOfInterestPayment": "P1ML1"
+        },
+        "referenceType": "CNT",
+        "referenceRole": "FIL"
+      },
+      {
+        "object": {
+          "contractType": "PAM",
+          "statusDate": "2015-01-01T00:00:00",
+          "contractID": "demo_swaps107-leg2",
+          "nominalInterestRate": 0.03,
+          "dayCountConvention": "30E360",
+          "currency": "EUR",
+          "contractDealDate": "2015-01-01T00:00:00",
+          "initialExchangeDate": "2015-01-02T00:00:00",
+          "maturityDate": "2016-01-01T00:00:00",
+          "notionalPrincipal": 815,
+          "cycleAnchorDateOfRateReset": "2015-01-02T00:00:00",
+          "cycleOfRateReset": "P1ML1",
+          "rateSpread": 0.02,
+          "marketObjectCodeOfRateReset": "Reference_Rate_B",
+          "rateMultiplier": 1,
+          "cycleAnchorDateOfInterestPayment": "2015-02-01T00:00:00",
+          "cycleOfInterestPayment": "P1ML1"
+        },
+        "referenceType": "CNT",
+        "referenceRole": "SEL"
+      }
+    ],
+    "currency": "USD",
+    "contractDealDate": "2015-01-01T00:00:00",
+    "statusDate": "2015-01-01T00:00:00",
+    "deliverySettlement": "D"
+  },
+  "riskFactors":  [
+{
+      "marketObjectCode": "Reference_Rate_A",
+      "base": 1,
+      "data": [
+        {
+          "time":  "2015-01-02T00:00:00",
+          "value": 0.005
+        },
+        {
+          "time":  "2015-02-02T00:00:00",
+          "value": 0.006
+        },
+        {
+          "time":  "2015-03-02T00:00:00",
+          "value": 0.007
+        },
+        {
+          "time":  "2015-04-02T00:00:00",
+          "value": 0.008
+        },
+        {
+          "time":  "2015-05-02T00:00:00",
+          "value": 0.01
+        },
+        {
+          "time":  "2015-06-02T00:00:00",
+          "value": 0.005
+        },
+        {
+          "time":  "2015-07-02T00:00:00",
+          "value": 0.003
+        },
+        {
+          "time":  "2015-08-02T00:00:00",
+          "value": 0.01
+        },
+        {
+          "time":  "2015-09-02T00:00:00",
+          "value": 0.015
+        },
+        {
+          "time":  "2015-10-02T00:00:00",
+          "value": 0.02
+        },
+        {
+          "time":  "2016-01-02T00:00:00",
+          "value": 0.01
+        },
+        {
+          "time":  "2016-02-02T00:00:00",
+          "value": 0.005
+        },
+        {
+          "time":  "2016-03-02T00:00:00",
+          "value": 0.01
+        },
+        {
+          "time":  "2016-04-02T00:00:00",
+          "value": 0.02
+        },
+        {
+          "time":  "2016-05-02T00:00:00",
+          "value": 0.025
+        },
+        {
+          "time":  "2016-06-02T00:00:00",
+          "value": 0.03
+        },
+        {
+          "time":  "2016-07-02T00:00:00",
+          "value": 0.01
+        },
+        {
+          "time":  "2016-08-02T00:00:00",
+          "value": 0.018
+        },
+        {
+          "time":  "2016-09-02T00:00:00",
+          "value": 0.021
+        },
+        {
+          "time":  "2016-10-02T00:00:00",
+          "value": 0.022
+        },
+        {
+          "time":  "2016-11-02T00:00:00",
+          "value": 0.029
+        },
+        {
+          "time":  "2016-12-02T00:00:00",
+          "value": 0.02
+        }
+      ]
+    },
+{
+      "marketObjectCode": "Reference_Rate_B",
+      "base": 1,
+      "data": [
+        {
+          "time":  "2015-01-02T00:00:00",
+          "value": 0.005
+        },
+        {
+          "time":  "2015-02-02T00:00:00",
+          "value": 0.006
+        },
+        {
+          "time":  "2015-03-02T00:00:00",
+          "value": 0.007
+        },
+        {
+          "time":  "2015-04-02T00:00:00",
+          "value": 0.008
+        },
+        {
+          "time":  "2015-05-02T00:00:00",
+          "value": 0.01
+        },
+        {
+          "time":  "2015-06-02T00:00:00",
+          "value": 0.005
+        },
+        {
+          "time":  "2015-07-02T00:00:00",
+          "value": 0.003
+        },
+        {
+          "time":  "2015-08-02T00:00:00",
+          "value": 0.01
+        },
+        {
+          "time":  "2015-09-02T00:00:00",
+          "value": 0.015
+        },
+        {
+          "time":  "2015-10-02T00:00:00",
+          "value": 0.02
+        },
+        {
+          "time":  "2016-01-02T00:00:00",
+          "value": 0.01
+        },
+        {
+          "time":  "2016-02-02T00:00:00",
+          "value": 0.005
+        },
+        {
+          "time":  "2016-03-02T00:00:00",
+          "value": 0.01
+        },
+        {
+          "time":  "2016-04-02T00:00:00",
+          "value": 0.02
+        },
+        {
+          "time":  "2016-05-02T00:00:00",
+          "value": 0.025
+        },
+        {
+          "time":  "2016-06-02T00:00:00",
+          "value": 0.03
+        },
+        {
+          "time":  "2016-07-02T00:00:00",
+          "value": 0.01
+        },
+        {
+          "time":  "2016-08-02T00:00:00",
+          "value": 0.018
+        },
+        {
+          "time":  "2016-09-02T00:00:00",
+          "value": 0.021
+        },
+        {
+          "time":  "2016-10-02T00:00:00",
+          "value": 0.022
+        }
+        {
+          "time":  "2016-11-02T00:00:00",
+          "value": 0.029
+        },
+        {
+          "time":  "2016-12-02T00:00:00",
+          "value": 0.02
+	}
+      ]
+    }
+]
+}

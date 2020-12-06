@@ -1,0 +1,32 @@
+{
+  "identifier":   "demo_lax112",
+  "label":        "CT 112: Same as case 110 but with only Principal payments ",
+  "contractType": "LAX",
+  "version":      "20201006",
+  "description":  "Same as case 110 but with only Principal payments linked to a Reference Index.",
+  "contract":     {
+    "contractType":                              "LAX",
+    "statusDate":                                "2015-01-01T00:00:00",
+    "contractRole":                              "RPA",
+    "contractID":                                112,
+    "arrayCycleAnchorDateOfInterestPayment":     "2016-01-01T00:00:00",
+    "arrayCycleOfInterestPayment":               "P1YL0",
+    "nominalInterestRate":                       0.05,
+    "dayCountConvention":                        "30E360",
+    "interestCalculationBase":                   "NT",
+    "currency":                                  "USD",
+    "contractDealDate":                          "2015-01-01T00:00:00",
+    "initialExchangeDate":                       "2015-01-02T00:00:00",
+    "notionalPrincipal":                         500,
+    "arrayCycleAnchorDateOfPrincipalRedemption": "2016-01-01T00:00:00,2018-01-01T00:00:00",
+    "arrayCycleOfPrincipalRedemption":           "P1YL0,P1YL0",
+    "arrayNextPrincipalRedemptionPayment":       "500,300",
+    "arrayIncreaseDecrease":                     "INC,DEC",
+    "cycleAnchorDateOfScalingIndex":             "2016-01-01T00:00:00",
+    "cycleOfScalingIndex":                       "P1YL0",
+    "scalingEffect":                             "ONO",
+    "arrayRate":                                 "0",
+    "scalingIndexAtContractDealDate":            100
+  },
+  "riskFactors":  []
+}
