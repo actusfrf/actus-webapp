@@ -1,18 +1,22 @@
 {
-    "contracts": [ 
-			"cash", 
-                	"callMoney",
-                	"undefinedMaturityProfile",
-                	"commodity",
-                	"stock",
-                	"principalAtMaturity",
-                	"linearAmortizer",
+    "contracts": [
+			"annuity",
+			"callMoney",
+			"capFloor",
+			"cash",
+			"commodity",
+			"collateral",
+			"guarantee",
 			"exoticLinearAmortizer",
-                	"negativeAmortizer",
-                	"annuity",
-                	"foreignExchangeOutright",
-                	"plainVanillaSwap",
+			"foreignExchangeOutright",
+			"future",
+			"linearAmortizer",
+			"negativeAmortizer",
+			"option",
+			"plainVanillaSwap",
+			"principalAtMaturity",
+			"stock",
 			"swap",
-			"capFloor"
-            	]
+			"undefinedMaturityProfile"
+		]
 }

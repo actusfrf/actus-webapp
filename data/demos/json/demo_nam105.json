@@ -14,7 +14,7 @@
     "nominalInterestRate":                      0.05,
     "dayCountConvention":                       "30E360",
     "cycleAnchorDateOfInterestCalculationBase": "2019-01-01T00:00:00",
-    "cycleOfInterestCalculationBase":           "PY3L0",
+    "cycleOfInterestCalculationBase":           "P3YL0",
     "interestCalculationBase":                  "NTL",
     "interestCalculationBaseAmount":            1000,
     "currency":                                 "USD",
