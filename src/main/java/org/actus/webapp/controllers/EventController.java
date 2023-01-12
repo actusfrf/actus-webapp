@@ -1,7 +1,6 @@
 package org.actus.webapp.controllers;
 
 import org.actus.webapp.models.Event;
-import org.actus.webapp.repositories.EventRepository;
 import org.actus.attributes.ContractModel;
 import org.actus.attributes.ContractModelProvider;
 import org.actus.contracts.ContractType;
@@ -25,9 +24,6 @@ import java.util.stream.Collectors;
 
 @RestController
 public class EventController {
-
-    @Autowired
-    EventRepository eventRepository;
 
     class MarketModel implements RiskFactorModelProvider {
         HashMap<String,TimeSeries<LocalDateTime,Double>> multiSeries = new HashMap<String,TimeSeries<LocalDateTime,Double>>();
@@ -80,18 +76,18 @@ public class EventController {
         contractData.forEach(entry -> {
             // extract contract terms
             ContractModel terms;
-            String contractId = (entry.get("contractID") == null)? "NA":entry.get("contractID").toString();
+            String contractID = (entry.get("contractID") == null)? "NA":entry.get("contractID").toString();
             try {
                 terms = ContractModel.parse(entry); 
             } catch(Exception e){
-                output.add(new EventStream(contractId, "Failure", e.toString(), new ArrayList<Event>()));
+                output.add(new EventStream(contractID, "Failure", e.toString(), new ArrayList<Event>()));
                 return; // skipt this iteration and continue with next
             }
             // compute contract events
             try {
-                output.add(new EventStream(contractId, "Success", "", computeEvents(terms, observer)));
+                output.add(new EventStream(contractID, "Success", "", computeEvents(terms, observer)));
             }catch(Exception e){
-                output.add(new EventStream(contractId, "Failure", e.toString(), new ArrayList<Event>()));
+                output.add(new EventStream(contractID, "Failure", e.toString(), new ArrayList<Event>()));
             }
         });
         return output;
