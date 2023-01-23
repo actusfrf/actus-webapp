@@ -9,18 +9,21 @@ public class ScenarioData {
     private List<TermStructureData> termStructureData;
     private List<TwoDimensionalPrepaymentModelData> twoDimensionalPrepaymentModelData;
     private List<TwoDimensionalCreditLossModelData> twoDimensionalCreditLossModelData;
-
+    private List<TwoDimensionalDepositTrxModelData> twoDimensionalDepositTrxModelData;
+    
     public ScenarioData() {
     }
 
     public ScenarioData(String scenarioId, List<ObservedData> timeSeriesData, List<TermStructureData> termStructureData, 
                         List<TwoDimensionalPrepaymentModelData> twoDimensionalPrepaymentModelData,
-                        List<TwoDimensionalCreditLossModelData> twoDimensionalCreditLossModelData) {
+                        List<TwoDimensionalCreditLossModelData> twoDimensionalCreditLossModelData,
+                        List<TwoDimensionalDepositTrxModelData> twoDimensionalDepositTrxModelData) {
         this.scenarioId = scenarioId;
         this.timeSeriesData = timeSeriesData;
         this.termStructureData = termStructureData;
         this.twoDimensionalPrepaymentModelData = twoDimensionalPrepaymentModelData;
         this.twoDimensionalCreditLossModelData = twoDimensionalCreditLossModelData;
+        this.twoDimensionalDepositTrxModelData = twoDimensionalDepositTrxModelData;
     }
 
     public String getScenarioId() {
@@ -62,6 +65,14 @@ public class ScenarioData {
     public void setTwoDimensionalCreditLossModelData(List<TwoDimensionalCreditLossModelData> twoDimensionalCreditLossModelData) {
         this.twoDimensionalCreditLossModelData = twoDimensionalCreditLossModelData;
     }
+    
+    public List<TwoDimensionalDepositTrxModelData> getTwoDimensionalDepositTrxModelData() {
+        return twoDimensionalDepositTrxModelData;
+    }
+
+    public void setTwoDimensionalDepositTrxModelData(List<TwoDimensionalDepositTrxModelData> twoDimensionalDepositTrxModelData) {
+        this.twoDimensionalDepositTrxModelData = twoDimensionalDepositTrxModelData;
+    }
 
     @Override
     public String toString() {
@@ -71,6 +82,7 @@ public class ScenarioData {
         sb.append(", termStructureData='").append(termStructureData).append('\'');
         sb.append(", twoDimensionalPrepaymentModelData='").append(twoDimensionalPrepaymentModelData).append('\'');
         sb.append(", twoDimensionalCreditLossModelData='").append(twoDimensionalCreditLossModelData).append('\'');
+        sb.append(", twoDimensionalDepositTrxModelData='").append(twoDimensionalDepositTrxModelData).append('\'');
         sb.append('}');
         return sb.toString();
     }
