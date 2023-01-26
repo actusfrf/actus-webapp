@@ -17,7 +17,6 @@ public final class POF_CW implements PayOffFunction {
     @Override
         public double eval(LocalDateTime time, StateSpace states, 
     ContractModelProvider model, RiskFactorModelProvider riskFactorModel, DayCountCalculator dayCounter, BusinessDayAdjuster timeAdjuster) {
-        return riskFactorModel.stateAt(model.getAs("ObjectCodeOfCashBalanceModel"),time,states,model)
-                * states.notionalPrincipal;
+        return riskFactorModel.stateAt(model.getAs("ObjectCodeOfCashBalanceModel"),time,states,model);
         }
 }

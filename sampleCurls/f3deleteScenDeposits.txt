@@ -1,0 +1,1 @@
+curl -L --request POST http://localhost:8083/scenarios/deleteScenario -H content-Type:application/json --data-raw '{"scenarioId" : "Deposits"}'

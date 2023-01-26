@@ -1,6 +1,7 @@
 package org.actus.webapp.models;
 
 import java.util.List;
+import org.actus.webapp.models.LabelMargin;
 
 public class TwoDimensionalLabelSurfaceData {
     private String interpolationMethod; // e.g. "linear"

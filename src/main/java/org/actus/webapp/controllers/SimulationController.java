@@ -7,10 +7,12 @@ import org.actus.webapp.models.ScenarioData;
 import org.actus.webapp.models.ScenarioSimulationInput;
 import org.actus.webapp.models.TwoDimensionalPrepaymentModelData;
 import org.actus.webapp.models.TwoDimensionalCreditLossModelData;
+import org.actus.webapp.models.TwoDimensionalDepositTrxModelData;
 import org.actus.webapp.repositories.ScenarioRepository;
 import org.actus.webapp.utils.TimeSeriesModel;
 import org.actus.webapp.utils.TwoDimensionalPrepaymentModel;
 import org.actus.webapp.utils.TwoDimensionalCreditLossModel;
+import org.actus.webapp.utils.TwoDimensionalDepositTrxModel;
 import org.actus.webapp.utils.MultiDimensionalRiskFactorModel;
 import org.actus.webapp.core.functions.POF_PP;
 import org.actus.webapp.core.functions.STF_PP;
@@ -111,6 +113,7 @@ public class SimulationController {
         List<ObservedData> timeSeriesData = json.getTimeSeriesData();
         List<TwoDimensionalPrepaymentModelData> prepModelData = json.getTwoDimensionalPrepaymentModelData();
         List<TwoDimensionalCreditLossModelData> creditLossModelData = json.getTwoDimensionalCreditLossModelData();
+	List<TwoDimensionalDepositTrxModelData> depositTrxModelData = json.getTwoDimensionalDepositTrxModelData();
 
         if(timeSeriesData.size()>0) {
             timeSeriesData.forEach(entry -> {
@@ -144,6 +147,21 @@ System.out.println("****fnp002 Added 2DPPmodel <"+ entry.getRiskFactorId()+"> to
             });
         }
 
+        if(!depositTrxModelData.isEmpty()) {
+            depositTrxModelData.forEach(entry -> {
+                try {
+
+                    observer.add(entry.getRiskFactorId(),
+                        new TwoDimensionalDepositTrxModel(entry.getRiskFactorId(),entry));
+                        // market data never needed for DepositTrx RF so observer parameter not passed this case
+System.out.println("****fnp025 Added 2DDepositTrxModel <"+ entry.getRiskFactorId()+"> to observer");  // fnp diagnostic jan 2023
+                } catch(Exception e) {
+                    throw new RuntimeException("riskFactorType for TwoDimensionalDepositTrxModelData with riskFactorId='" + entry.getRiskFactorId() + "' unsupported!");
+                }
+            });
+        }
+
+
         return observer;
     }
 
@@ -170,7 +188,7 @@ System.out.println("****fnp002 Added 2DPPmodel <"+ entry.getRiskFactorId()+"> to
                 ));
         }
 
-System.out.println("****fnp003 Adding PPevents for contract<"+ model.getAs("ContractID") + ">");       // fnp diagnostic jan 2023
+System.out.println("****fnp003 Adding events for contract<"+ model.getAs("ContractID") + ">");       // fnp diagnostic jan 2023
 System.out.println("****fnp004 PPmodel ObjCd = <"+ model.getAs("ObjectCodeOfPrepaymentModel") + ">");  // fnp diagnostic jan 2023
 
         // add prepayment events if prepayment model referenced by contract
@@ -193,13 +211,14 @@ System.out.println("****fnp004 PPmodel ObjCd = <"+ model.getAs("ObjectCodeOfPrep
             schedule.addAll(prepaymentEvents);
 System.out.println("****fnp005 Returning from prepayment");       // fnp diagnostic jan 2023
         }
-
+System.out.println("****fnp026 DepositTrxModel ObjCd = <"+ model.getAs("ObjectCodeOfCashBalanceModel") + ">");  // fnp diagnostic jan 2023
         // add deposit withdrawal events if withdrawal model referenced by UMP contract
         if(model.getAs("ContractType").equals(ContractTypeEnum.UMP) && !CommonUtils.isNull(model.getAs("ObjectCodeOfCashBalanceModel"))) {
-            String modelId = model.getAs("ObjectCodeOfCashBalanceModel");
-            TwoDimensionalPrepaymentModelData modelData = scenario.getTwoDimensionalPrepaymentModelData().
+	    String modelId = model.getAs("ObjectCodeOfCashBalanceModel");
+System.out.println("****fnp027 Contract ObjectCodeOfCash Balance =<"+ modelId + ">");       // fnp diagnostic jan 2023
+            TwoDimensionalDepositTrxModelData modelData = scenario.getTwoDimensionalDepositTrxModelData().
                     stream().filter(dat -> dat.getRiskFactorId().equals(modelId)).collect(Collectors.toList()).get(0);
-            List<String> transactionEventTimes = modelData.getPrepaymentEventTimes();
+            List<String> transactionEventTimes = modelData.getDepositTrxEventTimes();
             IntStream stream = IntStream.range(0,transactionEventTimes.size()); // start inclusive, end exclusive
             ArrayList<ContractEvent> transactionEvents = new ArrayList<ContractEvent>();
             stream.forEach(i -> transactionEvents.add(EventFactory.createEvent(
@@ -212,6 +231,7 @@ System.out.println("****fnp005 Returning from prepayment");       // fnp diagnos
                 model.getAs("ContractID")
             )));
             schedule.addAll(transactionEvents);
+System.out.println("****fnp028 Returning from deposit Trx event scheduling");       // fnp diagnostic jan 2023
         }
 
 System.out.println("****fnp006 Withdrawal processing passed");       // fnp diagnostic jan 2023

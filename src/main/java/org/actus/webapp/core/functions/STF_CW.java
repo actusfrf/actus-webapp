@@ -18,7 +18,7 @@ public final class STF_CW implements StateTransitionFunction {
         double timeFromLastEvent = dayCounter.dayCountFraction(timeAdjuster.shiftCalcTime(states.statusDate), timeAdjuster.shiftCalcTime(time));
         states.accruedInterest += states.nominalInterestRate * states.notionalPrincipal * timeFromLastEvent;
         states.feeAccrued += model.<Double>getAs("FeeRate") * states.notionalPrincipal * timeFromLastEvent;
-        states.notionalPrincipal -= riskFactorModel.stateAt(model.getAs("ObjectCodeOfCashBalanceModel"),time,states,model) * states.notionalPrincipal;
+        states.notionalPrincipal -= riskFactorModel.stateAt(model.getAs("ObjectCodeOfCashBalanceModel"),time,states,model) ;
         states.statusDate = time;
 
         // return post-event-states
