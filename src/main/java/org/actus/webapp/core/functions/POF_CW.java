@@ -17,6 +17,11 @@ public final class POF_CW implements PayOffFunction {
     @Override
         public double eval(LocalDateTime time, StateSpace states, 
     ContractModelProvider model, RiskFactorModelProvider riskFactorModel, DayCountCalculator dayCounter, BusinessDayAdjuster timeAdjuster) {
-        return riskFactorModel.stateAt(model.getAs("ObjectCodeOfCashBalanceModel"),time,states,model);
+        double roamt = riskFactorModel.stateAt(model.getAs("ObjectCodeOfCashBalanceModel"),time,states,model);
+        double absnp = states.notionalPrincipal*ContractRoleConvention.roleSign(model.getAs("ContractRole"));
+	double payoff = ((absnp + roamt ) < 0.0) ?   -1.0 * absnp : roamt ;
+System.out.println("****fnp030 absnp =<" + absnp + "> roamt= <" + roamt +"> payoff = <" + payoff +">");          // fnp diagnostic jan 2023
+System.out.println("****fnp031 signP value =<"+ ContractRoleConvention.roleSign(model.getAs("ContractRole")) + ">") ;  // fnp diagnostic jan 2023  
+        return payoff;
         }
 }
