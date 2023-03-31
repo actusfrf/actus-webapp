@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.actus.states.StateSpace;
 import org.actus.webapp.models.ObservedData;
@@ -41,10 +42,10 @@ public class TwoDimensionalDepositTrxModel implements RiskFactorModelProvider {
                    }
                 Double[ ] dimension2Margins = new Double[dim2Labels.length] ;
                 for(int i=0; i < dim2Labels.length ; i++ ) {
-                   this.dimension2Index.put(dim2Labels[i].substring(0,16),Double.valueOf(i));
+                   this.dimension2Index.put(dim2Labels[i],Double.valueOf(i));
                    dimension2Margins[i] = Double.valueOf(i) ;
                    }
-System.out.println("****fnp029 lookup date(0)= <"+ dim2Labels[0].substring(0,16) + "> .");   // fnp diagnostic jan 2023 
+System.out.println("****fnp029 lookup date(0)= <" + dim2Labels[0] + "> .");   // fnp diagnostic jan 2023 
 	
 	//	List<Double> dimension1Margins = data.getSurface().getMargins().get(0).getValues();
 	//	Double[] dimension2Margins = data.getSurface().getMargins().get(1).getValues().stream().map(obs -> obs).toArray(Double[]::new);
@@ -64,12 +65,19 @@ System.out.println("****fnp029 lookup date(0)= <"+ dim2Labels[0].substring(0,16)
 
 	public double stateAt(String id, LocalDateTime time, StateSpace states,
 			ContractModelProvider terms) {
+                DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+                String timeS = time.format(formatter);
 System.out.println("****fnp020 TwoDimensionalDepositTrxModel stateAt() entered");       // fnp diagnostic jan 2023 
                 String contractID  = terms.getAs("ContractID");
-System.out.println("****fnp021 contractID = <" + contractID + "> time = <"+ String.valueOf(time)+">" );       // fnp diagnostic jan 2023 
+// System.out.println("****fnp021 contractID = <" + contractID + "> time = <"+ String.valueOf(time)+">" ); // fnp diagnostic jan 2023 
+
+System.out.println("****fnp021 contractID = <" + contractID + "> time = <" + timeS + ">" ); // fnp diagnostic jan 2023 
                 Double dim1x = this.dimension1Index.get(contractID);
 System.out.println("****fnp022 dim1x = <" + String.valueOf(dim1x) + ">");       // fnp diagnostic jan 2023
-		Double dim2x = this.dimension2Index.get(String.valueOf(time)); 
+		Double dim2x = this.dimension2Index.get(timeS); 
+
+//               Double dim2x = this.dimension2Index.get(String.valueOf(time)); 
+
 System.out.println("****fnp023 dim2x = <" + String.valueOf(dim2x) + ">");       // fnp diagnostic jan 2023
                 Double trxAmt = surface.getValueFor(dim1x,1).getValueFor(dim2x,1);
 System.out.println("****fnp024 trxAmt = <" + String.valueOf(trxAmt) + ">");       // fnp diagnostic jan 2023    
