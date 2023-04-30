@@ -1,0 +1,11 @@
+This version of the actus-webapp server  
+ - uses actus-webapp V1.0  source  master branch / base version code  
+ - has  modified gradle.build and gradle.settings to enable
+     -- compilation with openjdk17
+     -- build with gradle V 8.1.1   
+     -- builds or uses actus-core-1.0.1-SNAPSHOT.jar  from V101jdk17 branch of actusfrf/actus-core
+     -- mongodb requirement not yet fully tested and set  
+
+Tested fnparr@gmail.com   Francis Parr( ACTUSfrf) 
+30 April 2023 
+  
