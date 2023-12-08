@@ -116,3 +116,7 @@ npm start
 
 Now, open your browser and the app through url <a href="http://localhost:3000">http://localhost:3000</a>.
 
+
+Version Information / Release Notes 8 December 2023 
+This is actus-webapp Version 1.0.1
+It includes and runs with actus-core Version 1.0.1
