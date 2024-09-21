@@ -1,9 +1,9 @@
 package org.actus.webapp.controllers;
 
+import java.util.List;
+
 import org.actus.webapp.models.DemoMeta;
 import org.actus.webapp.repositories.DemoMetaRepository;
-import java.io.IOException;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;

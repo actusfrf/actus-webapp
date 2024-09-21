@@ -1,7 +1,8 @@
 package org.actus.webapp.repositories;
 
-import org.actus.webapp.models.DemoMeta;
 import java.util.List;
+
+import org.actus.webapp.models.DemoMeta;
 import org.springframework.data.repository.CrudRepository;
 
 public interface DemoMetaRepository extends CrudRepository<DemoMeta, String> {

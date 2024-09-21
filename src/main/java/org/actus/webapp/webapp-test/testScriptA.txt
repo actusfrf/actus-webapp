@@ -1,0 +1,4 @@
+Test whether RiskFactor20Controller is active and listening
+
+> curl -v http://localhost:8083/rf2/hello
+ 

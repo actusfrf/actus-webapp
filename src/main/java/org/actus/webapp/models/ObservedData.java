@@ -1,6 +1,6 @@
 package org.actus.webapp.models;
 
-import java.util.*;
+import java.util.List;
 
 public class ObservedData {
 
