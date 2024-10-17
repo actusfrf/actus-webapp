@@ -6,14 +6,15 @@ import java.util.Map;
 public class BatchInputData_rf2 {
 	
     private List<Map<String,Object>> contracts;
-    private String scenarioID;
+    private ScenarioDescriptor scenarioDescriptor;
 
     public BatchInputData_rf2() {
     }
     
-    public BatchInputData_rf2(List<Map<String,Object>> contracts, String scenarioID) {
+    public BatchInputData_rf2(List<Map<String,Object>> contracts,
+    						  ScenarioDescriptor scenarioDescriptor) {
         this.contracts = contracts;
-        this.scenarioID = scenarioID;
+        this.scenarioDescriptor = scenarioDescriptor;
     }
     
     public List<Map<String,Object>> getContracts() {
@@ -24,19 +25,19 @@ public class BatchInputData_rf2 {
         this.contracts = contracts;
     }
 
-    public String getScenarioID() {
-        return this.scenarioID;
+    public ScenarioDescriptor getScenarioDescriptor() {
+        return this.scenarioDescriptor;
     }
 
-    public void setScenarioID(String scenarioID) {
-        this.scenarioID = scenarioID;
+    public void setScenarioDescriptor(ScenarioDescriptor scenarioDescriptor) {
+        this.scenarioDescriptor = scenarioDescriptor;
     }
     
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("ActusData{");
         sb.append("contracts='").append(contracts).append('\'');
-        sb.append(", scenarioID='").append(scenarioID).append('\'');
+        sb.append(", scenarioID='").append(scenarioDescriptor.toString()).append('\'');
         sb.append('}');
         return sb.toString();
     }

@@ -30,7 +30,8 @@ import org.actus.webapp.models.EventStream2;
 import org.actus.webapp.models.MarketData_rf2;
 import org.actus.webapp.models.ObservedData;
 import org.actus.webapp.models.ReferenceIndex_rf2;
-import org.actus.webapp.models.ScenarioSimulationInput;
+import org.actus.webapp.models.ScenarioSimulationInput_rf2;
+import org.actus.webapp.models.ScenarioDescriptor;
 import org.actus.webapp.utils.MultiRiskFactorModel_rf2;
 import org.actus.webapp.utils.TimeSeries;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -69,7 +70,7 @@ public class RiskFactor20Controller {
 	        
 		  // extract body parameters
 	      List<Map<String, Object>> contractData = json.getContracts();
-	      String           scenarioID   = json.getScenarioID();
+	      String           scenarioID   = json.getScenarioDescriptor().getScenarioID();
 	        
 	      // fetch Market data for scn01 - ignoring input 
 	      System.out.println("**** rf2EventsBatch/doGetMarketData - request to risksrv3.");
@@ -151,24 +152,23 @@ public class RiskFactor20Controller {
 	    @RequestMapping(method = RequestMethod.POST, value = "/rf2/scenarioSimulation")
 	    @ResponseBody
 	    @CrossOrigin(origins = "*")
-	    public List<EventStream2> runScenarioSimulation(@RequestBody ScenarioSimulationInput json) {
+	    public List<EventStream2> runScenarioSimulation(@RequestBody ScenarioSimulationInput_rf2 json) {
 	        
 	        System.out.println("****fnp001 Started a scenario simulation");  // fnp diagnostic aug 2024  
 	        // extract body parameters
-	        String scenarioId = json.getScenarioID();
+	        ScenarioDescriptor scenarioDescriptor = json.getScenarioDescriptor();
+	        String scenarioId = scenarioDescriptor.getScenarioID();
 	        List<Map<String, Object>> contractData = json.getContracts();
 	        LocalDateTime simulateTo = json.getSimulateTo();
 	        Set<LocalDateTime> monitoringTimes = json.getMonitoringTimes();
 	        
 	        // Step1:  REST invocation to external RiskService a PostforObject call 
 	        System.out.println("****fnp002  Call /Started a scenario simulation");  // fnp diagnostic aug 2024 
-	        // call risksrv3:/batchEventsStart passing  BatchStartInput as request data 
-			String uri = "http://localhost:8082/scenarioSimulationBatchStart";
-			RestTemplate restTemplate = new RestTemplate();
-			List<ContractUserData> contractUserData = new ArrayList<ContractUserData>();
-			BatchStartInput batchStartInput = new BatchStartInput(scenarioId,contractUserData);		  
-			String outstr = restTemplate.postForObject(uri, batchStartInput, String.class );
-		    System.out.println("****fnp003 return /scenarioSimulationBatchStart " + outstr);  // fnp diagnostic aug 2024 
+	        // call risksrv3:/scenarioSimulationStart passing  the scenarioDescriptor from request data 
+			String uri = "http://localhost:8082/scenarioSimulationStart";
+			RestTemplate restTemplate = new RestTemplate();	  
+			String outstr = restTemplate.postForObject(uri, scenarioDescriptor, String.class );
+		    System.out.println("****fnp003 return /scenarioSimulationStart " + outstr);  // fnp diagnostic aug 2024 
 		    
 	        // fetch scenario data and create risk factor observer
 		    // BUT no need to do this  with external risk - all lookup is remote
@@ -244,7 +244,7 @@ public class RiskFactor20Controller {
 	        // call out to risk service /scenarioSimulationContractStart it will decide whether
 	        // any  prepayment behavior model is activated and return populated or empty List<CallOutData> 
 	        RestTemplate restTemplate = new RestTemplate(); 
-	    	String uri = "http://localhost:8082/scenarioSimulationContractStart";
+	    	String uri = "http://localhost:8082/contractSimulationStart";
 	    	System.out.println("****fnp100  in ppcallouts about to post ContractStart request ") ;  // fnp diagnostic aug 2024 
 	    	List<Object> items = restTemplate.postForObject(uri, attributes, List.class);
 	    	System.out.println("****fnp101  returned  items = " + items.toString() + "items.size=  " + items.size()) ;
