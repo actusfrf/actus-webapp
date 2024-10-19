@@ -10,8 +10,20 @@ import org.actus.states.StateSpace;
 import org.actus.webapp.models.StateAtInput;
 import org.actus.webapp.models.BehaviorStateAtInput;
 import org.springframework.web.client.RestTemplate;
+import  org.springframework.beans.factory.annotation.Value;
 
 public class MultiRiskFactorModel_rf2 implements RiskFactorModelProvider{
+	
+	// properties to configure location of external risk service 
+    private
+    @Value("${actus.riskservice.host}")
+    String riskserviceHost;
+
+    private
+    @Value("${spring.data.riskservice.port}")
+    Integer riskservicePort;
+		
+	
 	public MultiRiskFactorModel_rf2() {
 	}
 
@@ -19,7 +31,8 @@ public class MultiRiskFactorModel_rf2 implements RiskFactorModelProvider{
 	// but may never get used - we do not want to refine the interface 
 	public Set<String> keys() {
 		  RestTemplate restTemplate = new RestTemplate();
-		  String uri = "http://localhost:8082/marketKeys";	
+		  String uri = "http://"+ riskserviceHost+ ':' + riskservicePort + "/marketKeys";
+		 // String uri = "http://localhost:8082/marketKeys";	
 		  HashSet<String> kset = restTemplate.getForObject(uri,HashSet.class);
 		  return kset;
 	}
@@ -29,12 +42,14 @@ public class MultiRiskFactorModel_rf2 implements RiskFactorModelProvider{
 		  double dval;
 	      if (isMarket) {
 	    	  RestTemplate restTemplate = new RestTemplate();
-	    	  String uri = "http://localhost:8082/marketStateAt";
+	    	  String uri = "http://"+ riskserviceHost+ ':' + riskservicePort + "/marketStateAt" ;
+	    	  // String uri = "http://localhost:8082/marketStateAt";
 	    	  StateAtInput stateAtInput = new StateAtInput(id, time);		  
 	    	  dval = restTemplate.postForObject(uri, stateAtInput, Double.class );
 		  } else {  // observation call out to a behavior rather than a model
 	    	  RestTemplate restTemplate = new RestTemplate();
-	    	  String uri = "http://localhost:8082/behaviorStateAt";
+	    	  String uri = "http://"+ riskserviceHost+ ':' + riskservicePort + "/behaviorStateAt";
+	    	  // String uri = "http://localhost:8082/behaviorStateAt";
 	    	  BehaviorStateAtInput behaviorStateAtInput = new BehaviorStateAtInput(id, states);		  
 	    	  dval = restTemplate.postForObject(uri, behaviorStateAtInput, Double.class );
 		  }

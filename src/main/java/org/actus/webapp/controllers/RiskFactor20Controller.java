@@ -40,7 +40,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import  org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.client.RestTemplate;
+
+
 
 @RestController
 public class RiskFactor20Controller {
@@ -61,8 +64,15 @@ public class RiskFactor20Controller {
             return multiSeries.get(id).getValueFor(time,1);
         }
     }	
-	
-	  
+    
+	// properties to configure location of external risk service 
+    private
+    @Value("${actus.riskservice.host}")
+    String riskserviceHost;
+
+    private
+    @Value("${spring.data.riskservice.port}")
+    Integer riskservicePort;
 
 	  @RequestMapping(method = RequestMethod.POST, value = "/rf2/eventsBatch")
 	  @CrossOrigin(origins = "*")
@@ -74,7 +84,7 @@ public class RiskFactor20Controller {
 	        
 	      // fetch Market data for scn01 - ignoring input 
 	      System.out.println("**** rf2EventsBatch/doGetMarketData - request to risksrv3.");
-	      String uri = "http://localhost:8082/marketData/" + scenarioID ;
+	      String uri = "http://"+ riskserviceHost+ ':' + riskservicePort + "/marketData/" + scenarioID ;
 	      System.out.println("**** uri = <"+ uri +">");
 	      RestTemplate restTemplate = new RestTemplate();
 	      MarketData_rf2 marketData = restTemplate.getForObject(uri, MarketData_rf2.class );
@@ -165,7 +175,8 @@ public class RiskFactor20Controller {
 	        // Step1:  REST invocation to external RiskService a PostforObject call 
 	        System.out.println("****fnp002  Call /Started a scenario simulation");  // fnp diagnostic aug 2024 
 	        // call risksrv3:/scenarioSimulationStart passing  the scenarioDescriptor from request data 
-			String uri = "http://localhost:8082/scenarioSimulationStart";
+	        String uri = "http://"+ riskserviceHost+ ':' + riskservicePort + "/scenarioSimulationStart" ;
+			// String uri = "http://localhost:8082/scenarioSimulationStart";
 			RestTemplate restTemplate = new RestTemplate();	  
 			String outstr = restTemplate.postForObject(uri, scenarioDescriptor, String.class );
 		    System.out.println("****fnp003 return /scenarioSimulationStart " + outstr);  // fnp diagnostic aug 2024 
@@ -244,7 +255,8 @@ public class RiskFactor20Controller {
 	        // call out to risk service /scenarioSimulationContractStart it will decide whether
 	        // any  prepayment behavior model is activated and return populated or empty List<CallOutData> 
 	        RestTemplate restTemplate = new RestTemplate(); 
-	    	String uri = "http://localhost:8082/contractSimulationStart";
+	        String uri = "http://"+ riskserviceHost+ ':' + riskservicePort + "/contractSimulationStart" ;
+	    	// String uri = "http://localhost:8082/contractSimulationStart";
 	    	System.out.println("****fnp100  in ppcallouts about to post ContractStart request ") ;  // fnp diagnostic aug 2024 
 	    	List<Object> items = restTemplate.postForObject(uri, attributes, List.class);
 	    	System.out.println("****fnp101  returned  items = " + items.toString() + "items.size=  " + items.size()) ;
