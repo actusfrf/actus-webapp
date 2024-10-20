@@ -15,16 +15,21 @@ import  org.springframework.beans.factory.annotation.Value;
 public class MultiRiskFactorModel_rf2 implements RiskFactorModelProvider{
 	
 	// properties to configure location of external risk service 
-    private
-    @Value("${actus.riskservice.host}")
+    private 
     String riskserviceHost;
+  //  @Value("${actus.riskservice.host}")
 
     private
-    @Value("${spring.data.riskservice.port}")
     Integer riskservicePort;
+  //  @Value("${actus.riskservice.port}")  
 		
 	
 	public MultiRiskFactorModel_rf2() {
+	}
+	
+	public MultiRiskFactorModel_rf2(String riskserviceHost, Integer riskservicePort) {
+		this.riskserviceHost = riskserviceHost;
+		this.riskservicePort = riskservicePort;
 	}
 
 	// this has a warning about type conversion - my not work FNP Aug 2024 

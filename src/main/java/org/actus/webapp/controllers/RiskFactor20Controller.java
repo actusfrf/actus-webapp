@@ -71,7 +71,7 @@ public class RiskFactor20Controller {
     String riskserviceHost;
 
     private
-    @Value("${spring.data.riskservice.port}")
+    @Value("${actus.riskservice.port}")
     Integer riskservicePort;
 
 	  @RequestMapping(method = RequestMethod.POST, value = "/rf2/eventsBatch")
@@ -223,7 +223,7 @@ public class RiskFactor20Controller {
 	    }
 
 	    private RiskFactorModelProvider createObserver() {
-	        MultiRiskFactorModel_rf2 observer = new MultiRiskFactorModel_rf2();     
+	        MultiRiskFactorModel_rf2 observer = new MultiRiskFactorModel_rf2(riskserviceHost,riskservicePort);     
 	        return observer;
 	    }
 
